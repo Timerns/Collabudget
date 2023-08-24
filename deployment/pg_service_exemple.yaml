@@ -55,7 +55,7 @@ metadata:
   name: pg-service
 spec:
   type: LoadBalancer
-  #loadBalancerIP: 34.30.247.67
+  loadBalancerIP: 34.171.94.83
   ports:
   - name: pg-network
     port: 5432
