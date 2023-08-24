@@ -3,9 +3,12 @@ kind: Service
 metadata:
   name: frontend-service
 spec:
+  type: LoadBalancer
+  # loadBalancerIP: 34.30.247.67
   ports:
-  - name: http
+  - name: front-network
     port: 80
+    protocol: TCP
     targetPort: 3000
   selector:
     app: front
