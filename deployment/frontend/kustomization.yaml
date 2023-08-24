@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
 - frontend_deployment.yaml
 - frontend_service.yaml
-- frontend_ingress.yaml

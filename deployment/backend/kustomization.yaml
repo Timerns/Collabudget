@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
 - backend_deployment.yaml
 - backend_service.yaml
-- backend_ingress.yaml

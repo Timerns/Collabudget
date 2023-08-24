@@ -4,7 +4,7 @@ metadata:
   name: backend-service
 spec:
   type: LoadBalancer
-  # loadBalancerIP: 34.30.247.67
+  loadBalancerIP: 104.198.25.239
   ports:
   - name: backend-network
     port: 80
