@@ -9,5 +9,5 @@ app.listen(port, async () => {
     res.send('Express + TypeScript Server');
   });
   
-  console.log('🚀💥 We are live on http://localhost:' + port + '🚀');
+  console.log('🚀 We are live on http://localhost:' + port + '🚀');
 });
