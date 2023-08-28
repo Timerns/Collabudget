@@ -12,7 +12,7 @@ const config: Config = {
         'secondary': '#212121',
         'light-secondary': '#4A4A4A',
         'primary': '#FF9B05',
-        'light-gray': "F5F5F5"
+        'light-gray': "#F5F5F5"
       },
       fontFamily: {
         'primary': ['Poppins']
