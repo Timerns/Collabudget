@@ -1,11 +1,12 @@
-import Menu from "@/app/components/menu";
+
 import Footer from "@/app/components/footer";
+import LandingMenu from "./components/Menus/LandingMenu";
 
 export default function Landing() {
     console.log("Hello World " + process.env.HELLO);
     return (
         <>
-            <Menu/>
+            <LandingMenu></LandingMenu>
             <div className="container mx-auto px-4">
                 <h1 className={"text-2xl text-center my-16"}>Gérez vos dépenses</h1>
                 <hr className={"border-secondary mx-16"}/>
