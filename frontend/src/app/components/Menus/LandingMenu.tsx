@@ -34,10 +34,10 @@ const LandingMenu: FC<pageProps> = (props) => {
               <a href="/" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Accueil</a>
             </li> 
             <li>
-              <a href="/test" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/test" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Solution</a>
+              <a href="/solution" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/test" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Solution</a>
             </li>
             <li>
-              <a href="/propos" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/propos" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">A propos</a>
+              <a href="/apropos" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/propos" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">A propos</a>
             </li>
             <li>
               <a href="/contact" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/contact" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Contact</a>
