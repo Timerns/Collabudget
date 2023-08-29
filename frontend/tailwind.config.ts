@@ -14,7 +14,8 @@ const config: Config = {
         'primary': '#FF9B05',
         'light-gray': "#F5F5F5",
         'red': "#F14668",
-        'green': "#46D2A0"
+        'green': "#46D2A0",
+        'white': "#F5F5F5"
       },
       fontFamily: {
         'primary': ['Poppins']

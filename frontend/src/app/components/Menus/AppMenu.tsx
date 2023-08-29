@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, FC } from 'react'
 import { usePathname } from 'next/navigation';
+import Link from "next/link";
 
 type pageProps = {}
 
@@ -37,27 +38,27 @@ const AppMenu: FC<pageProps> = (props) => {
             <aside id="sidebar-multi-level-sidebar" className={"fixed top-0 left-0 z-30 w-64 h-screen transition-transform  sm:translate-x-0" + (navbarOpen ? "" : " -translate-x-full")} aria-label="Sidebar">
                 <div className="flex flex-col h-full px-3 py-4 overflow-y-auto bg-light-secondary ">
 
-                    <a href="/" className="flex justify-center w-full mx-auto invisible sm:visible">
+                    <Link href="/app/tableau-debord" className="flex justify-center w-full mx-auto invisible sm:visible">
                         <img src="/collabudget-light.png" className="h-14" alt="Collabudget Logo" />
-                    </a>
+                    </Link>
                     <hr className="w-48 h-1 mx-auto my-4 bg-primary border-0 rounded" />
                     <ul className="space-y-2 font-medium">
                         <li>
-                            <a href="#" className="flex items-center p-2 text-light-gray group">
+                            <Link href="/app/tableau-de-bord" className="flex items-center p-2 text-light-gray group">
                                 <svg className="w-5 h-5" viewBox="0 0 31 34" aria-hidden="true" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M16.7083 10.875V3.625H26.375V10.875H16.7083ZM4.625 15.7083V3.625H14.2917V15.7083H4.625ZM16.7083 25.375V13.2917H26.375V25.375H16.7083ZM4.625 25.375V18.125H14.2917V25.375H4.625Z" />
                                 </svg>
-                                <span className={"ml-3 text-light-gray  hover:text-primary" + (pathname == "/app" ? " text-primary underline decoration-primary underline-offset-4": " text-white")}>Tableau de bord</span>
-                            </a>
+                                <span className={"ml-3 text-light-gray  hover:text-primary" + (pathname == "/app/tableau-de-bord" ? " text-primary underline decoration-primary underline-offset-4": " text-white")}>Tableau de bord</span>
+                            </Link>
                         </li>
                         <li>
-                            <a href="#" className="flex items-center p-2 text-light-gray group">
+                            <Link href="/app/mes-depenses" className="flex items-center p-2 text-light-gray group">
                                 <svg className="w-5 h-5" width="29" height="29" viewBox="0 0 29 29" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M19.0312 14.5C19.0312 15.3962 18.7655 16.2723 18.2676 17.0174C17.7697 17.7626 17.062 18.3434 16.234 18.6863C15.4061 19.0293 14.495 19.119 13.616 18.9442C12.737 18.7693 11.9296 18.3378 11.2959 17.7041C10.6622 17.0704 10.2307 16.263 10.0558 15.384C9.88098 14.505 9.97071 13.5939 10.3137 12.766C10.6566 11.938 11.2374 11.2303 11.9826 10.7324C12.7277 10.2345 13.6038 9.96875 14.5 9.96875C15.7018 9.96875 16.8543 10.4461 17.7041 11.2959C18.5539 12.1457 19.0312 13.2982 19.0312 14.5ZM28.0938 7.25V21.75C28.0938 21.9904 27.9983 22.2209 27.8283 22.3908C27.6584 22.5608 27.4279 22.6562 27.1875 22.6562H1.8125C1.57215 22.6562 1.34164 22.5608 1.17168 22.3908C1.00173 22.2209 0.90625 21.9904 0.90625 21.75V7.25C0.90625 7.00965 1.00173 6.77914 1.17168 6.60918C1.34164 6.43923 1.57215 6.34375 1.8125 6.34375H27.1875C27.4279 6.34375 27.6584 6.43923 27.8283 6.60918C27.9983 6.77914 28.0938 7.00965 28.0938 7.25ZM26.2812 12.5006C25.2522 12.1963 24.3156 11.6394 23.5569 10.8806C22.7981 10.1219 22.2412 9.18529 21.9369 8.15625H7.06309C6.75882 9.18529 6.20193 10.1219 5.44315 10.8806C4.68436 11.6394 3.74779 12.1963 2.71875 12.5006V16.4994C3.74779 16.8037 4.68436 17.3606 5.44315 18.1194C6.20193 18.8781 6.75882 19.8147 7.06309 20.8438H21.9369C22.2412 19.8147 22.7981 18.8781 23.5569 18.1194C24.3156 17.3606 25.2522 16.8037 26.2812 16.4994V12.5006Z" fill="#F5F5F5" />
                                 </svg>
 
-                                <span className={"ml-3 text-light-gray  hover:text-primary" + (pathname == "/depence" ? " text-primary underline decoration-primary underline-offset-4": " text-white")}>Mes dépenses</span>
-                            </a>
+                                <span className={"ml-3 text-light-gray  hover:text-primary" + (pathname == "/app/mes-depenses" ? " text-primary underline decoration-primary underline-offset-4": " text-white")}>Mes dépenses</span>
+                            </Link>
                         </li>
                         <li>
                             <button type="button" className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
@@ -99,7 +100,7 @@ const AppMenu: FC<pageProps> = (props) => {
                                 <span className={"ml-3 text-light-gray  hover:text-primary" + (pathname == "/settings" ? " text-primary underline decoration-primary underline-offset-4": " text-white")}>Mon compte</span>
                             </a>
                         </li>
-                       
+
                     </ul>
 
                 </div>
