@@ -11,7 +11,7 @@ const LandingMenu: FC<pageProps> = (props) => {
     <nav className="bg-secondary md:px-10">
       <div className="flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/" className="flex items-center">
-          <img src="/logo.png" className="h-12 mr-8" alt="Collabudget Logo" />
+          <img src="/collabudget-light.png" className="h-12 mr-8" alt="Collabudget Logo" />
         </a>
         <button data-collapse-toggle="navbar-default" 
                 type="button" 

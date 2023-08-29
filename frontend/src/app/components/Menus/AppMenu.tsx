@@ -27,7 +27,7 @@ const AppMenu: FC<pageProps> = (props) => {
             <div className='fixed top-0 left-0 z-40 w-full bg-light-secondary sm:hidden'>
                 <div className='flex flex-col w-64  px-3 py-4 '>
                     <a href="/" className="flex justify-center w-full mx-auto">
-                        <img src="/logo.png" className="h-14" alt="Collabudget Logo" />
+                        <img src="/collabudget-light.png" className="h-14" alt="Collabudget Logo" />
                     </a>
                 </div>
             </div>
@@ -36,7 +36,7 @@ const AppMenu: FC<pageProps> = (props) => {
                 <div className="flex flex-col h-full px-3 py-4 overflow-y-auto bg-light-secondary ">
 
                     <a href="/" className="flex justify-center w-full mx-auto invisible sm:visible">
-                        <img src="/logo.png" className="h-14" alt="Collabudget Logo" />
+                        <img src="/collabudget-light.png" className="h-14" alt="Collabudget Logo" />
                     </a>
                     <hr className="w-48 h-1 mx-auto my-4 bg-primary border-0 rounded" />
                     <ul className="space-y-2 font-medium">
