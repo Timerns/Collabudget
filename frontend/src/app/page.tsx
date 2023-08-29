@@ -2,6 +2,7 @@ import Menu from "@/app/components/menu";
 import Footer from "@/app/components/footer";
 
 export default function Landing() {
+    console.log("Hello World " + process.env.HELLO);
     return (
         <>
             <Menu/>
