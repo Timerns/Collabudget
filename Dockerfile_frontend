@@ -2,6 +2,9 @@ FROM node:16-alpine
 
 WORKDIR /app
 
+ARG DOTENV_KEY
+ENV DOTENV_KEY=$DOTENV_KEY
+
 COPY ./frontend .
 WORKDIR /app/frontend
 RUN npm ci --production
