@@ -7,7 +7,7 @@ const AppMenu: FC<pageProps> = (props) => {
     const [navbarOpen, setNavbarOpen] = useState(false);
     return (
         <div>
-            <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" className="fixed top-0 right-0 inline-flex items-center p-2 mt-6 mr-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 z-50 "
+            <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" className="fixed top-0 right-0 inline-flex items-center p-2 mt-6 mr-3 text-sm text-light-gray rounded-lg sm:hidden hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-light-gray z-50 "
                 onClick={() => setNavbarOpen(!navbarOpen)}
             >
                 <span className="sr-only">Open sidebar</span>
