@@ -7,22 +7,38 @@ const AppMenu: FC<pageProps> = (props) => {
     const [navbarOpen, setNavbarOpen] = useState(false);
     return (
         <div>
-            <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
-                    onClick={() => setNavbarOpen(!navbarOpen)}
+            <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" className="fixed top-0 right-0 inline-flex items-center p-2 mt-6 mr-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 z-50 "
+                onClick={() => setNavbarOpen(!navbarOpen)}
             >
                 <span className="sr-only">Open sidebar</span>
-                <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-                </svg>
+                {
+                    navbarOpen ?
+                        <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11 1L1 11M1 1L11 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        :
+                        <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+                        </svg>
+                }
             </button>
 
-            <aside id="sidebar-multi-level-sidebar" className={"fixed top-0 left-0 z-40 w-64 h-screen transition-transform  sm:translate-x-0" + (navbarOpen ? "" : " -translate-x-full")} aria-label="Sidebar">
+
+            <div className='fixed top-0 left-0 z-40 w-full bg-light-secondary sm:hidden'>
+                <div className='flex flex-col w-64  px-3 py-4 '>
+                    <a href="/" className="flex justify-center w-full mx-auto">
+                        <img src="/logo.png" className="h-14" alt="Collabudget Logo" />
+                    </a>
+                </div>
+            </div>
+
+            <aside id="sidebar-multi-level-sidebar" className={"fixed top-0 left-0 z-30 w-64 h-screen transition-transform  sm:translate-x-0" + (navbarOpen ? "" : " -translate-x-full")} aria-label="Sidebar">
                 <div className="flex flex-col h-full px-3 py-4 overflow-y-auto bg-light-secondary ">
 
-                    <a href="/" className="flex justify-center w-full mx-auto">
-                        <img src="/logo.png" className="h-20" alt="Collabudget Logo" />
+                    <a href="/" className="flex justify-center w-full mx-auto invisible sm:visible">
+                        <img src="/logo.png" className="h-14" alt="Collabudget Logo" />
                     </a>
-                    <hr className="w-48 h-1 mx-auto my-4 bg-primary border-0 rounded md:my-10" />
+                    <hr className="w-48 h-1 mx-auto my-4 bg-primary border-0 rounded" />
                     <ul className="space-y-2 font-medium">
                         <li>
                             <a href="#" className="flex items-center p-2 text-light-gray group">
