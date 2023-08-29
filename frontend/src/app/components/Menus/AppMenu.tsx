@@ -10,7 +10,7 @@ const AppMenu: FC<pageProps> = (props) => {
     const pathname  = usePathname ()
     return (
         <div>
-            <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" className="fixed top-0 right-0 inline-flex items-center p-2 mt-6 mr-3 text-sm text-light-gray rounded-lg sm:hidden hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-light-gray z-50 "
+            <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" className="fixed top-0 right-0 inline-flex items-center p-2 mt-6 mr-3 text-sm text-light-gray rounded-lg sm:hidden hover:bg-secondary z-50 "
                 onClick={() => setNavbarOpen(!navbarOpen)}
             >
                 <span className="sr-only">Open sidebar</span>
@@ -28,7 +28,7 @@ const AppMenu: FC<pageProps> = (props) => {
 
 
             <div className='fixed top-0 left-0 z-40 w-full bg-light-secondary sm:hidden'>
-                <div className='flex flex-col w-64  px-3 py-4 '>
+                <div className='flex flex-col w-64 h-20 px-3 py-4 '>
                     <a href="/" className="flex justify-center w-full mx-auto">
                         <img src="/collabudget-light.png" className="h-14" alt="Collabudget Logo" />
                     </a>
@@ -38,7 +38,7 @@ const AppMenu: FC<pageProps> = (props) => {
             <aside id="sidebar-multi-level-sidebar" className={"fixed top-0 left-0 z-30 w-64 h-screen transition-transform  sm:translate-x-0" + (navbarOpen ? "" : " -translate-x-full")} aria-label="Sidebar">
                 <div className="flex flex-col h-full px-3 py-4 overflow-y-auto bg-light-secondary ">
 
-                    <Link href="/app" className="flex justify-center w-full mx-auto invisible sm:visible">
+                    <Link href="/app" className="flex justify-center w-full mx-auto invisible sm:visible h-20 ">
                         <img src="/collabudget-light.png" className="h-14" alt="Collabudget Logo" />
                     </Link>
                     <hr className="w-48 h-1 mx-auto my-4 bg-primary border-0 rounded" />
