@@ -1,8 +1,8 @@
 "use client"
+import InputButton from "@/app/components/Inputs/InputButton";
+import StringInput from "@/app/components/Inputs/StringInput";
 import React from 'react';
 import { useForm } from "react-hook-form";
-import StringInput from "../components/Inputs/StringInput";
-import InputButton from "../components/Inputs/InputButton";
 
 export type LoginForm = {
   username: string,
