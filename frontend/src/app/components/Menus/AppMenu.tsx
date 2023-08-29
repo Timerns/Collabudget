@@ -38,17 +38,17 @@ const AppMenu: FC<pageProps> = (props) => {
             <aside id="sidebar-multi-level-sidebar" className={"fixed top-0 left-0 z-30 w-64 h-screen transition-transform  sm:translate-x-0" + (navbarOpen ? "" : " -translate-x-full")} aria-label="Sidebar">
                 <div className="flex flex-col h-full px-3 py-4 overflow-y-auto bg-light-secondary ">
 
-                    <Link href="/app/tableau-debord" className="flex justify-center w-full mx-auto invisible sm:visible">
+                    <Link href="/app" className="flex justify-center w-full mx-auto invisible sm:visible">
                         <img src="/collabudget-light.png" className="h-14" alt="Collabudget Logo" />
                     </Link>
                     <hr className="w-48 h-1 mx-auto my-4 bg-primary border-0 rounded" />
                     <ul className="space-y-2 font-medium">
                         <li>
-                            <Link href="/app/tableau-de-bord" className="flex items-center p-2 text-light-gray group">
+                            <Link href="/app" className="flex items-center p-2 text-light-gray group">
                                 <svg className="w-5 h-5" viewBox="0 0 31 34" aria-hidden="true" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M16.7083 10.875V3.625H26.375V10.875H16.7083ZM4.625 15.7083V3.625H14.2917V15.7083H4.625ZM16.7083 25.375V13.2917H26.375V25.375H16.7083ZM4.625 25.375V18.125H14.2917V25.375H4.625Z" />
                                 </svg>
-                                <span className={"ml-3 text-light-gray  hover:text-primary" + (pathname == "/app/tableau-de-bord" ? " text-primary underline decoration-primary underline-offset-4": " text-white")}>Tableau de bord</span>
+                                <span className={"ml-3 text-light-gray  hover:text-primary" + (pathname == "/app" ? " text-primary underline decoration-primary underline-offset-4": " text-white")}>Tableau de bord</span>
                             </Link>
                         </li>
                         <li>
@@ -70,9 +70,9 @@ const AppMenu: FC<pageProps> = (props) => {
                                 <span className="flex-1 ml-3 text-left text-light-gray whitespace-nowrap">Groupes</span>
 
                             </button>
-                            <ul id="dropdown-example" className="py-2 space-y-2">
+                            <ul className="py-2 space-y-2">
                                 <li>
-                                    <a href="#" className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group text-light-gray hover:text-primary">Products</a>
+                                    <Link href="/app/groupe/vacance" className={"flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group text-light-gray hover:text-primary"+ (pathname == "/app/groupe/vacance" ? " text-primary underline decoration-primary underline-offset-4": " text-white")}>Vacance</Link>
                                 </li>
 
                             </ul>
@@ -81,24 +81,24 @@ const AppMenu: FC<pageProps> = (props) => {
                     {/* bottom nav */}
                     <ul className="self-end space-y-2 font-medium mt-auto mr-auto">
                         <li>
-                            <a href="#" className="flex items-center p-2 text-light-gray group">
+                            <Link href="#" className="flex items-center p-2 text-light-gray group">
 
                                 <svg className="w-5 h-5" width="23" height="23" viewBox="0 0 23 23" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M3.04167 22.375C2.37709 22.375 1.80796 22.1382 1.33429 21.6645C0.860627 21.1908 0.624196 20.6221 0.625002 19.9583V3.04167C0.625002 2.37709 0.861835 1.80796 1.3355 1.33429C1.80917 0.860627 2.37789 0.624196 3.04167 0.625002H11.5V3.04167H3.04167V19.9583H11.5V22.375H3.04167ZM16.3333 17.5417L14.6719 15.7896L17.7531 12.7083H7.875V10.2917H17.7531L14.6719 7.21042L16.3333 5.45834L22.375 11.5L16.3333 17.5417Z" />
                                 </svg>
 
-                                <span className={"ml-3 text-light-gray  hover:text-primary" + (pathname == "/deconextion" ? " text-primary underline decoration-primary underline-offset-4": " text-white")}>Déconnexion</span>
-                            </a>
+                                <span className={"ml-3 text-light-gray  hover:text-primary" + (pathname == "/deconnection" ? " text-primary underline decoration-primary underline-offset-4": " text-white")}>Déconnection</span>
+                            </Link>
                         </li>
                         <hr className="w-48 h-1 mx-auto my-4 bg-primary border-0 rounded md:my-10" />
                         <li>
-                            <a href="#" className="flex items-center p-2 text-light-gray group">
+                            <Link href="/app/mon-compte" className="flex items-center p-2 text-light-gray group">
                                 <svg className="w-5 h-5" width="21" height="21" viewBox="0 0 21 21" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10.5002 0.833252C11.782 0.833252 13.0114 1.34248 13.9178 2.2489C14.8243 3.15533 15.3335 4.38471 15.3335 5.66659C15.3335 6.94847 14.8243 8.17784 13.9178 9.08427C13.0114 9.99069 11.782 10.4999 10.5002 10.4999C9.21828 10.4999 7.98891 9.99069 7.08248 9.08427C6.17605 8.17784 5.66683 6.94847 5.66683 5.66659C5.66683 4.38471 6.17605 3.15533 7.08248 2.2489C7.98891 1.34248 9.21828 0.833252 10.5002 0.833252ZM10.5002 12.9166C15.841 12.9166 20.1668 15.0795 20.1668 17.7499V20.1666H0.833496V17.7499C0.833496 15.0795 5.15933 12.9166 10.5002 12.9166Z" />
                                 </svg>
 
-                                <span className={"ml-3 text-light-gray  hover:text-primary" + (pathname == "/settings" ? " text-primary underline decoration-primary underline-offset-4": " text-white")}>Mon compte</span>
-                            </a>
+                                <span className={"ml-3 text-light-gray  hover:text-primary" + (pathname == "/app/mon-compte" ? " text-primary underline decoration-primary underline-offset-4": " text-white")}>Mon compte</span>
+                            </Link>
                         </li>
 
                     </ul>

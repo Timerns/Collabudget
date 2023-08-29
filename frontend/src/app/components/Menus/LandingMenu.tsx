@@ -31,16 +31,16 @@ const LandingMenu: FC<pageProps> = (props) => {
              id="navbar-default">
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:mt-0 md:border-0 md:w-full">
             <li>
-              <a href="/" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Accueil</a>
+              <Link href="/" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Accueil</Link>
             </li> 
             <li>
-              <a href="/solution" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/test" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Solution</a>
+              <Link href="/solution" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/solution" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Solution</Link>
             </li>
             <li>
-              <a href="/apropos" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/propos" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">A propos</a>
+              <Link href="/a-propos" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/a-propos" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">A propos</Link>
             </li>
             <li>
-              <a href="/contact" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/contact" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Contact</a>
+              <Link href="/contact" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/contact" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Contact</Link>
             </li>
             <li className="lg:ml-20">
               <Link href="/login" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/signin" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Connexion</Link>
