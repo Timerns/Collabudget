@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/server.js",
-    "dev": "nodemon",
+    "dev": "npx dotenv-vault@latest pull && nodemon",
     "test": "jest --passWithNoTests"
   },
   "devDependencies": {
@@ -19,6 +19,7 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",

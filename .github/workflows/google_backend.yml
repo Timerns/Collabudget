@@ -66,7 +66,10 @@ jobs:
           --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
+          --build-arg DOTENV_KEY="$DOTENV_KEY" \
           .
+      env:
+        DOTENV_KEY: ${{ secrets.DOTENV_KEY }}
     # Push the Docker image to Google Artifact Registry
     - name: Publish
       run: |-
