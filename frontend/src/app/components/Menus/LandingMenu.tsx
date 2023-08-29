@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, FC } from 'react'
 import { usePathname } from 'next/navigation';
+import Link from "next/link";
 
 type pageProps = {}
 
@@ -10,9 +11,9 @@ const LandingMenu: FC<pageProps> = (props) => {
   return (
     <nav className="bg-secondary md:px-10">
       <div className="flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="/" className="flex items-center">
+        <Link href="/" className="flex items-center">
           <img src="/collabudget-light.png" className="h-12 mr-8" alt="Collabudget Logo" />
-        </a>
+        </Link>
         <button data-collapse-toggle="navbar-default" 
                 type="button" 
                 className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-light-gray focus:outline-none focus:ring-2 focus:ring-light-gray" 
@@ -42,7 +43,7 @@ const LandingMenu: FC<pageProps> = (props) => {
               <a href="/contact" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/contact" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Contact</a>
             </li>
             <li className="lg:ml-20">
-              <a href="/signin" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/signin" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Connexion</a>
+              <Link href="/login" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/signin" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Connexion</Link>
             </li>
           </ul>
         </div>
