@@ -25,7 +25,7 @@ const Modal = forwardRef<ModalHandle, ModalProps>(({ title, children }, ref) => 
   return (
     <>
       <button
-        className="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+        className="bg-primary"
         type="button"
         onClick={() => setShowModal(true)}
       >
@@ -47,14 +47,15 @@ const Modal = forwardRef<ModalHandle, ModalProps>(({ title, children }, ref) => 
                   </h3>
                 </div>
                 {/*body*/}
-                <div className="relative p-6 flex-auto overflow-y-auto">
+                <div className="relative px-6 flex-auto overflow-y-auto">
                   {children}
                 </div>
                 {/*footer*/}
 
-
+                <div className="flex flex-col items-center justify-end mx-5 mb-5 rounded-b">
                 <div className='mt-5 hover:text-primary cursor-pointer' onClick={() => setShowModal(false)}>
                   Annuler
+                </div>
                 </div>
               </div>
             </div>

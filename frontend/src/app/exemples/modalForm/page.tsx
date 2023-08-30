@@ -41,7 +41,7 @@ export default function Page() {
             </label>
             <input className="shadow appearance-none text-sm py-3 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Titre" />
           </div>
-          <div className="mb-2">
+          <div className="mb-6">
             <label className="block text-white text-sm mb-1">
               Titre
             </label>
