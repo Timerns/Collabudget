@@ -57,3 +57,7 @@
     background: #888;
     border-radius: 3px;
 }
+
+.swiper .swiper-button-prev, .swiper .swiper-button-next {
+    @apply text-primary -mt-14 sm:-mt-14;
+}
