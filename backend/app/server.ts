@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from 'express';
+import session from 'express-session';
 import { config } from 'dotenv';
 import { Sequelize } from 'sequelize';
 import { Group } from './database/group';
@@ -10,10 +11,13 @@ import { GroupLabel } from './database/groupLabel';
 import { MonthlyLimit } from './database/monthlyLimit';
 import { Transaction } from './database/transaction';
 import { Contribution } from './database/contribution';
+import { routes } from './routes/routes';
 
 
 config();
 const app = express();
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(session({ secret: 'asdf', proxy: true, resave: false, saveUninitialized: false, cookie: { maxAge: 3600000 } }))
 const port = 8000;
 
 const types: ((conn: Sequelize) => void)[] = [
@@ -35,10 +39,6 @@ const sequelize: Sequelize = new Sequelize(login, {
 });
 
 app.listen(port, async () => {
-  app.get('/', (req: Request, res: Response) => {
-    res.send('Hello World');
-  });
-
   try {
     await sequelize.authenticate();
   } catch (error) {
@@ -113,6 +113,8 @@ app.listen(port, async () => {
 
   await Transaction.sync();
   await Contribution.sync();
+
+  routes(app, sequelize);
 
   console.log('🚀 We are live on http://localhost:' + port + ' 🚀');
 });
