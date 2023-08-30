@@ -1,4 +1,4 @@
-import { Sequelize, DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, Optional } from 'sequelize';
+import { Sequelize, DataTypes, Model, CreationOptional, Optional } from 'sequelize';
 import { getInitOptions } from './utils';
 
 export class Transaction extends Model {

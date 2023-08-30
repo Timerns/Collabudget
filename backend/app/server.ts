@@ -10,7 +10,6 @@ import { GroupLabel } from './database/groupLabel';
 import { MonthlyLimit } from './database/monthlyLimit';
 import { Transaction } from './database/transaction';
 import { Contribution } from './database/contribution';
-import { DATE } from 'sequelize';
 
 
 config();
