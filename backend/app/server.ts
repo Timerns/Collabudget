@@ -28,13 +28,15 @@ const types: ((conn: Sequelize) => void)[] = [
   Contribution.register
 ];
 
-const sequelize: Sequelize = new Sequelize('postgres://postgres:Pa$$w0rd@localhost:5432/colla_db', {
+const login: string = process.env.DB_CS ?? '';
+
+const sequelize: Sequelize = new Sequelize(login, {
   logging: true
 });
 
 app.listen(port, async () => {
   app.get('/', (req: Request, res: Response) => {
-    res.send('Hello World ' + process.env.HELLO);
+    res.send('Hello World');
   });
 
   try {
