@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, Optional } from 'sequelize';
 import { getInitOptions } from './utils';
 
-export class GroupLabel extends Model<InferAttributes<GroupLabel>, InferCreationAttributes<GroupLabel>> {
+export class GroupLabel extends Model {
   id!: CreationOptional<number>;
 
   public static register(conn: Sequelize): void {

@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, Optional } from 'sequelize';
 import { getInitOptions } from './utils';
 
-export class Contribution extends Model<InferAttributes<Contribution>, InferCreationAttributes<Contribution>> {
+export class Contribution extends Model {
   id!: CreationOptional<number>;
   value!: number;
 
@@ -14,7 +14,7 @@ export class Contribution extends Model<InferAttributes<Contribution>, InferCrea
         primaryKey: true
       },
       value: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false
       }
     }, getInitOptions(conn, Contribution.name));

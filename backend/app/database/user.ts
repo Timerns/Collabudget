@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, Optional } from 'sequelize';
 import { getInitOptions } from './utils';
 
-export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+export class User extends Model {
   username!: string;
   password!: string;
   currency!: string;

@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, Optional } from 'sequelize';
 import { getInitOptions } from './utils';
 
-export class MonthlyLimit extends Model<InferAttributes<MonthlyLimit>, InferCreationAttributes<MonthlyLimit>> {
+export class MonthlyLimit extends Model {
   id!: CreationOptional<number>;
   month!: number;
   year!: number;
@@ -24,7 +24,7 @@ export class MonthlyLimit extends Model<InferAttributes<MonthlyLimit>, InferCrea
         allowNull: false
       },
       limit: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false
       }
     }, getInitOptions(conn, MonthlyLimit.name));

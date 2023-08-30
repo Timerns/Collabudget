@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, Optional } from 'sequelize';
 import { getInitOptions } from './utils';
 
-export class UserGroup extends Model<InferAttributes<UserGroup>, InferCreationAttributes<UserGroup>> {
+export class UserGroup extends Model {
   id!: CreationOptional<number>;
   solde!: number;
 
@@ -14,7 +14,7 @@ export class UserGroup extends Model<InferAttributes<UserGroup>, InferCreationAt
         primaryKey: true
       },
       solde: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL,
         allowNull: false
       }
     }, getInitOptions(conn, UserGroup.name));

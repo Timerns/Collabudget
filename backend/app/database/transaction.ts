@@ -1,10 +1,10 @@
 import { Sequelize, DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, Optional } from 'sequelize';
 import { getInitOptions } from './utils';
 
-export class Transaction extends Model<InferAttributes<Transaction>, InferCreationAttributes<Transaction>> {
+export class Transaction extends Model {
   id!: CreationOptional<number>;
   title!: string;
-  value!: string;
+  value!: number;
   date!: Date;
 
   public static register(conn: Sequelize): void {
@@ -20,11 +20,11 @@ export class Transaction extends Model<InferAttributes<Transaction>, InferCreati
         allowNull: false
       },
       value: {
-        type: DataTypes.CHAR(3),
+        type: DataTypes.DECIMAL,
         allowNull: false
       },
       date: {
-        type: DataTypes.STRING(40),
+        type: DataTypes.DATE,
         allowNull: false
       }
     }, getInitOptions(conn, Transaction.name));

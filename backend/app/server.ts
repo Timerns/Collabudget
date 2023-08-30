@@ -10,6 +10,7 @@ import { GroupLabel } from './database/groupLabel';
 import { MonthlyLimit } from './database/monthlyLimit';
 import { Transaction } from './database/transaction';
 import { Contribution } from './database/contribution';
+import { DATE } from 'sequelize';
 
 
 config();
@@ -53,26 +54,27 @@ app.listen(port, async () => {
   // Association Class UserGroup
   User.belongsToMany(Group, { through: UserGroup });
   Group.belongsToMany(User, { through: UserGroup });
+  UserGroup.belongsTo(User, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
   User.hasMany(UserGroup);
-  UserGroup.belongsTo(User);
+  UserGroup.belongsTo(Group, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
   Group.hasMany(UserGroup);
-  UserGroup.belongsTo(Group);
 
   // Association Class UserLabel
   User.belongsToMany(Label, { through: UserLabel });
   Label.belongsToMany(User, { through: UserLabel });
+  UserLabel.belongsTo(User, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
   User.hasMany(UserLabel);
-  UserLabel.belongsTo(User);
+  UserLabel.belongsTo(Label, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
   Label.hasMany(UserLabel);
-  UserLabel.belongsTo(Label);
+  
 
   // Association Class GroupLabel
   Group.belongsToMany(Label, { through: GroupLabel });
   Label.belongsToMany(Group, { through: GroupLabel });
+  GroupLabel.belongsTo(Group, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
   Group.hasMany(GroupLabel);
-  GroupLabel.belongsTo(Group);
+  GroupLabel.belongsTo(Label, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
   Label.hasMany(GroupLabel);
-  GroupLabel.belongsTo(Label);
 
   // Monthly limit
   // Warning : should not let the possibilities to have a user and a userLabel at the same time {COMPLETE, DISJOINT}
@@ -85,15 +87,18 @@ app.listen(port, async () => {
   Transaction.belongsTo(User, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' })
   User.hasMany(Transaction);
   Group.hasMany(Transaction);
-  Transaction.belongsTo(Group)
+  Transaction.belongsTo(Group);
+  Label.hasMany(Transaction);
+  Transaction.belongsTo(Group);
 
   // Association Class Contribution
   User.belongsToMany(Transaction, { through: Contribution });
   Transaction.belongsToMany(User, { through: Contribution });
+  Contribution.belongsTo(User, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
   User.hasMany(Contribution);
-  Contribution.belongsTo(User);
+  Contribution.belongsTo(Transaction, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' });
   Transaction.hasMany(Contribution);
-  Contribution.belongsTo(Transaction);
+  
 
   await User.sync();
   await Group.sync();

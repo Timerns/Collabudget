@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, Optional } from 'sequelize';
 import { getInitOptions } from './utils';
 
-export class Group extends Model<InferAttributes<Group>, InferCreationAttributes<Group>> {
+export class Group extends Model {
   id!: CreationOptional<number>;
   name!: string;
   currency!: string;

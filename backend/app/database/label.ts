@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional, Optional } from 'sequelize';
 import { getInitOptions } from './utils';
 
-export class Label extends Model<InferAttributes<Label>, InferCreationAttributes<Label>> {
+export class Label extends Model {
   id!: CreationOptional<number>;
   name!: string;
   color!: string;
