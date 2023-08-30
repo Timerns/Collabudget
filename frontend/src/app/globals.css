@@ -40,3 +40,24 @@
 
     @apply bg-primary;
 }
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.swiper .swiper-button-prev, .swiper .swiper-button-next {
+    @apply text-primary -mt-14 sm:-mt-14;
+}
