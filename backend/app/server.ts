@@ -13,11 +13,11 @@ import { Transaction } from './database/transaction';
 import { Contribution } from './database/contribution';
 import { routes } from './routes/routes';
 
-
 config();
 const app = express();
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-app.use(session({ secret: process.env.EXPRESS_SECRET ?? '', proxy: true, resave: false, saveUninitialized: false, cookie: { maxAge: 3600000 } }))
+app.use(session({ secret: process.env.EXPRESS_SECRET ?? '', proxy: true, resave: false, saveUninitialized: false, cookie: { maxAge: 3600000 } }));
+app.use(authChecker);
 const port = 8000;
 
 const types: ((conn: Sequelize) => void)[] = [
@@ -118,3 +118,11 @@ app.listen(port, async () => {
 
   console.log('🚀 We are live on http://localhost:' + port + ' 🚀');
 });
+
+function authChecker(req: Request, res: Response, next: any) {
+  if (req.session.username || req.path==='/api/login' || req.path==='/api/register') {
+    next();
+  } else {
+    res.json({ error: 'Vous n\'êtes pas connecté' });
+  }
+};

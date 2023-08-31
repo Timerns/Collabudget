@@ -20,7 +20,7 @@ export function loginRoute(app: Express, sequelize: Sequelize) {
             })
             .catch(err => res.json({ error: err }))
         } else {
-          res.json({ error: 'L\'utilisateur existe déjà' })
+          res.json({ error: 'L\'utilisateur existe déjà.' })
         }
       })
       .catch(err => res.json({ error: err }))
@@ -28,7 +28,7 @@ export function loginRoute(app: Express, sequelize: Sequelize) {
 
   app.post("/api/login", (req, res) => {
     if (req.session.username !== undefined) {
-      res.json({ status: 'Vous êtes déjà connecté !' })
+      res.json({ error: 'Vous êtes déjà connecté.' })
       
       return
     }
