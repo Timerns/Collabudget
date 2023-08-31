@@ -62,3 +62,6 @@
 ::-webkit-color-swatch {
     border-color: transparent;
 }
+::-moz-color-swatch {
+    border-color: transparent;
+}
