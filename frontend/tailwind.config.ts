@@ -20,6 +20,9 @@ const config: Config = {
       },
       fontFamily: {
         'primary': ['Poppins']
+      },
+      spacing: {
+        '212' : '53rem'
       }
     },
   },
