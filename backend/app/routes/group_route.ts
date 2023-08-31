@@ -94,16 +94,26 @@ export function groupRoute(app: Express, sequelize: Sequelize) {
 
   app.get(apiUrl + '/invite/:inviteLink', async (req, res) => {
     Group.findOne({ where: { inviteId: req.params.inviteLink }})
-      .then(group => {
+      .then(async group => {
         if (!group) {
           res.json({ error: 'Ce lien d\'invitation n\'existe pas.' })
           return
         }
 
-        UserGroup.findOrCreate({
-          where: { UserUsername: req.session.username, GroupId: group.id },
-          defaults: { solde: 0 }
-        })
+        try {
+          const [userGroup, created] = await UserGroup.findOrCreate({
+            where: { UserUsername: req.session.username, GroupId: group.id },
+            defaults: { solde: 0 }
+          })
+
+          if (created) {
+            res.json({ status: 'Vous avez rejoint le groupe ' + group.name + ' !' })
+            return
+          }
+          res.json({ error: 'Vous faites déjà parti du groupe ' + group.name + '.' })
+        } catch(err) {
+          res.json({ error: err })
+        }
       })
       .catch(err => res.json({ error: err }))
   })
