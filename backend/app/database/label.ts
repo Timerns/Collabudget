@@ -22,9 +22,9 @@ export class Label extends Model {
         type: DataTypes.CHAR(7),
         allowNull: false
       }
-    }, getInitOptions(conn, Label.name, [{
+    }, getInitOptions(conn, Label.name/*, [{
       unique: true,
       fields: ['name', 'color']
-    }]));
+    }]*/));
   }
 }
