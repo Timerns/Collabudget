@@ -29,6 +29,8 @@ export default function Page() {
     new GroupeType(1, "Vacances 2023", "CHF", 1, []),
     new GroupeType(1, "Vacances 2023", "CHF", 1, []),
     new GroupeType(1, "Vacances 2023", "CHF", 1, []),
+    new GroupeType(1, "Vacances 2023", "CHF", 1, []),
+    new GroupeType(1, "Vacances 2023", "CHF", 1, []),
   ]
 
   let transactions: TransactionType[] = [];
@@ -109,21 +111,24 @@ export default function Page() {
             spaceBetween={30}
             breakpoints={{
               0: {
-                slidesPerView: 2,
+                slidesPerView: 2.3,
               },
               640: {
-                slidesPerView: 3,
+                slidesPerView: 3.3,
               },
               1024: {
+                slidesPerView: 4.3,
+              },
+              1280: {
                 slidesPerView: 5,
               },
             }}
             loop={true}
+            centeredSlidesBounds={true}
             navigation
-            hashNavigation={true}
             scrollbar={{draggable: true}}
         >
-          {groupes.map((g, i) => {
+          {groupes.map((g) => {
             return (
                 <SwiperSlide className={"mb-5"}>
                   <Link href={`/app/groupe/${g.id}`} className={"text-center"}>
