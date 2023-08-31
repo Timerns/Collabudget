@@ -14,7 +14,7 @@ export class User extends Model {
         primaryKey: true
       },
       password: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING(65),
         allowNull: false
       },
       currency: {
