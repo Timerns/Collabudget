@@ -32,7 +32,7 @@ const DropdownInput = React.forwardRef<HTMLInputElement, DropdownInputProps & Re
   return (
     <Input {...props}>
       <div>
-        <button ref={refSelector} id="dropdownDefaultButton" onClick={() => setOpen(!open)} className="flex p-3 bg-white appearance-none text-sm border rounded w-full items-center justify-center" type="button">
+        <button ref={refSelector} onClick={() => setOpen(!open)} className={(props.onlyComponent ? "" : "border rounded ") + "flex p-3 bg-white appearance-none text-sm w-full items-center justify-center"} type="button">
           <span className="flex grow">
             {value !== undefined && props.show(value)}
           </span> 
@@ -41,7 +41,7 @@ const DropdownInput = React.forwardRef<HTMLInputElement, DropdownInputProps & Re
           </svg>
         </button>
         <div ref={refDropdown} id="dropdown" className={(open ? "" : "hidden ") + "mt-1 absolute z-10 divide-y divide-gray-100 rounded-lg shadow dark:bg-white"}>
-          <ul className="py-2 text-sm text-gray-700 dark:text-black" aria-labelledby="dropdownDefaultButton">
+          <ul className="py-2 text-sm text-gray-700 dark:text-black">
             {
               props.choices.map(c => (
                 <li key={JSON.stringify(c)}>

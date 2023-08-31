@@ -15,7 +15,7 @@ const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps & ReturnTy
   
   return (
     <Input {...props}>
-      <div className="flex shadow bg-white appearance-none text-sm border rounded w-full justify-between overflow-hidden">
+      <div className="flex bg-white appearance-none text-sm border rounded w-full justify-between overflow-hidden">
         <p className="my-auto py-3 px-3">{color}</p>
         <div className="w-15 h-auto m-[-6px] h-[calc(100% + 12px)] p-0 b-0 items-center justify-center flex">
           <svg className="absolute w-6 h-6 ml-[-2px] mt-[-1px] pointer-events-none" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 296.135 296.135">
