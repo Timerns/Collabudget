@@ -17,7 +17,7 @@ import { routes } from './routes/routes';
 config();
 const app = express();
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-app.use(session({ secret: 'asdf', proxy: true, resave: false, saveUninitialized: false, cookie: { maxAge: 3600000 } }))
+app.use(session({ secret: process.env.EXPRESS_SECRET ?? '', proxy: true, resave: false, saveUninitialized: false, cookie: { maxAge: 3600000 } }))
 const port = 8000;
 
 const types: ((conn: Sequelize) => void)[] = [
