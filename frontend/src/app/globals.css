@@ -65,3 +65,7 @@
 ::-moz-color-swatch {
     border-color: transparent;
 }
+
+.swiper .swiper-button-prev, .swiper .swiper-button-next {
+    @apply text-primary -mt-14 sm:-mt-14;
+}
