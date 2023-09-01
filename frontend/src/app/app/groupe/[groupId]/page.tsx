@@ -11,6 +11,7 @@ import UserType from "@/app/types/userType";
 import RefoundType from "@/app/types/refoundType";
 import RefoundList from "@/app/components/refound/refoundList";
 import {Cell, Pie, PieChart, ResponsiveContainer, Tooltip} from "recharts";
+import AddButton from "@/app/components/addButton";
 
 export default function Page({params}: { params: { groupId: number } }) {
   //TODO Get data from API
@@ -92,6 +93,7 @@ export default function Page({params}: { params: { groupId: number } }) {
             <RefoundList refounds={refounds}/>
           </div>
         </div>
+        <AddButton></AddButton>
       </>
   )
 }

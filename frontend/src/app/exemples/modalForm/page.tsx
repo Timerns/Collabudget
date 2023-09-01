@@ -15,7 +15,7 @@ export default function Page() {
   return (
     <div>
       WIP
-      <Modal title="Super form" ref={modalRef}>
+      <Modal text_bt="super modal form" title="Super form" ref={modalRef}>
         <form onSubmit={handelSumbit}>
           <div className="mb-2">
             <label className="block text-white text-sm mb-1">

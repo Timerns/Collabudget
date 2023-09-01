@@ -4,6 +4,7 @@ import InputButton from './Inputs/InputButton';
 
 type ModalProps = {
   title: string,
+  text_bt: string,
   children: string | JSX.Element | JSX.Element[]
 }
 
@@ -12,7 +13,7 @@ export type ModalHandle = {
 };
 
 
-const Modal = forwardRef<ModalHandle, ModalProps>(({ title, children }, ref) => {
+const Modal = forwardRef<ModalHandle, ModalProps>(({ title, text_bt, children }, ref) => {
   console.log(children)
   const [showModal, setShowModal] = useState(false);
 
@@ -25,11 +26,11 @@ const Modal = forwardRef<ModalHandle, ModalProps>(({ title, children }, ref) => 
   return (
     <>
       <button
-        className="bg-primary"
+        className="hover:text-primary text-left"
         type="button"
         onClick={() => setShowModal(true)}
       >
-        Open regular modal
+        {text_bt}
       </button>
       {showModal ? (
         <>
