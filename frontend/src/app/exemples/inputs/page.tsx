@@ -25,8 +25,7 @@ type Money = {
 type Transaction = {
   isContributing: boolean,
   username: string,
-  value: number,
-  currency: string
+  value: number
 }
 
 export type LoginForm = {
