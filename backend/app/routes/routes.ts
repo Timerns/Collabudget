@@ -1,12 +1,14 @@
 import { Express } from 'express';
 import { Sequelize } from "sequelize";
+import { UserGroup } from '../database/userGroup';
 import { loginRoute } from './login_route';
 import { labelRoute } from './label_route';
-import { UserGroup } from '../database/userGroup';
+import { groupRoute } from './group_route';
 
 export function routes(app: Express, sequelize: Sequelize) {
   loginRoute(app, sequelize);
   labelRoute(app, sequelize);
+  groupRoute(app, sequelize);
 }
 
 // Verify if the user is in the group to know if he is allowed to do the group's action
