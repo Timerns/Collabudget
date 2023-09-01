@@ -3,7 +3,6 @@ import Footer from "@/app/components/footer";
 import LandingMenu from "../components/Menus/LandingMenu";
 
 export default function Page() {
-    console.log("Hello World " + process.env.HELLO);
     return (
         <>
             <div className="container mx-auto px-4">
