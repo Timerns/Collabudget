@@ -80,7 +80,7 @@ export function groupRoute(app: Express, sequelize: Sequelize) {
   app.post(apiUrl + '/invite', async (req, res) => {
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
-    Group.findOne({ where: { GroupId: req.body.groupId } })
+    Group.findOne({ where: { id: req.body.groupId } })
       .then(group => {
         if (!group) {
           res.json({ error: 'Ce groupe n\'existe pas.' })
