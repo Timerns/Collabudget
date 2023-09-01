@@ -1,13 +1,17 @@
 import { Express } from 'express';
 import { Sequelize } from "sequelize";
+import { UserGroup } from '../database/userGroup';
 import { loginRoute } from './login_route';
 import { labelRoute } from './label_route';
-import { UserGroup } from '../database/userGroup';
+import { groupRoute } from './group_route';
+import { limitRoute } from './limit_route';
 import {transactionRoute} from "./transaction_route";
 
 export function routes(app: Express, sequelize: Sequelize) {
   loginRoute(app, sequelize);
   labelRoute(app, sequelize);
+  groupRoute(app, sequelize);
+  limitRoute(app, sequelize);
   transactionRoute(app, sequelize);
 }
 

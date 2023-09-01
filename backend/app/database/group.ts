@@ -6,7 +6,8 @@ export class Group extends Model {
   name!: string;
   currency!: string;
   inviteId!: string;
-  description!: string
+  description!: string;
+  image!: string;
 
   public static register(conn: Sequelize): void {
     Group.init({
@@ -29,6 +30,10 @@ export class Group extends Model {
         allowNull: false
       },
       description: {
+        type: DataTypes.TEXT,
+        allowNull: true
+      },
+      image: {
         type: DataTypes.TEXT,
         allowNull: true
       }
