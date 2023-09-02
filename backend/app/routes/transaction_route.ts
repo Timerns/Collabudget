@@ -81,7 +81,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
         UserUsername: req.body.payer,
         GroupId: req.body.groupId,
         LabelId: req.body.labelId ?? null
-      })
+      }, { transaction: t })
   
       let total = req.body.value
 
@@ -99,7 +99,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
       //contributor: { isContributing: boolean, username: string, value: number }
       for (const contributor of JSON.parse(req.body.contributors)) {
         if (contributor.isContributing) {
-          await Contribution.create({ value: contributor.value, UserUsername: contributor.username, TransactionId: transaction.id })
+          await Contribution.create({ value: contributor.value, UserUsername: contributor.username, TransactionId: transaction.id }, { transaction: t })
           let newSolde = Number((await UserGroup.findOne({ where: { UserUsername: contributor.username, GroupId: req.body.groupId } }))?.solde)
           
           if (newSolde === undefined) {
@@ -111,7 +111,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
             newSolde += parseFloat(req.body.value)
           }
           
-          await UserGroup.update({ solde: newSolde}, { where: { UserUsername: contributor.username, GroupId: req.body.groupId } })
+          await UserGroup.update({ solde: newSolde}, { where: { UserUsername: contributor.username, GroupId: req.body.groupId }, transaction: t })
         }
       }
 
@@ -139,7 +139,8 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
         UserUsername: req.body.payer,
         LabelId: req.body.labelId ?? null
       }, {
-        where : { id: req.body.transactionId, GroupId: req.body.groupId }
+        where : { id: req.body.transactionId, GroupId: req.body.groupId },
+        transaction: t
       })
   
       if (!transaction || !oldTransaction) {
@@ -165,15 +166,18 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
 
         if (!oldContrib) {
           if (contributor.isContributing) {
-            await Contribution.create({ value: contributor.value, UserUsername: contributor.username, TransactionId: req.body.transactionId })
+            await Contribution.create({ value: contributor.value, UserUsername: contributor.username, TransactionId: req.body.transactionId }, { transaction: t })
           } else {
             continue
           }
         } else {
           if (contributor.isContributing) {
-            await Contribution.update({ value: contributor.value }, { where : { UserUsername: contributor.username, TransactionId: req.body.transactionId } })
+            await Contribution.update(
+              { value: contributor.value },
+              { where : { UserUsername: contributor.username, TransactionId: req.body.transactionId }, transaction: t }
+            )
           } else {
-            await Contribution.destroy({ where : { UserUsername: contributor.username, TransactionId: req.body.transactionId } })
+            await Contribution.destroy({ where : { UserUsername: contributor.username, TransactionId: req.body.transactionId }, transaction: t })
           }
         }
 
@@ -195,7 +199,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
           newSolde += parseFloat(req.body.value)
         }
 
-        await UserGroup.update({ solde: newSolde}, { where: { UserUsername: contributor.username, GroupId: req.body.groupId } })
+        await UserGroup.update({ solde: newSolde}, { where: { UserUsername: contributor.username, GroupId: req.body.groupId }, transaction: t })
       }
 
       await t.commit()
@@ -214,7 +218,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
     try {
       const oldTransaction = await Transaction.findOne({ where: { id: req.body.transactionId, GroupId: req.body.groupId } })
       const contributions = await Contribution.findAll({ where: { TransactionId: req.body.transactionId } })
-      const transaction = await Transaction.destroy({ where: { id: req.body.transactionId, GroupId: req.body.groupId } })
+      const transaction = await Transaction.destroy({ where: { id: req.body.transactionId, GroupId: req.body.groupId }, transaction: t })
 
       if (!transaction || !oldTransaction) {
         throw new Error('Vous ne pouvez pas supprimer cette transaction.')
@@ -232,7 +236,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
           newSolde -= Number(oldTransaction.value)
         }
         
-        await UserGroup.update({ solde: newSolde}, { where: { UserUsername: contributor.UserUsername, GroupId: req.body.groupId } })
+        await UserGroup.update({ solde: newSolde}, { where: { UserUsername: contributor.UserUsername, GroupId: req.body.groupId }, transaction: t })
       }
 
       await t.commit()
