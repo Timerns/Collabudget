@@ -13,6 +13,9 @@ const TRANSA: any = Transaction;
 export function transactionRoute(app: Express, sequelize: Sequelize) {
   // User transaction
   app.get(apiUrl, async (req, res) => {
+    //Obtient les transactions qu'on se fait rembourser en regardant le refundedusername
+    //Ajout des transactions à la liste mais en inversant leur valeur avant
+    //tri ordre chronologique
     res.json(await Transaction.findAll({ where: { UserUsername: req.session.username } }))
   })
 
@@ -241,6 +244,58 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
 
       await t.commit()
       res.json({ status: 'La transaction a été supprimée !' })
+    } catch (err: any) {
+      await t.rollback()
+      res.json({ error: err.message })
+    }    
+  })
+
+  app.post(apiUrl + apiUrlGroup + "/refund", async (req, res) => { 
+    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
+
+    if (req.session.username !== req.body.refunder && req.session.username !== req.body.refunded) {
+      res.json({ error: 'Vous n\'êtes pas concerné pas ce remboursement.' })
+      return
+    }
+
+    const t = await sequelize.transaction()
+
+    try {
+      const refunder = await UserGroup.findOne({ where: { UserUsername: req.body.refunder } })
+      const refunded = await UserGroup.findOne({ where: { UserUsername: req.body.refunded } })
+  
+      if (!refunder || !refunded) {
+        throw new Error('Ces personnes ne font pas partie du groupe.')
+      }
+  
+      let refunderSolde = Number(refunder.solde)
+      let refundedSolde = Number(refunded.solde)
+
+      if (refunderSolde >= 0 || refundedSolde <= 0) {
+        throw new Error('Il n\'y a pas de remboursement a effectué entre ces personnes.')
+      }
+  
+      let refundAmount = refunderSolde
+      if (refundedSolde - refunderSolde <= 0) {
+        refundAmount = refundedSolde
+      }
+  
+      await Transaction.create({
+        title: 'Remboursement',
+        value: refundAmount,
+        date: new Date(),
+        UserUsername: req.body.refunder,
+        RefundedUsername: req.body.refunded,
+        GroupId: req.body.groupId
+      }, { transaction: t })
+
+      refunderSolde += refundAmount
+      refundedSolde -= refundAmount
+      await UserGroup.update({ solde: refunderSolde}, { where: { UserUsername: req.body.refunder, GroupId: req.body.groupId }, transaction: t })
+      await UserGroup.update({ solde: refundedSolde}, { where: { UserUsername: req.body.refunded, GroupId: req.body.groupId }, transaction: t })
+
+      await t.commit()
+      res.json({ status: 'Le remboursement a été effectué !' })
     } catch (err: any) {
       await t.rollback()
       res.json({ error: err.message })
