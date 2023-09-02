@@ -6,7 +6,7 @@ export class Transaction extends Model {
   title!: string;
   value!: number;
   date!: Date;
-  UserUsername!: string | null
+  UserUsername!: string | null;
 
   public static register(conn: Sequelize): void {
     Transaction.init({

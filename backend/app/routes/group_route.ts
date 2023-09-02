@@ -78,8 +78,8 @@ export function groupRoute(app: Express, sequelize: Sequelize) {
             return
           }
           res.json({ error: 'Vous faites déjà parti du groupe ' + group.name + '.' })
-        } catch(err) {
-          res.json({ error: err })
+        } catch(err: any) {
+          res.json({ error: err.message })
         }
       })
       .catch(err => res.json({ error: err }))
