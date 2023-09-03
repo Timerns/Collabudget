@@ -11,12 +11,12 @@ const apiUrlGroup = '/g';
 export function labelRoute(app: Express, sequelize: Sequelize) {
   // User label
   app.get(apiUrl, async (req, res) => {
-    res.json(await Label.findAll({ 
+    res.json({ status: await Label.findAll({ 
       include: [{
         model: UserLabel,
         where: { UserUsername: req.session.username }
       }]
-    }))
+    }) })
   })
 
   app.post(apiUrl + '/add', (req, res) => {
@@ -93,12 +93,12 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
   app.post(apiUrl + apiUrlGroup, async (req, res) => {
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
-    res.json(await Label.findAll({ 
+    res.json({ status: await Label.findAll({ 
       include: [{
         model: GroupLabel,
         where: { GroupId: req.body.groupId }
       }]
-    }))
+    }) })
   })
 
   app.post(apiUrl + apiUrlGroup + '/add', async (req, res) => {

@@ -87,6 +87,7 @@ app.listen(port, async () => {
   // Transaction relations
   Transaction.belongsTo(User, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' })
   User.hasMany(Transaction);
+  Transaction.belongsTo(User, { as: 'Refunded' })
   Group.hasMany(Transaction);
   Transaction.belongsTo(Group);
   Label.hasMany(Transaction);
