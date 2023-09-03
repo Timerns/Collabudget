@@ -16,7 +16,17 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
     //Obtient les transactions qu'on se fait rembourser en regardant le refundedusername
     //Ajout des transactions à la liste mais en inversant leur valeur avant
     //tri ordre chronologique
-    res.json(await Transaction.findAll({ where: { UserUsername: req.session.username } }))
+    let userTransactions = await Transaction.findAll({ where: { UserUsername: req.session.username } })
+    let userRefunded = await Transaction.findAll({ where: { RefundedUsername: req.session.username } })
+    userRefunded = userRefunded.map((v: any) => {
+      v.value = new String(-v.value)
+      return v
+    })
+
+    userTransactions.push(...userRefunded)
+    userTransactions = userTransactions.sort((d1, d2) => new Date(d1.date).getTime() - new Date(d2.date).getTime())
+
+    res.json({ status: userTransactions })
   })
 
   app.post(apiUrl + "/add", (req, res) => {
@@ -66,7 +76,11 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
   app.post(apiUrl + apiUrlGroup, async (req, res) => {
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
-    res.json(await Transaction.findAll({ where: { GroupId: req.body.groupId } }))
+
+    let transactions = await Transaction.findAll({ where: { GroupId: req.body.groupId } })
+    transactions = transactions.sort((d1, d2) => new Date(d1.date).getTime() - new Date(d2.date).getTime())
+
+    res.json({ status: transactions })
   })
 
   app.post(apiUrl + apiUrlGroup + "/add", async (req, res) => {
@@ -235,7 +249,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
         }
         
         newSolde += Number(contributor.value)
-        if (contributor.UserUsername === oldTransaction.UserUsername) {
+        if (contributor.UserUsername === oldTransaction.UserUsername && oldTransaction.RefundedUsername === null) {
           newSolde -= Number(oldTransaction.value)
         }
         
@@ -275,12 +289,12 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
         throw new Error('Il n\'y a pas de remboursement a effectué entre ces personnes.')
       }
   
-      let refundAmount = refunderSolde
-      if (refundedSolde - refunderSolde <= 0) {
+      let refundAmount = Math.abs(refunderSolde)
+      if (refundedSolde - Math.abs(refunderSolde) <= 0) {
         refundAmount = refundedSolde
       }
   
-      await Transaction.create({
+      const transaction = await Transaction.create({
         title: 'Remboursement',
         value: refundAmount,
         date: new Date(),
@@ -293,6 +307,9 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
       refundedSolde -= refundAmount
       await UserGroup.update({ solde: refunderSolde}, { where: { UserUsername: req.body.refunder, GroupId: req.body.groupId }, transaction: t })
       await UserGroup.update({ solde: refundedSolde}, { where: { UserUsername: req.body.refunded, GroupId: req.body.groupId }, transaction: t })
+
+      await Contribution.create({ value: -refundAmount, UserUsername: req.body.refunder, TransactionId: transaction.id }, { transaction: t })
+      await Contribution.create({ value: refundAmount, UserUsername: req.body.refunded, TransactionId: transaction.id }, { transaction: t })
 
       await t.commit()
       res.json({ status: 'Le remboursement a été effectué !' })

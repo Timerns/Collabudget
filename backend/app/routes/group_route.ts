@@ -9,12 +9,12 @@ const apiUrl = '/api/groups';
 
 export function groupRoute(app: Express, sequelize: Sequelize) { 
   app.get(apiUrl, async (req, res) => {
-    res.json(await Group.findAll({ 
+    res.json({ status: await Group.findAll({ 
       include: [{
         model: UserGroup,
         where: { UserUsername: req.session.username }
       }]
-    }))
+    }) })
   })
 
   app.post(apiUrl + '/add', (req, res) => {
