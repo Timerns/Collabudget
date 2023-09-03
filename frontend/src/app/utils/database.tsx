@@ -5,15 +5,7 @@ function getBodyUrlEncoded(obj?: object) {
 
   var body = new URLSearchParams();
   for (var [key, value] of Object.entries(obj)) {
-    if (Array.isArray(value)) {
-      value.forEach(val => {
-        if (typeof val === "object") {
-          body.append(key, JSON.stringify(val));
-        } else {
-          body.append(key, value as string);
-        }
-      });
-    } else if (typeof value === "object") {
+    if (Array.isArray(value) || typeof value === "object") {
       body.append(key, JSON.stringify(value));
     } else {
       body.append(key, value as string);
@@ -24,6 +16,9 @@ function getBodyUrlEncoded(obj?: object) {
 
 function processResponse<T>(res: Response) {
   return new Promise<T>((acc, rej) => {
+    if (!res.ok) {
+      rej(res.status + ": " + res.statusText);
+    }
     res.json()
       .then(val => {
         if ("status" in val) {
@@ -38,7 +33,7 @@ function processResponse<T>(res: Response) {
 
 export function request<T>(url: string, method: string, body?: any) {
   return new Promise<T>((acc, rej) => {
-    fetch(url, { method: method, redirect: "follow", body: getBodyUrlEncoded(body), headers: body ? { "content-type": "application/x-www-form-urlencoded" } : {} })
+    fetch(`${process.env.BACKEND_URL}${url}`, { method: method, redirect: "follow", body: getBodyUrlEncoded(body), headers: body ? { "content-type": "application/x-www-form-urlencoded" } : { }, credentials: "include" })
       .then((res) => {
         processResponse<T>(res)
           .then(val => acc(val))

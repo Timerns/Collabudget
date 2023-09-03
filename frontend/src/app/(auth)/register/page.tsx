@@ -22,7 +22,7 @@ export default function Page() {
       return;
     }
 
-    await request<string>("http://localhost:8000/api/register", "POST", { username: data.username, password: data.password })
+    await request<string>("/api/register", "POST", { username: data.username, password: data.password })
       .then(val => toast.success(val))
       .catch(e => toast.error(e));
   };

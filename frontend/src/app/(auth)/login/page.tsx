@@ -1,11 +1,11 @@
 "use client"
 import InputButton from "@/app/components/Inputs/InputButton";
 import TextInput from "@/app/components/Inputs/TextInput";
+import { isLoggedIn, loggedInAs } from "@/app/utils/account";
 import { request } from "@/app/utils/database";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useNotificationCenter } from "react-toastify/addons/use-notification-center";
 
 export type LoginForm = {
   username: string,
@@ -15,11 +15,16 @@ export type LoginForm = {
 export default function Page() {
   const { register, handleSubmit } = useForm<LoginForm>();
 
+  if (isLoggedIn()) {
+    window.location.href = "/app";
+  }
+
   const onSubmit = async (data: LoginForm) => {
     console.log(data);
 
-    await request<string>("http://localhost:8000/api/login", "POST", { username: data.username, password: data.password })
+    request<string>("/api/login", "POST", { username: data.username, password: data.password })
       .then(val => {
+        loggedInAs(data.username);
         window.location.href = "/app";
       })
       .catch(e => toast.error(e));

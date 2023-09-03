@@ -1,4 +1,4 @@
-import { ToastContainer, toast } from "react-toastify"
+import { ToastContainer } from "react-toastify"
 import './globals.css'
 import type { Metadata } from 'next'
 

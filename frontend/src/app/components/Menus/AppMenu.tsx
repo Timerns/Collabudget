@@ -2,12 +2,25 @@
 import React, { useState, FC } from 'react'
 import { usePathname } from 'next/navigation';
 import Link from "next/link";
+import { loggedOut } from "@/app/utils/account";
+import { request } from "@/app/utils/database";
+import { toast } from "react-toastify";
 
 type pageProps = {}
 
 const AppMenu: FC<pageProps> = (props) => {
     const [navbarOpen, setNavbarOpen] = useState(false);
-    const pathname  = usePathname ()
+    const pathname  = usePathname()
+
+    const logout = () => {
+        request<string>("/api/logout", "GET")
+            .then(val => {
+                loggedOut();
+                window.location.href = "/login";
+            })
+            .catch(e => toast.error(e));
+    }
+
     return (
         <div>
             <button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar" aria-controls="sidebar-multi-level-sidebar" type="button" className="fixed top-0 right-0 inline-flex items-center p-2 mt-6 mr-3 text-sm text-light-gray rounded-lg sm:hidden hover:bg-secondary z-50 "
@@ -81,7 +94,7 @@ const AppMenu: FC<pageProps> = (props) => {
                     {/* bottom nav */}
                     <ul className="self-end space-y-2 font-medium mt-auto mr-auto">
                         <li>
-                            <Link href="#" className="flex items-center p-2 text-light-gray group">
+                            <Link href="#" onClick={() => { logout() }} className="flex items-center p-2 text-light-gray group">
 
                                 <svg className="w-5 h-5" width="23" height="23" viewBox="0 0 23 23" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M3.04167 22.375C2.37709 22.375 1.80796 22.1382 1.33429 21.6645C0.860627 21.1908 0.624196 20.6221 0.625002 19.9583V3.04167C0.625002 2.37709 0.861835 1.80796 1.3355 1.33429C1.80917 0.860627 2.37789 0.624196 3.04167 0.625002H11.5V3.04167H3.04167V19.9583H11.5V22.375H3.04167ZM16.3333 17.5417L14.6719 15.7896L17.7531 12.7083H7.875V10.2917H17.7531L14.6719 7.21042L16.3333 5.45834L22.375 11.5L16.3333 17.5417Z" />
