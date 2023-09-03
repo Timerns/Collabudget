@@ -1,7 +1,7 @@
 "use client"
 import InputButton from "@/app/components/Inputs/InputButton";
 import TextInput from "@/app/components/Inputs/TextInput";
-import { isLoggedIn, loggedInAs } from "@/app/utils/account";
+import { getStatus } from "@/app/utils/account";
 import { request } from "@/app/utils/database";
 import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
@@ -15,16 +15,19 @@ export type LoginForm = {
 export default function Page() {
   const { register, handleSubmit } = useForm<LoginForm>();
 
-  if (isLoggedIn()) {
-    window.location.href = "/app";
-  }
+  getStatus()
+    .then(username => {
+      if (username !== null) {
+        window.location.href = "/app";
+      }
+    })
+    .catch(e => toast.error(e));
 
   const onSubmit = async (data: LoginForm) => {
     console.log(data);
 
     request<string>("/api/login", "POST", { username: data.username, password: data.password })
       .then(val => {
-        loggedInAs(data.username);
         window.location.href = "/app";
       })
       .catch(e => toast.error(e));

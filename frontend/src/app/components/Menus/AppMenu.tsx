@@ -2,7 +2,6 @@
 import React, { useState, FC } from 'react'
 import { usePathname } from 'next/navigation';
 import Link from "next/link";
-import { loggedOut } from "@/app/utils/account";
 import { request } from "@/app/utils/database";
 import { toast } from "react-toastify";
 
@@ -15,7 +14,6 @@ const AppMenu: FC<pageProps> = (props) => {
     const logout = () => {
         request<string>("/api/logout", "GET")
             .then(val => {
-                loggedOut();
                 window.location.href = "/login";
             })
             .catch(e => toast.error(e));
