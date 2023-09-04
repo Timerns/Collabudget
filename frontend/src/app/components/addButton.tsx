@@ -91,7 +91,7 @@ export default function AddButton() {
       </div>
       <div className="flex bg-primary rounded-full p-2 sm:m-5 sm:ml-auto mt-5 ml-auto h-30 w-30" onClick={() => setMenu(!menu)}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48px" height="48px">
-          <path fill-rule="evenodd" d="M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z" />
+          <path fillRule="evenodd" d="M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z" />
         </svg>
       </div>
     </div>
