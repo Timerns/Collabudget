@@ -1,10 +1,11 @@
-import LabelType from "@/app/types/labelType";
+import SoldeType from "./soldeType";
 
 export default class GroupeType {
-  id!: number;
-  name!: string;
-  currency!: string;
-  inviteId!: string;
-  description!: string;
-  image!: string;
+    id!: number;
+    name!: string;
+    currency!: string;
+    inviteId!: string;
+    description!: string;
+    image!: string;
+    soldes!: SoldeType[]
 }

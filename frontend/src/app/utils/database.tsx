@@ -15,10 +15,15 @@ function getBodyUrlEncoded(obj?: object) {
 }
 
 function processResponse<T>(res: Response) {
-  return new Promise<T>((acc, rej) => {
+  return new Promise<T>(async (acc, rej) => {
     if (!res.ok) {
       rej(res.status + ": " + res.statusText);
     }
+
+    // var txt = await res.text();
+    // console.log(txt);
+    // acc(JSON.parse(txt));
+
     res.json()
       .then(val => {
         if ("status" in val) {
@@ -31,14 +36,15 @@ function processResponse<T>(res: Response) {
   });
 }
 
-export function request<T>(url: string, method: string, body?: any) {
-  return new Promise<T>((acc, rej) => {
-    fetch(`${process.env.BACKEND_URL}${url}`, { method: method, redirect: "follow", body: getBodyUrlEncoded(body), headers: body ? { "content-type": "application/x-www-form-urlencoded" } : { }, credentials: "include" })
-      .then((res) => {
-        processResponse<T>(res)
-          .then(val => acc(val))
-          .catch(err => rej(err))
-      })
-      .catch(err => rej(err))
+export function request<T>(url: string, method: string, body?: object) {
+  return new Promise<T>(async (acc, rej) => {
+    var res = await fetch(`${process.env.BACKEND_URL}${url}`, { method: method, body: getBodyUrlEncoded(body), headers: body ? { "content-type": "application/x-www-form-urlencoded" } : { }, credentials: "include" })
+    var data: any = await res.json();
+
+    if ("status" in data) {
+      acc(data.status);
+    } else {
+      rej((!data.error || Object.keys(data.error).length === 0) ? "Erreur inconnue !" : data.error);
+    }
   });
 }

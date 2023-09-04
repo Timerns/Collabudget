@@ -79,9 +79,9 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
 
   // Group transaction
   app.post(apiUrl + apiUrlGroup, async (req, res) => {
-    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
     if (!parametersDefined(res, [req.body.groupId])) return
     if (!isNumber(res, [req.body.groupId], 'L\'id')) return
+    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     let transactions = await Transaction.findAll({ where: { GroupId: req.body.groupId } })
     transactions = transactions.sort((d1, d2) => new Date(d1.date).getTime() - new Date(d2.date).getTime())
@@ -90,10 +90,10 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + apiUrlGroup + "/add", async (req, res) => {
-    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
     if (!parametersDefined(res, [req.body.title, req.body.value, req.body.date, req.body.payer, req.body.groupId, req.body.contributors])) return
     if (!isNumber(res, [req.body.value, req.body.groupId, (req.body.labelId ?? null)], 'La valeur ou l\'id')) return
     if (!isDate(res, req.body.date)) return
+    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     if (!await participantInGroup(req, res)) return
 
@@ -150,10 +150,10 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + apiUrlGroup + "/update", async (req, res) => {
-    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
     if (!parametersDefined(res, [req.body.title, req.body.value, req.body.date, req.body.payer, req.body.groupId, req.body.contributors, req.body.transactionId])) return
     if (!isNumber(res, [req.body.value, req.body.groupId, req.body.transactionId, (req.body.labelId ?? null)], 'La valeur ou l\'id')) return
     if (!isDate(res, req.body.date)) return
+    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     if (!await participantInGroup(req, res)) return
 
@@ -240,9 +240,9 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + apiUrlGroup + "/delete", async (req, res) => { 
-    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
     if (!parametersDefined(res, [req.body.groupId, req.body.transactionId])) return
     if (!isNumber(res, [req.body.groupId, req.body.transactionId], 'L\'id')) return
+    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     const t = await sequelize.transaction()
 
@@ -279,9 +279,9 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + apiUrlGroup + "/refund", async (req, res) => { 
-    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
     if (!parametersDefined(res, [req.body.groupId, req.body.refunder, req.body.refunded])) return
     if (!isNumber(res, [req.body.groupId], 'L\'id')) return
+    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     if (req.session.username !== req.body.refunder && req.session.username !== req.body.refunded) {
       res.json({ error: 'Vous n\'êtes pas concerné pas ce remboursement.' })

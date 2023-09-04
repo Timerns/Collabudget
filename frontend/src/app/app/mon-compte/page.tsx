@@ -18,14 +18,14 @@ import Link from "next/link";
 export default function Page() {
 
   const groupes: GroupeType[] = [
-    new GroupeType(1, "Vacances 2023", "CHF", 1, []),
-    new GroupeType(1, "Vacances 2023", "CHF", 1, []),
-    new GroupeType(1, "Vacances 2023", "CHF", 1, []),
-    new GroupeType(1, "Vacances 2023", "CHF", 1, []),
-    new GroupeType(1, "Vacances 2023", "CHF", 1, []),
-    new GroupeType(1, "Vacances 2023", "CHF", 1, []),
-    new GroupeType(1, "Vacances 2023", "CHF", 1, []),
-    new GroupeType(1, "Vacances 2023", "CHF", 1, []),
+    // new GroupeType(1, "Vacances 2023", "CHF", 1, []),
+    // new GroupeType(1, "Vacances 2023", "CHF", 1, []),
+    // new GroupeType(1, "Vacances 2023", "CHF", 1, []),
+    // new GroupeType(1, "Vacances 2023", "CHF", 1, []),
+    // new GroupeType(1, "Vacances 2023", "CHF", 1, []),
+    // new GroupeType(1, "Vacances 2023", "CHF", 1, []),
+    // new GroupeType(1, "Vacances 2023", "CHF", 1, []),
+    // new GroupeType(1, "Vacances 2023", "CHF", 1, []),
   ]
 
   return (
