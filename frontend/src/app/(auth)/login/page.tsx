@@ -14,14 +14,16 @@ export type LoginForm = {
 
 export default function Page() {
   const { register, handleSubmit } = useForm<LoginForm>();
-
-  getStatus()
-    .then(username => {
-      if (username !== null) {
-        window.location.href = "/app";
-      }
-    })
-    .catch(e => toast.error(e));
+  
+  useEffect(() => {
+    getStatus()
+      .then(username => {
+        if (username !== null) {
+          window.location.href = "/app";
+        }
+      })
+      .catch(e => toast.error(e));
+  }, [])
 
   const onSubmit = async (data: LoginForm) => {
     console.log(data);

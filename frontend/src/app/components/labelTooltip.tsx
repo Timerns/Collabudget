@@ -1,12 +1,11 @@
 import {NameType, ValueType} from "recharts/types/component/DefaultTooltipContent";
 import {TooltipProps} from "recharts";
 
-export default function DepenseTooltip({active, payload, label }: TooltipProps<ValueType, NameType>) {
+export default function LabelTooltip({active, payload, label }: TooltipProps<ValueType, NameType>) {
   if (active && payload) {
     return (
         <div className={"bg-secondary p-4"}>
-          <h3 className={"text-primary"}>{payload[0]?.payload?.title}</h3>
-          <div>{payload[0]?.payload?.date.toLocaleDateString()}</div>
+          <h3 className={"text-primary"}>{payload[0]?.payload?.label.name}</h3>
           <div>{Math.round(payload[0]?.payload?.value * 100) / 100} CHF</div>
         </div>
     );
