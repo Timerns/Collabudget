@@ -118,11 +118,11 @@ app.listen(port, async () => {
 
   routes(app, sequelize);
 
-  console.log('🚀 We are live on http://localhost:' + port + ' 🚀');
+  console.log(`🚀 We are live on ${process.env.ENV} 🚀`);
 });
 
 function authChecker(req: Request, res: Response, next: any) {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND ?? "");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   if (req.session.username || req.path==='/api/login' || req.path==='/api/register' || req.path==='/api/status') {
     next();
