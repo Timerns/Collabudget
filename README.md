@@ -23,13 +23,13 @@
 Workflows
 <p align="center">
 
-  [![Backend unit testing](https://github.com/Timerns/Collabudget/actions/workflows/ut_backend.yml/badge.svg)](https://github.com/Timerns/Collabudget/actions/workflows/ut_backend.yml)
+  [![Backend unit testing][https://github.com/Timerns/Collabudget/actions/workflows/ut_backend.yml/badge.svg]][https://github.com/Timerns/Collabudget/actions/workflows/ut_backend.yml]
 
-  [![Frontend unit testing](https://github.com/Timerns/Collabudget/actions/workflows/ut_frontend.yml/badge.svg)](https://github.com/Timerns/Collabudget/actions/workflows/ut_frontend.yml)
+  [![Frontend unit testing][https://github.com/Timerns/Collabudget/actions/workflows/ut_frontend.yml/badge.svg]][https://github.com/Timerns/Collabudget/actions/workflows/ut_frontend.yml]
 
-  [![Build and Deploy backend to GKE](https://github.com/Timerns/Collabudget/actions/workflows/google_backend.yml/badge.svg)](https://github.com/Timerns/Collabudget/actions/workflows/google_backend.yml)
+  [![Build and Deploy backend to GKE][https://github.com/Timerns/Collabudget/actions/workflows/google_backend.yml/badge.svg]][https://github.com/Timerns/Collabudget/actions/workflows/google_backend.yml]
 
-  [![Build and Deploy frontend to GKE](https://github.com/Timerns/Collabudget/actions/workflows/google_frontend.yml/badge.svg)](https://github.com/Timerns/Collabudget/actions/workflows/google_frontend.yml)
+  [![Build and Deploy frontend to GKE][https://github.com/Timerns/Collabudget/actions/workflows/google_frontend.yml/badge.svg]][https://github.com/Timerns/Collabudget/actions/workflows/google_frontend.yml]
 
 Issues
 <p align="center">
