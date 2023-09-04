@@ -17,6 +17,9 @@
       </ul>
     </li>
     <li>
+      <a href="#Contribution-au-projet ">Contribution au projet </a>
+    </li>
+    <li>
       <a href="#Technologie-utilisé">Technologie uilisé</a>
     </li>
     
@@ -107,6 +110,12 @@ npm install
 ```
 npm run dev-local
 ```
+
+## Contribution au projet 
+
+Pour contribuer au projet, deux étapes à éffectué. La premiere céer une branche pour ca featchure, faire ses modification. Puis faire une pull request. Lors de la pull request les tests unitaire seront executer tout seul et lors du merge de la pull request le déployment automatique se fait sur google cloud. 
+
+
 
 ## Technologie uilisé
 ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
