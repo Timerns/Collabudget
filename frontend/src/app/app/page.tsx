@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import { request } from "../utils/database";
 import { toast } from "react-toastify";
 import LabelTooltip from "../components/labelTooltip";
-import Solde from "../types/solde";
+import SoldeType from "../types/soldeType";
 
 export default function Page() {
   type Data = {
@@ -42,7 +42,7 @@ export default function Page() {
       let groups = await request<GroupeType[]>("/api/groups", "GET");
 
       for (let i = 0; i < groups.length; ++i) {
-        groups[i].soldes = await request<Solde[]>("/api/groups/solde", "POST", { groupId: groups[i].id });
+        groups[i].soldes = await request<SoldeType[]>("/api/groups/solde", "POST", { groupId: groups[i].id });
       }
 
       let transactions = await request<TransactionType[]>("/api/transactions", "GET");

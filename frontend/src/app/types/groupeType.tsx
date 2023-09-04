@@ -1,4 +1,4 @@
-import Solde from "./solde";
+import SoldeType from "./soldeType";
 
 export default class GroupeType {
     id!: number;
@@ -7,5 +7,5 @@ export default class GroupeType {
     inviteId!: string;
     description!: string;
     image!: string;
-    soldes!: Solde[]
+    soldes!: SoldeType[]
 }
