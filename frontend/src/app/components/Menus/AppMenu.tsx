@@ -99,7 +99,7 @@ const AppMenu: FC<pageProps> = (props) => {
                   groupes.map((val) => {
                     return (
                       <li>
-                        <Link href={"/app/groupe/" + val.id} className={"flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group text-light-gray hover:text-primary" + (pathname == "/app/groupe/vacance" ? " text-primary underline decoration-primary underline-offset-4" : " text-white")}>{val.name}</Link>
+                        <Link href={"/app/groupe/" + val.id} className={"flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group text-light-gray hover:text-primary" + (pathname == "/app/groupe/" + val.id ? " text-primary underline decoration-primary underline-offset-4" : " text-white")}>{val.name}</Link>
                       </li>
                     )  
                   })
