@@ -1,5 +1,24 @@
 # Collabudget
 
+
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#Etat-du-projet">Etat du projet</a>
+    </li>
+    <li><a href="#Structure-des-dossiers-principals-du-projet">Structure des dossiers</a></li>
+    <li>
+      <a href="#getting-started">Démarer rapidement</a>
+      <ul>
+      <li><a href="#Cloner-le-projet">Cloner le projet</a></li>
+        <li><a href="#Creation-de-la-base-de-donnée">Creation de la base de donnée</a></li>
+        <li><a href="#Ajouté-les-fichiers-.env">Ajouté les fichiers .env</a></li>
+        <li><a href="#Démarer-les-projets">Démarer les projets</a></li>
+      </ul>
+    </li>
+  </ol>
+
+
 ## Etat du projet
 Workflows
 <p align="center">
@@ -49,6 +68,13 @@ Issues
 
 ## Comment démarer le projet en moin de 15min en local
 
+### Cloner le projet
+
+```
+git clone https://github.com/Timerns/Collabudget.git
+```
+
+
 ### Creation de la base de donnée
 
 Créer une base de donnée [postgresql](https://www.postgresql.org/download/) avec le nom que vous voulez. 
@@ -72,13 +98,17 @@ Pour démarer le projet backend et frontend, il y a des prérequie. Il faut avoi
 Pour démarer le projet backend, il faut ouvrir un terminal dans le dossier backend puis executer les commandes si dessous: 
 
 ```
- > npm install
- > npm run dev-local
+npm install
+```
+```
+npm run dev-local
 ```
 
 De même pour le frontend, ouvrir un terminal dans le dossier frontend puis executer les commandes si dessous:
 
 ```
- > npm install
- > npm run dev-local
+npm install
+```
+```
+npm run dev-local
 ```
