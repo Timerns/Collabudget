@@ -118,7 +118,7 @@ app.listen(port, async () => {
 
   routes(app, sequelize);
 
-  console.log(`🚀 We are live on ${process.env.ENV} 🚀`);
+  console.log(`🚀 We are live on ${process.env.BACKEND} 🚀`);
 });
 
 function authChecker(req: Request, res: Response, next: any) {

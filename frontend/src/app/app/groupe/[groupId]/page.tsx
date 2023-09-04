@@ -12,62 +12,55 @@ import RefoundType from "@/app/types/refoundType";
 import RefoundList from "@/app/components/refound/refoundList";
 import {Cell, Pie, PieChart, ResponsiveContainer, Tooltip} from "recharts";
 import AddButton from "@/app/components/addButton";
+import { useEffect, useState } from "react";
+import { request } from "@/app/utils/database";
+import { toast } from "react-toastify";
+import SoldeType from "@/app/types/soldeType";
 
 export default function Page({params}: { params: { groupId: number } }) {
-  //TODO Get data from API
-  const groupId = params.groupId;
 
-  let groupe = new GroupeType(groupId, "Vacances 2023", "CHF", 1, []);
-  let transactions: TransactionType[] = [];
+  const [groupe, setGroupe] = useState<GroupeType>()
+  const [transactions, setTransactions] = useState<TransactionType[]>([])
+  const [labels, setLabels] = useState<LabelType[]>([])
+  const [soldes, setSoldes] = useState<SoldeType[]>([])
+  const [isLoaded, setisLoaded] = useState(false)
 
-  let curDate = new Date();
+  useEffect(() => {
+    request<any>("/api/groups/solde", "POST", { groupId: params.groupId})
+      .then(val => {
+        console.log(val)
+        setSoldes(val)
+        setisLoaded(true);
+      })
+      .catch(e => toast.error(e));
 
-  const user1 = new UserType("aoiram", "CHF", [groupe], [], []);
-  const user2 = new UserType("Green", "CHF", [groupe], [], []);
+    request<TransactionType[]>("/api/transactions/g", "POST", { groupId: params.groupId})
+      .then(val => {
+        setTransactions(val)
+      })
+      .catch(e => toast.error(e));
 
-  let soldes = [
-    new UserGroupType(user1, groupe, 20)
-  ];
+    request<LabelType[]>("/api/labels/g", "POST", { groupId: params.groupId})
+      .then(val => {
+        setLabels(val)
+      })
+      .catch(e => toast.error(e));
 
-  let refounds = [
-    new RefoundType(user1, user2, 30)
-  ]
-
-  // @ts-ignore
-  for (const x of Array(100).keys()) {
-    curDate.setFullYear(2023, 8, Math.floor(Math.random() * 30) + 1)
-    transactions.push(new TransactionType(
-        "Dépense",
-        (Math.random() > 0.5 ? -1 : +1) * Math.floor(Math.random() * (70 - 20 + 1) + 20),
-        curDate,
-        Math.random() < 0.25 || Math.random().valueOf() > 0.75 ? new LabelType("Oui", "#FF00FF") : new LabelType("Non", "#FF0")));
-  }
-
-  let categories: string | any[] | undefined = [];
-  transactions.reduce(function (res, val) {
-    if (val.montant > 0) {
-      // @ts-ignore
-      if (!res[val.label?.title]) {
-        // @ts-ignore
-        res[val.label?.title] = {name: val.label?.title, value: 0, color: val.label?.color};
-        // @ts-ignore
-        categories?.push(res[val.label?.title])
-      }
-
-      // @ts-ignore
-      res[val.label?.title].value = val.montant;
-    }
-
-    return res;
-  })
+      request<GroupeType[]>("/api/groups", "GET")
+      .then(val => {
+        val = val.filter((x) => x.id === params.groupId)
+        setGroupe(val[0])
+      })
+      .catch(e => toast.error(e));
+  }, [])
 
   return (
       <>
-        <MainTitle title={groupe.name} subtitle={"TODO desc ?"}/>
+        <MainTitle title={groupe?.name ? groupe?.name : "pas de titre"} subtitle={"TODO desc ?"}/>
         <div className={"grid grid-cols-1 xl:grid-cols-3 gap-x-7"}>
           <div className={"col-span-1 row-span-2"}>
             <Title title={"Transactions"}/>
-            <TransactionList transactions={transactions} doubleRow={true}/>
+            <TransactionList labels={labels} transactions={transactions} doubleRow={true}/>
           </div>
           <div className={"col-span-1"}>
             <Title title={"Soldes"}/>
@@ -75,7 +68,7 @@ export default function Page({params}: { params: { groupId: number } }) {
           </div>
           <div className={"col-span-1 row-span-2"}>
             <Title title={"Catégories"}/>
-            <ResponsiveContainer width={"100%"} height={350}>
+            {/* <ResponsiveContainer width={"100%"} height={350}>
               <PieChart>
                 <Pie data={categories} dataKey={"value"} label>
                   {categories.map((c, index) => {
@@ -86,11 +79,11 @@ export default function Page({params}: { params: { groupId: number } }) {
                 </Pie>
                 <Tooltip/>
               </PieChart>
-            </ResponsiveContainer>
+            </ResponsiveContainer> */}
           </div>
           <div className={"col-span-1"}>
             <Title title={"Remboursement"}/>
-            <RefoundList refounds={refounds}/>
+            <RefoundList refounds={soldes} groupId={params.groupId}/>
           </div>
         </div>
         <AddButton></AddButton>
