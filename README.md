@@ -16,31 +16,26 @@
         <li><a href="#Démarer-les-projets">Démarer les projets</a></li>
       </ul>
     </li>
+    <li>
+      <a href="#Technologie-uilisé">Technologie uilisé</a>
+    </li>
+    
   </ol>
 
 
 ## Etat du projet
 Workflows
-<p align="center">
 
-  [![Backend unit testing][https://github.com/Timerns/Collabudget/actions/workflows/ut_backend.yml/badge.svg]][https://github.com/Timerns/Collabudget/actions/workflows/ut_backend.yml]
-
-  [![Frontend unit testing][https://github.com/Timerns/Collabudget/actions/workflows/ut_frontend.yml/badge.svg]][https://github.com/Timerns/Collabudget/actions/workflows/ut_frontend.yml]
-
-  [![Build and Deploy backend to GKE][https://github.com/Timerns/Collabudget/actions/workflows/google_backend.yml/badge.svg]][https://github.com/Timerns/Collabudget/actions/workflows/google_backend.yml]
-
-  [![Build and Deploy frontend to GKE][https://github.com/Timerns/Collabudget/actions/workflows/google_frontend.yml/badge.svg]][https://github.com/Timerns/Collabudget/actions/workflows/google_frontend.yml]
+  [![Backend unit testing](https://github.com/Timerns/Collabudget/actions/workflows/ut_backend.yml/badge.svg)](https://github.com/Timerns/Collabudget/actions/workflows/ut_backend.yml)
+  [![Frontend unit testing](https://github.com/Timerns/Collabudget/actions/workflows/ut_frontend.yml/badge.svg)](https://github.com/Timerns/Collabudget/actions/workflows/ut_frontend.yml)
+  [![Build and Deploy backend to GKE](https://github.com/Timerns/Collabudget/actions/workflows/google_backend.yml/badge.svg)](https://github.com/Timerns/Collabudget/actions/workflows/google_backend.yml)
+  [![Build and Deploy frontend to GKE](https://github.com/Timerns/Collabudget/actions/workflows/google_frontend.yml/badge.svg)](https://github.com/Timerns/Collabudget/actions/workflows/google_frontend.yml)
 
 Issues
-<p align="center">
 
 ![GitHub issues](https://img.shields.io/github/issues/timerns/Collabudget?label=GitHub%20total%20issues)
-
-
 ![GitHub issues by-label](https://img.shields.io/github/issues/timerns/Collabudget/frontend)
-
 ![GitHub issues by-label](https://img.shields.io/github/issues/timerns/Collabudget/backend)
-</p>
 
 ## Structure des dossiers principals du projet
 ```
@@ -112,3 +107,14 @@ npm install
 ```
 npm run dev-local
 ```
+
+## Technologie uilisé
+![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white)
+
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Sequelize](https://img.shields.io/badge/Sequelize-52B0E7?style=for-the-badge&logo=Sequelize&logoColor=white) ![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white)
+
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) ![Google Cloud](https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white) ![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
