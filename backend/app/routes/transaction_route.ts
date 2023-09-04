@@ -2,20 +2,15 @@ import {Express} from 'express';
 import {Sequelize} from "sequelize";
 import {Transaction} from "../database/transaction";
 import {UserGroup} from "../database/userGroup";
-import { userInGroup } from './routes';
+import { isDate, isNumber, parametersDefined, userInGroup } from './routes';
 import { Contribution } from '../database/contribution';
 
 const apiUrl = '/api/transactions';
 const apiUrlGroup = '/g';
 
-const TRANSA: any = Transaction;
-
 export function transactionRoute(app: Express, sequelize: Sequelize) {
   // User transaction
   app.get(apiUrl, async (req, res) => {
-    //Obtient les transactions qu'on se fait rembourser en regardant le refundedusername
-    //Ajout des transactions à la liste mais en inversant leur valeur avant
-    //tri ordre chronologique
     let userTransactions = await Transaction.findAll({ where: { UserUsername: req.session.username } })
     let userRefunded = await Transaction.findAll({ where: { RefundedUsername: req.session.username } })
     userRefunded = userRefunded.map((v: any) => {
@@ -30,6 +25,10 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + "/add", (req, res) => {
+    if (!parametersDefined(res, [req.body.title, req.body.value, req.body.date])) return
+    if (!isNumber(res, [req.body.value, (req.body.labelId ?? null)], 'La valeur ou l\'id')) return
+    if (!isDate(res, req.body.date)) return
+
     Transaction.create({
       title: req.body.title,
       value: req.body.value,
@@ -44,7 +43,11 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + "/update", (req, res) => {
-    Transaction.update({ title: req.body.title, value: req.body.value, date: req.body.date, LabelId: req.body.labelId ?? null }, {
+    if (!parametersDefined(res, [req.body.title, req.body.value, req.body.date, req.body.transactionId])) return
+    if (!isNumber(res, [req.body.value, req.body.transactionId, (req.body.labelId ?? null)], 'La valeur ou l\'id')) return
+    if (!isDate(res, req.body.date)) return
+
+    Transaction.update({ title: req.body.title, value: req.body.value, date: req.body.date, LabelId: (req.body.labelId ?? null) }, {
       where : { id: req.body.transactionId, UserUsername: req.session.username }
     })
       .then(transaction => {
@@ -59,6 +62,8 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + "/delete", (req, res) => {
+    if (!parametersDefined(res, [req.body.transactionId])) return
+
     Transaction.destroy({ where : { id: req.body.transactionId, UserUsername: req.session.username } })
       .then(transaction => {
         if (!transaction) {
@@ -74,8 +79,9 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
 
   // Group transaction
   app.post(apiUrl + apiUrlGroup, async (req, res) => {
+    if (!parametersDefined(res, [req.body.groupId])) return
+    if (!isNumber(res, [req.body.groupId], 'L\'id')) return
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
-
 
     let transactions = await Transaction.findAll({ where: { GroupId: req.body.groupId } })
     transactions = transactions.sort((d1, d2) => new Date(d1.date).getTime() - new Date(d2.date).getTime())
@@ -84,6 +90,9 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + apiUrlGroup + "/add", async (req, res) => {
+    if (!parametersDefined(res, [req.body.title, req.body.value, req.body.date, req.body.payer, req.body.groupId, req.body.contributors])) return
+    if (!isNumber(res, [req.body.value, req.body.groupId, (req.body.labelId ?? null)], 'La valeur ou l\'id')) return
+    if (!isDate(res, req.body.date)) return
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     if (!await participantInGroup(req, res)) return
@@ -97,7 +106,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
         date: req.body.date,
         UserUsername: req.body.payer,
         GroupId: req.body.groupId,
-        LabelId: req.body.labelId ?? null
+        LabelId: (req.body.labelId ?? null)
       }, { transaction: t })
   
       let total = req.body.value
@@ -141,6 +150,9 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + apiUrlGroup + "/update", async (req, res) => {
+    if (!parametersDefined(res, [req.body.title, req.body.value, req.body.date, req.body.payer, req.body.groupId, req.body.contributors, req.body.transactionId])) return
+    if (!isNumber(res, [req.body.value, req.body.groupId, req.body.transactionId, (req.body.labelId ?? null)], 'La valeur ou l\'id')) return
+    if (!isDate(res, req.body.date)) return
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     if (!await participantInGroup(req, res)) return
@@ -154,7 +166,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
         value: req.body.value,
         date: req.body.date,
         UserUsername: req.body.payer,
-        LabelId: req.body.labelId ?? null
+        LabelId: (req.body.labelId ?? null)
       }, {
         where : { id: req.body.transactionId, GroupId: req.body.groupId },
         transaction: t
@@ -228,6 +240,8 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + apiUrlGroup + "/delete", async (req, res) => { 
+    if (!parametersDefined(res, [req.body.groupId, req.body.transactionId])) return
+    if (!isNumber(res, [req.body.groupId, req.body.transactionId], 'L\'id')) return
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     const t = await sequelize.transaction()
@@ -265,6 +279,8 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + apiUrlGroup + "/refund", async (req, res) => { 
+    if (!parametersDefined(res, [req.body.groupId, req.body.refunder, req.body.refunded])) return
+    if (!isNumber(res, [req.body.groupId], 'L\'id')) return
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     if (req.session.username !== req.body.refunder && req.session.username !== req.body.refunded) {

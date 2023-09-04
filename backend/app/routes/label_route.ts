@@ -3,7 +3,7 @@ import { Op, Sequelize } from "sequelize";
 import { Label } from '../database/label';
 import { UserLabel } from '../database/userLabel';
 import { GroupLabel } from '../database/groupLabel';
-import { userInGroup } from './routes';
+import { isNumber, parametersDefined, userInGroup } from './routes';
 
 const apiUrl = '/api/labels';
 const apiUrlGroup = '/g';
@@ -20,6 +20,8 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + '/add', (req, res) => {
+    if (!parametersDefined(res, [req.body.name, req.body.color])) return
+
     UserLabel.findOne({ 
       where: { UserUsername: req.session.username },
       include: [{
@@ -47,6 +49,9 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + '/update', (req, res) => {
+    if (!parametersDefined(res, [req.body.name, req.body.color, req.body.id])) return
+    if (!isNumber(res, [req.body.id], 'L\'id')) return
+
     UserLabel.findOne({ where: { UserUsername: req.session.username, LabelId: req.body.id } })
       .then(userLabel => {
         if (!userLabel) {
@@ -68,6 +73,9 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + '/delete', (req, res) => {
+    if (!parametersDefined(res, [req.body.id])) return
+    if (!isNumber(res, [req.body.id], 'L\'id')) return
+    
     UserLabel.findOne({ where: { UserUsername: req.session.username, LabelId: req.body.id } })
       .then(userLabel => {
         if (!userLabel) {
@@ -91,6 +99,8 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
 
   // Group label
   app.post(apiUrl + apiUrlGroup, async (req, res) => {
+    if (!parametersDefined(res, [req.body.groupId])) return
+    if (!isNumber(res, [req.body.groupId], 'L\'id')) return
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     res.json({ status: await Label.findAll({ 
@@ -102,6 +112,8 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + apiUrlGroup + '/add', async (req, res) => {
+    if (!parametersDefined(res, [req.body.name, req.body.color, req.body.groupId])) return
+    if (!isNumber(res, [req.body.groupId], 'L\'id')) return
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     GroupLabel.findOne({ 
@@ -131,6 +143,8 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + apiUrlGroup + '/update', async (req, res) => {
+    if (!parametersDefined(res, [req.body.name, req.body.color, req.body.groupId, req.body.id])) return
+    if (!isNumber(res, [req.body.groupId, req.body.id], 'L\'id')) return
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     GroupLabel.findOne({ where: { GroupId: req.body.groupId, LabelId: req.body.id } })
@@ -154,6 +168,8 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + apiUrlGroup + '/delete', async (req, res) => {
+    if (!parametersDefined(res, [req.body.groupId, req.body.id])) return
+    if (!isNumber(res, [req.body.groupId, req.body.id], 'L\'id')) return
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     GroupLabel.findOne({ where: { GroupId: req.body.groupId, LabelId: req.body.id } })

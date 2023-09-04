@@ -2,6 +2,7 @@ import { Express, Request, Response } from 'express';
 import { Sequelize } from "sequelize";
 import { MonthlyLimit } from '../database/monthlyLimit';
 import { UserLabel } from '../database/userLabel';
+import { isNumber, parametersDefined } from './routes';
 
 const apiUrl = '/api/limits';
 
@@ -25,6 +26,9 @@ export function limitRoute(app: Express, sequelize: Sequelize) {
 
   // If no limit the default value displayed for the month or the label should be 0
   app.post(apiUrl + '/month', (req, res) => {
+    if (!parametersDefined(res, [req.body.month, req.body.year])) return
+    if (!isNumber(res, [req.body.month, req.body.year], 'Le mois ou l\'année')) return
+
     Promise.all([
       MonthlyLimit.findAll({ where: { month: req.body.month, year: req.body.year, UserUsername: req.session.username } }),
       MonthlyLimit.findAll({
@@ -42,6 +46,9 @@ export function limitRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + '/update/m', (req, res) => {
+    if (!parametersDefined(res, [req.body.month, req.body.year, req.body.limit])) return
+    if (!isNumber(res, [req.body.month, req.body.year, req.body.limit], 'Le mois, l\'année ou la limite')) return
+
     MonthlyLimit.findOrCreate({
       where: { month: req.body.month, year: req.body.year, UserUsername: req.session.username },
       defaults: { limit: 0 }
@@ -57,6 +64,9 @@ export function limitRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + '/update/l', async (req, res) => {
+    if (!parametersDefined(res, [req.body.month, req.body.year, req.body.limit, req.body.labelId])) return
+    if (!isNumber(res, [req.body.month, req.body.year, req.body.limit, req.body.labelId], 'Le mois, l\'année, la limite ou l\'id')) return
+
     MonthlyLimit.findOrCreate({
       where : { month: req.body.month, year: req.body.year },
       include : [{
