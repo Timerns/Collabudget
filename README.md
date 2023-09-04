@@ -1,7 +1,7 @@
 # Collabudget
 
 
-  <summary>Table of Contents</summary>
+  <summary>Table des matières</summary>
   <ol>
     <li>
       <a href="#Etat-du-projet">Etat du projet</a>
@@ -42,13 +42,13 @@ Issues
 📦Collabudget
  ┣ 📂.github
  ┃ ┗ 📂workflows          # workflows git hub
- ┣ 📂backend             # Node backend code
+ ┣ 📂backend              # Node backend code
  ┃ ┣ 📂app                # application backend
  ┃ ┣ 📂tests              # dossier des test
  ┣ 📂deployment
  ┃ ┣ 📂backend
  ┃ ┗ 📂frontend
- ┗ 📂frontend            # Next.js app code
+ ┗ 📂frontend             # Next.js app code
    ┣ 📂public
    ┣ 📂src
    ┃ ┗ 📂app             
