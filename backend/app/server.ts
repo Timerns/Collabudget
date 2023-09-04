@@ -15,10 +15,11 @@ import { routes } from './routes/routes';
 
 config();
 const app = express();
+const port = 8000;
+
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(session({ secret: process.env.EXPRESS_SECRET ?? '', proxy: true, resave: false, saveUninitialized: false, cookie: { maxAge: 3600000 } }));
 app.use(authChecker);
-const port = 8000;
 
 const types: ((conn: Sequelize) => void)[] = [
   User.register,
@@ -117,11 +118,13 @@ app.listen(port, async () => {
 
   routes(app, sequelize);
 
-  console.log('🚀 We are live on http://localhost:' + port + ' 🚀');
+  console.log(`🚀 We are live on ${process.env.ENV} 🚀`);
 });
 
 function authChecker(req: Request, res: Response, next: any) {
-  if (req.session.username || req.path==='/api/login' || req.path==='/api/register') {
+  res.setHeader("Access-Control-Allow-Origin", process.env.FRONTEND ?? "");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  if (req.session.username || req.path==='/api/login' || req.path==='/api/register' || req.path==='/api/status') {
     next();
   } else {
     res.json({ error: 'Vous n\'êtes pas connecté' });

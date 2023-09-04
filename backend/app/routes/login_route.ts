@@ -62,4 +62,8 @@ export function loginRoute(app: Express, sequelize: Sequelize) {
     req.session.username = undefined
     res.json({ status: 'Déconnexion' })
   })
+
+  app.get("/api/status", (req, res) => {
+    res.json({ status: req.session.username ?? null })
+  })
 }

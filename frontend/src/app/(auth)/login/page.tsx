@@ -1,8 +1,11 @@
 "use client"
 import InputButton from "@/app/components/Inputs/InputButton";
 import TextInput from "@/app/components/Inputs/TextInput";
-import React from 'react';
+import { getStatus } from "@/app/utils/account";
+import { request } from "@/app/utils/database";
+import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export type LoginForm = {
   username: string,
@@ -12,8 +15,22 @@ export type LoginForm = {
 export default function Page() {
   const { register, handleSubmit } = useForm<LoginForm>();
 
-  const onSubmit = (data: LoginForm) => {
+  getStatus()
+    .then(username => {
+      if (username !== null) {
+        window.location.href = "/app";
+      }
+    })
+    .catch(e => toast.error(e));
+
+  const onSubmit = async (data: LoginForm) => {
     console.log(data);
+
+    request<string>("/api/login", "POST", { username: data.username, password: data.password })
+      .then(val => {
+        window.location.href = "/app";
+      })
+      .catch(e => toast.error(e));
   };
 
   return (
@@ -36,7 +53,7 @@ export default function Page() {
             </div>
             <div className="text-sm text-white text-center w-full">
               Pas encore de compte ?&nbsp;
-              <a className="text-primary hover:text-dark-primary underline" href="#">
+              <a className="text-primary hover:text-dark-primary underline" href="/register">
                 S'enregistrer ici
               </a>
             </div>
