@@ -2,11 +2,14 @@ import { Express, Request, Response } from 'express';
 import { Sequelize } from "sequelize";
 import * as bcrypt from "bcrypt";
 import { User } from '../database/user';
+import { parametersDefined } from './routes';
 
 const ERROR_USER_PWD = 'Votre nom d\'utilisateur ou mot de passe est incorrect ou n\'existe pas.'
 
 export function loginRoute(app: Express, sequelize: Sequelize) {
   app.post("/api/register", (req, res) => {
+    if (!parametersDefined(res, [req.body.username, req.body.password])) return
+
     User.findOne({ where: { username: req.body.username } })
       .then(user => {
         if (!user) {
@@ -32,6 +35,8 @@ export function loginRoute(app: Express, sequelize: Sequelize) {
       
       return
     }
+
+    if (!parametersDefined(res, [req.body.username, req.body.password])) return
 
     User.findOne({ where: { username: req.body.username } })
       .then(user => {

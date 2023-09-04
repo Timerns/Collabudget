@@ -3,7 +3,7 @@ import { Sequelize } from "sequelize";
 import { Group } from '../database/group';
 import { UserGroup } from '../database/userGroup';
 import {v4 as uuidv4} from 'uuid';
-import { userInGroup } from './routes';
+import { isNumber, parametersDefined, userInGroup } from './routes';
 
 const apiUrl = '/api/groups';
 
@@ -18,8 +18,10 @@ export function groupRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + '/add', (req, res) => {
+    if (!parametersDefined(res, [req.body.name, req.body.currency])) return
+
     const groupUuid = uuidv4();
-    Group.create({ name: req.body.name, currency: req.body.currency, inviteId: groupUuid, description: req.body.description, image: req.body.image })
+    Group.create({ name: req.body.name, currency: req.body.currency, inviteId: groupUuid, description: (req.body.description ?? null), image: (req.body.image ?? null) })
       .then(newGroup => {
         UserGroup.create({ solde: 0, UserUsername: req.session.username, GroupId: newGroup.id })
           .then(_ => {
@@ -32,8 +34,10 @@ export function groupRoute(app: Express, sequelize: Sequelize) {
 
   app.post(apiUrl + '/update', async (req, res) => {
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
+    if (!parametersDefined(res, [req.body.name, req.body.groupId])) return
+    if (!isNumber(res, [req.body.groupId], 'L\'id')) return
 
-    Group.update({ name: req.body.name, description: req.body.description, image: req.body.image }, {
+    Group.update({ name: req.body.name, description: (req.body.description ?? null), image: (req.body.image ?? null) }, {
       where : {
         id: req.body.groupId
       }
@@ -46,6 +50,8 @@ export function groupRoute(app: Express, sequelize: Sequelize) {
 
   app.post(apiUrl + '/invite', async (req, res) => {
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
+    if (!parametersDefined(res, [req.body.groupId])) return
+    if (!isNumber(res, [req.body.groupId], 'L\'id')) return
 
     Group.findOne({ where: { id: req.body.groupId } })
       .then(group => {
