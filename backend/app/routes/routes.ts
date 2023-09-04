@@ -30,7 +30,7 @@ export async function userInGroup(res: any, username?: string, groupId?: string)
 export function parametersDefined(res: any, parameters: any[]): boolean {
   for (const parameter of parameters) {
     if (parameter === undefined) {
-      res.json({ error: 'Les paramètres sont incomplets.' })
+      res?.json({ error: 'Les paramètres sont incomplets.' })
       return false
     }
   }
@@ -41,7 +41,7 @@ export function parametersDefined(res: any, parameters: any[]): boolean {
 export function isNumber(res: any, parameters: any[], message: string): boolean {
   for (const parameter of parameters) {
     if (isNaN(Number(parameter))) {
-      res.json({ error: message + ' devrait être un nombre.' })
+      res?.json({ error: message + ' devrait être un nombre.' })
       return false
     }
   }
@@ -51,7 +51,7 @@ export function isNumber(res: any, parameters: any[], message: string): boolean 
 
 export function isDate(res: any, parameter: any): boolean {
   if (isNaN(new Date(parameter).valueOf())) {
-    res.json({ error: 'La date n\'est pas valide.' })
+    res?.json({ error: 'La date n\'est pas valide.' })
     return false
   }
 
