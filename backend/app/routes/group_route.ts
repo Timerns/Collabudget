@@ -33,9 +33,9 @@ export function groupRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + '/update', async (req, res) => {
-    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
     if (!parametersDefined(res, [req.body.name, req.body.groupId])) return
     if (!isNumber(res, [req.body.groupId], 'L\'id')) return
+    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     Group.update({ name: req.body.name, description: (req.body.description ?? null), image: (req.body.image ?? null) }, {
       where : {
@@ -49,9 +49,9 @@ export function groupRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + '/invite', async (req, res) => {
-    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
     if (!parametersDefined(res, [req.body.groupId])) return
     if (!isNumber(res, [req.body.groupId], 'L\'id')) return
+    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     Group.findOne({ where: { id: req.body.groupId } })
       .then(group => {
@@ -89,5 +89,14 @@ export function groupRoute(app: Express, sequelize: Sequelize) {
         }
       })
       .catch(err => res.json({ error: err }))
+  })
+
+  //Sold of all people in a group
+  app.post(apiUrl + '/solde', async (req, res) => {
+    if (!parametersDefined(res, [req.body.groupId])) return
+    if (!isNumber(res, [req.body.groupId], 'L\'id')) return
+    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
+
+    res.json({ status: await UserGroup.findAll({ where: { GroupId: req.body.groupId } }) })
   })
 }

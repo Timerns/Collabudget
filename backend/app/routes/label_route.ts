@@ -99,9 +99,9 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
 
   // Group label
   app.post(apiUrl + apiUrlGroup, async (req, res) => {
-    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
     if (!parametersDefined(res, [req.body.groupId])) return
     if (!isNumber(res, [req.body.groupId], 'L\'id')) return
+    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     res.json({ status: await Label.findAll({ 
       include: [{
@@ -112,9 +112,9 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + apiUrlGroup + '/add', async (req, res) => {
-    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
     if (!parametersDefined(res, [req.body.name, req.body.color, req.body.groupId])) return
     if (!isNumber(res, [req.body.groupId], 'L\'id')) return
+    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     GroupLabel.findOne({ 
       where: { GroupId: req.body.groupId },
@@ -143,9 +143,9 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + apiUrlGroup + '/update', async (req, res) => {
-    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
     if (!parametersDefined(res, [req.body.name, req.body.color, req.body.groupId, req.body.id])) return
     if (!isNumber(res, [req.body.groupId, req.body.id], 'L\'id')) return
+    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     GroupLabel.findOne({ where: { GroupId: req.body.groupId, LabelId: req.body.id } })
       .then(groupLabel => {
@@ -168,9 +168,9 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
   })
 
   app.post(apiUrl + apiUrlGroup + '/delete', async (req, res) => {
-    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
     if (!parametersDefined(res, [req.body.groupId, req.body.id])) return
     if (!isNumber(res, [req.body.groupId, req.body.id], 'L\'id')) return
+    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     GroupLabel.findOne({ where: { GroupId: req.body.groupId, LabelId: req.body.id } })
       .then(groupLabel => {
