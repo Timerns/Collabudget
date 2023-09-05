@@ -36,7 +36,7 @@ export default function CreateGroupModal(props: {show() :void}) {
       .catch(e => toast.error(e));
   };
     return (
-      <Modal title='Nouveau label' text_bt='Nouveau label' ref={modalLabelRef}>
+      <Modal title='Ajouter groupe' text_bt='Ajouter' ref={modalLabelRef}>
       <form onSubmit={FormGroupeActions.handleSubmit(onSubmitLabel)}>
         <div className="mb-2 text-secondary">
           <TextInput title="Nom du groupe" placeholder="Titre" {...FormGroupeActions.register("title")} />

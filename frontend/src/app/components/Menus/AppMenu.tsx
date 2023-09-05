@@ -101,9 +101,9 @@ const AppMenu: FC<pageProps> = (props) => {
               </button>
               <ul className="py-2 space-y-2">
                 {
-                  groupes.map((val) => {
+                  groupes.map((val, i) => {
                     return (
-                      <li>
+                      <li key={i}>
                         <Link href={"/app/groupe/" + val.id} className={"flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group text-light-gray hover:text-primary" + (pathname == "/app/groupe/" + val.id ? " text-primary underline decoration-primary underline-offset-4" : " text-white")}>{val.name}</Link>
                       </li>
                     )
@@ -114,7 +114,7 @@ const AppMenu: FC<pageProps> = (props) => {
                     <svg width="17" height="17" viewBox="0 0 17 17" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className='mr-2'>
                       <path d="M9.35 7.65V4.25H7.65V7.65H4.25V9.35H7.65V12.75H9.35V9.35H12.75V7.65H9.35ZM8.5 17C6.24566 17 4.08365 16.1045 2.48959 14.5104C0.895533 12.9163 0 10.7543 0 8.5C0 6.24566 0.895533 4.08365 2.48959 2.48959C4.08365 0.895533 6.24566 0 8.5 0C10.7543 0 12.9163 0.895533 14.5104 2.48959C16.1045 4.08365 17 6.24566 17 8.5C17 10.7543 16.1045 12.9163 14.5104 14.5104C12.9163 16.1045 10.7543 17 8.5 17Z" fill="#FF9B05" />
                     </svg> 
-                    <CreateGroupModal show={show} />
+                      <CreateGroupModal show={show} />
                     </button>
                 </li>
               </ul>
