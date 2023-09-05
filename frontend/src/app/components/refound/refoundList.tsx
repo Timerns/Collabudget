@@ -7,34 +7,36 @@ import { useEffect, useState } from "react";
 
 export default function RefoundList({refounds, groupId}: { refounds: SoldeType[], groupId: number}) {
   
-
   const [transaction, setTransaction] = useState<{s: string, d: string, m: number}[]>([])
+  const [isLoaded, setIsLoaded] = useState(false);
 
+  console.log("asdfasdfasdfasdfasd")
+  console.log(refounds)
   useEffect(() => {
     var plus:  SoldeType[] = JSON.parse(JSON.stringify(refounds.filter((x) => Number(x.solde) > 0 ).sort((x, y) => Number(y.solde) - Number(x.solde))));
     var moins: SoldeType[] = JSON.parse(JSON.stringify(refounds.filter((x) => Number(x.solde) < 0 ).sort((x, y) => Number(y.solde) - Number(x.solde))));
 
+    let transa = []
     while (moins.length !== 0) {
-
       if(Number(plus[plus.length - 1].solde) - Number(moins[moins.length - 1].solde) >= 0) {
-        transaction.push({s: moins[moins.length - 1].UserUsername, d: plus[plus.length - 1].UserUsername, m: Math.abs(Number(moins[moins.length - 1].solde))});
+        transa.push({s: moins[moins.length - 1].UserUsername, d: plus[plus.length - 1].UserUsername, m: Math.abs(Number(moins[moins.length - 1].solde))});
         plus[plus.length - 1].solde = String(Number(plus[plus.length - 1].solde) - Number(moins[moins.length - 1].solde)); 
         moins.pop();
       } else {
-        transaction.push({s: moins[moins.length - 1].UserUsername, d: plus[plus.length - 1].UserUsername, m: Number(plus[plus.length - 1].solde)});
+        transa.push({s: moins[moins.length - 1].UserUsername, d: plus[plus.length - 1].UserUsername, m: Number(plus[plus.length - 1].solde)});
         moins[moins.length - 1].solde = String(Number(moins[-1].solde) + Number(plus[plus.length - 1].solde));
         plus.pop(); 
       }
     }
-    setTransaction(transaction)
+    
+    setTransaction(transa)
+    setIsLoaded(true)
   }, [refounds])
   
-  
-  
-
   return (
       <ListContainer>
-        {transaction.map((r, i) => {
+        {isLoaded && 
+        transaction.map((r, i) => {
           return (
               <div key={i} className={`${i < transaction.length - 1 ? "mb-3" : ""}`}>
                 <Refound refound={r} groupId={groupId}/>
