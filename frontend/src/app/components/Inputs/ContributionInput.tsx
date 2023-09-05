@@ -24,7 +24,7 @@ const ContributionInput: FC<ContributionInputProps> = ((props) => {
     });
   }
 
-  const { fields, append, remove, update } = useFieldArray({ control: props.control, name: "transaction" });
+  const { fields, append, remove, update } = useFieldArray({ control: props.control, name: props.transactionName });
 
   useEffect(() => {
     remove();
@@ -36,6 +36,17 @@ const ContributionInput: FC<ContributionInputProps> = ((props) => {
       return obj;
     }));
   }, []);
+
+  useEffect(() => {
+    remove();
+    append(props.users.map((user) => {
+      var obj: any = {};
+      obj[props.usernameName] = user;
+      obj[props.isContributingName] = true;
+      obj[props.valueName] = props.totalValue / props.users.length;
+      return obj;
+    }));
+  }, [props.totalValue]);
 
   return (
     <Input {...props} onChange={onChange} onBlur={onChange} name={props.transactionName}>

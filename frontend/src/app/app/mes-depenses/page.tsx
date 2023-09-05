@@ -4,7 +4,7 @@ export default function Page() {
     return (
       <>
         <div>WIP</div>
-        <AddButton></AddButton>
+        <AddButton groups={false}></AddButton>
     
       </>
     )    
