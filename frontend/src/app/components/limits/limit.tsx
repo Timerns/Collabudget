@@ -1,5 +1,5 @@
 import LabelType from "@/app/types/labelType";
-import LimitType from "@/app/types/limitType";
+import { LimitType } from "@/app/types/limitType";
 import TransactionCategorieType from "@/app/types/transactionCategorieType";
 import TransactionType from "@/app/types/transactionType";
 import { formatCurrency } from "@/app/utils/numberFormatter";
@@ -14,7 +14,7 @@ export default function Limit({ limit, ...props }: { limit: LimitType, props?: a
           }
         </div>
         <span>
-          {limit.name || "Aucun label"}
+          {limit.name || "Autres"}
         </span>
       </div>
       <div className={`col-span-1 text-right ${-limit.currentValue >= limit.maxValue && limit.maxValue !== -1 ? "text-red" : "text-green"}`}>
