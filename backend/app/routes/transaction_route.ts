@@ -8,6 +8,8 @@ import { Contribution } from '../database/contribution';
 const apiUrl = '/api/transactions';
 const apiUrlGroup = '/g';
 
+const allowedError = 0.001
+
 export function transactionRoute(app: Express, sequelize: Sequelize) {
   // User transaction
   app.get(apiUrl, async (req, res) => {
@@ -118,13 +120,13 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
         }
       }
       
-      if (total != 0) {
+      if (Math.abs(total - req.body.value) <= allowedError) {
         throw new Error('Le total des contributeurs est incorrect.')
       }
 
       //contributor: { isContributing: boolean, username: string, value: number }
       for (const contributor of JSON.parse(req.body.contributors)) {
-        if (contributor.isContributing) {
+        if (contributor.isContributing || req.body.payer === contributor.username) {
           await Contribution.create({ value: contributor.value, UserUsername: contributor.username, TransactionId: transaction.id }, { transaction: t })
           let newSolde = Number((await UserGroup.findOne({ where: { UserUsername: contributor.username, GroupId: req.body.groupId } }))?.solde)
           
@@ -185,7 +187,8 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
         }
       }
   
-      if (total != 0) {
+
+      if (Math.abs(total - req.body.value) <= allowedError) {
         throw new Error('Le total des contributeurs est incorrect.')
       }
   
@@ -194,13 +197,13 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
         const oldContrib = await Contribution.findOne({ where: { UserUsername: contributor.username, TransactionId: req.body.transactionId } })
 
         if (!oldContrib) {
-          if (contributor.isContributing) {
+          if (contributor.isContributing || req.body.payer === contributor.username) {
             await Contribution.create({ value: contributor.value, UserUsername: contributor.username, TransactionId: req.body.transactionId }, { transaction: t })
           } else {
             continue
           }
         } else {
-          if (contributor.isContributing) {
+          if (contributor.isContributing || req.body.payer === contributor.username) {
             await Contribution.update(
               { value: contributor.value },
               { where : { UserUsername: contributor.username, TransactionId: req.body.transactionId }, transaction: t }

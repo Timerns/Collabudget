@@ -101,7 +101,7 @@ export default function TransactionGroupeMondal(props: {show() :void, groupId: n
           <TextInput title="Titre" placeholder="Titre" {...FormTrasactionActions.register("title")} />
         </div>
         <div className="mb-2 text-secondary">
-          <MoneyInput title="Montant" placeholder="-" baseFormName="total" valueName="value" currencyName="currency" setValueForm={FormTrasactionActions.setValue} register={FormTrasactionActions.register} currencies={["CHF", "EUR", "USD"]} />
+          <MoneyInput title="Montant" placeholder="-" baseFormName="total" valueName="value" currencyName="currency" setValueForm={FormTrasactionActions.setValue} register={FormTrasactionActions.register} currencies={["CHF"]} />
         </div>
         <div className="mb-2 text-secondary">
           <DropdownInput title="Label" setValueForm={FormTrasactionActions.setValue} choices={labels} show={show} {...FormTrasactionActions.register("label", { value: labels[0]})} />
