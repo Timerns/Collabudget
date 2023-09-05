@@ -78,7 +78,7 @@ export default function TransactionGroupeMondal(props: {show() :void, groupId: n
         toast.info(val)
         modalTransactionRef.current?.closeModal();
         props.show()
-        // window.location.reload()
+        window.location.reload()
       })
       .catch(e => toast.error(e));
   };
