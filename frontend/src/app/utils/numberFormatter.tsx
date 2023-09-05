@@ -6,7 +6,7 @@ function formatCurrency(montant?: number, currency?: string, showPlusSign?: bool
   if (showPlusSign === undefined)
     showPlusSign = true
 
-  return `${montant === undefined ? "∞" : (montant < 0 ? "" : (showPlusSign ? "+" : "")) + montant} ${currency}`;
+  return `${montant === undefined ? "∞" : (montant < 0 ? "" : (showPlusSign ? "+" : "")) + (Math.round(montant * 100) / 100)} ${currency}`;
 }
 
 export { formatCurrency }
