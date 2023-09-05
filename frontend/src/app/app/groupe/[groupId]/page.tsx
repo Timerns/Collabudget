@@ -16,77 +16,93 @@ import { useEffect, useState } from "react";
 import { request } from "@/app/utils/database";
 import { toast } from "react-toastify";
 import SoldeType from "@/app/types/soldeType";
+import LabelTooltip from "@/app/components/labelTooltip";
 
 export default function Page({params}: { params: { groupId: number } }) {
+  type Data = {
+    group: GroupeType,
+    transactions: TransactionType[],
+    labels: [LabelType[], any],
+    soldes: SoldeType[]
+  }
 
-  const [groupe, setGroupe] = useState<GroupeType>()
-  const [transactions, setTransactions] = useState<TransactionType[]>([])
-  const [labels, setLabels] = useState<LabelType[]>([])
-  const [soldes, setSoldes] = useState<SoldeType[]>([])
-  const [isLoaded, setisLoaded] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [data, setData] = useState<Data>({
+    group: {id: -1, currency: "", description: "", image: "", inviteId: "", name: "", soldes: []},
+    transactions: [],
+    labels: [[], {}],
+    soldes: []
+  });
 
   useEffect(() => {
-    request<any>("/api/groups/solde", "POST", { groupId: params.groupId})
-      .then(val => {
-        console.log(val)
-        setSoldes(val)
-        setisLoaded(true);
-      })
-      .catch(e => toast.error(e));
+    const fetchData = async () => {
+      let group = (await request<GroupeType[]>("/api/groups", "GET")).filter((x) => Number(x.id) === Number(params.groupId))[0];
 
-    request<TransactionType[]>("/api/transactions/g", "POST", { groupId: params.groupId})
-      .then(val => {
-        setTransactions(val)
-      })
-      .catch(e => toast.error(e));
+      let soldes = await request<SoldeType[]>("/api/groups/solde", "POST", { groupId: group.id });
 
-    request<LabelType[]>("/api/labels/g", "POST", { groupId: params.groupId})
-      .then(val => {
-        setLabels(val)
-      })
-      .catch(e => toast.error(e));
+      let transactions = await request<TransactionType[]>("/api/transactions/g", "POST", { groupId: params.groupId });
+      transactions = transactions.map(v => {
+        v.date = new Date(v.date);
+        return v;
+      });
+      let labels = await request<LabelType[]>("/api/labels/g", "POST", { groupId: group.id });
 
-      request<GroupeType[]>("/api/groups", "GET")
-      .then(val => {
-        val = val.filter((x) => x.id === params.groupId)
-        setGroupe(val[0])
-      })
+      let result: any = {};
+      transactions.forEach(function (value) {
+        var label: {id: string, name: string, color: string} = (labels.find(p => p.id.toString() == (value.LabelId ?? "")) as any ?? { id: -1, name: "Aucun label", color: "#000000" });
+        if (!result[label.id]) {
+          result[label.id] = {label: label, value: Number(value.value)};
+        } else {
+          result[label.id].value += Number(value.value);
+        }
+      }, {});
+
+      setData({
+        group: group, 
+        transactions: transactions, 
+        labels: [labels, result],
+        soldes: soldes
+      });
+      setIsLoaded(true);
+    }
+
+    fetchData()
       .catch(e => toast.error(e));
-  }, [])
+  }, []);
 
   return (
       <>
-        <MainTitle title={groupe?.name ? groupe?.name : "pas de titre"} subtitle={"TODO desc ?"}/>
+        <MainTitle title={data.group.name ? data.group.name : "pas de titre"} subtitle={data.group.description}/>
         <div className={"grid grid-cols-1 xl:grid-cols-3 gap-x-7"}>
           <div className={"col-span-1 row-span-2"}>
             <Title title={"Transactions"}/>
-            <TransactionList labels={labels} transactions={transactions} doubleRow={true}/>
+            <TransactionList labels={data.labels} transactions={data.transactions} doubleRow={true}/>
           </div>
           <div className={"col-span-1"}>
             <Title title={"Soldes"}/>
-            <UserGroupList soldes={soldes}/>
+            <UserGroupList soldes={data.soldes}/>
           </div>
           <div className={"col-span-1 row-span-2"}>
             <Title title={"Catégories"}/>
-            {/* <ResponsiveContainer width={"100%"} height={350}>
-              <PieChart>
-                <Pie data={categories} dataKey={"value"} label>
-                  {categories.map((c, index) => {
+            <ResponsiveContainer width={"100%"} height={300}>
+              <PieChart width={700} height={300}>
+                <Tooltip labelClassName={"text-secondary"} content={<LabelTooltip/>}/>
+                <Pie data={Object.entries(data.labels[1]).map(([a, b]) => b)} dataKey="value">
+                  {Object.keys(data.labels[1]).map((r) => {
                     return (
-                        <Cell key={`cell-${index}`} fill={c.color}/>
+                      <Cell key={`cell-${r}`} fill={data.labels[1][r].label.color} />
                     )
                   })}
                 </Pie>
-                <Tooltip/>
               </PieChart>
-            </ResponsiveContainer> */}
+            </ResponsiveContainer>
           </div>
           <div className={"col-span-1"}>
             <Title title={"Remboursement"}/>
-            <RefoundList refounds={soldes} groupId={params.groupId}/>
+            <RefoundList refounds={data.soldes} groupId={params.groupId}/>
           </div>
         </div>
-        <AddButton></AddButton>
+        <AddButton groups={true}></AddButton>
       </>
   )
 }

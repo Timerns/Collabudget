@@ -26,7 +26,6 @@ export default function Page() {
   }, [])
 
   const onSubmit = async (data: LoginForm) => {
-    console.log(data);
 
     request<string>("/api/login", "POST", { username: data.username, password: data.password })
       .then(val => {

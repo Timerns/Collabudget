@@ -16,7 +16,6 @@ export default function Page() {
   const { register, handleSubmit } = useForm<LoginForm>();
 
   const onSubmit = async (data: LoginForm) => {
-    console.log(data);
     if (data.password !== data.passwordConfirm) {
       toast.error("Les mots de passe ne correspondent pas !");
       return;

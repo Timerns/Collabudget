@@ -19,7 +19,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
     })
 
     userTransactions.push(...userRefunded)
-    userTransactions = userTransactions.sort((d1, d2) => new Date(d1.date).getTime() - new Date(d2.date).getTime())
+    userTransactions = userTransactions.sort((d1, d2) => new Date(d2.date).getTime() - new Date(d1.date).getTime())
 
     res.json({ status: userTransactions })
   })
@@ -84,7 +84,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     let transactions = await Transaction.findAll({ where: { GroupId: req.body.groupId } })
-    transactions = transactions.sort((d1, d2) => new Date(d1.date).getTime() - new Date(d2.date).getTime())
+    transactions = transactions.sort((d1, d2) => new Date(d2.date).getTime() - new Date(d1.date).getTime())
 
     res.json({ status: transactions })
   })
@@ -291,8 +291,8 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
     const t = await sequelize.transaction()
 
     try {
-      const refunder = await UserGroup.findOne({ where: { UserUsername: req.body.refunder } })
-      const refunded = await UserGroup.findOne({ where: { UserUsername: req.body.refunded } })
+      const refunder = await UserGroup.findOne({ where: { UserUsername: req.body.refunder, GroupId: req.body.groupId } })
+      const refunded = await UserGroup.findOne({ where: { UserUsername: req.body.refunded, GroupId: req.body.groupId } })
   
       if (!refunder || !refunded) {
         throw new Error('Ces personnes ne font pas partie du groupe.')
@@ -348,6 +348,11 @@ async function participantInGroup(req: any, res: any): Promise<boolean> {
 
   //contributor: { isContributing: boolean, username: string, value: number }
   for (const contributor of JSON.parse(req.body.contributors)) {
+    if (contributor.isContributing === undefined || contributor.username === undefined ||contributor.value === undefined) {
+      res.json({ error: 'La liste des contributeurs est incorrect.' })
+      return false
+    }
+
     const contributorInGroup = await UserGroup.findOne({ where: { UserUsername: contributor.username, GroupId: req.body.groupId } })
 
     if (contributorInGroup === null) {
