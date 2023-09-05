@@ -40,7 +40,7 @@ export function limitRoute(app: Express, sequelize: Sequelize) {
       })
     ])
       .then(allLimits => {
-        res.json(allLimits)
+        res.json({ status: allLimits })
       })
       .catch(err => res.json({ error: err }))
   })

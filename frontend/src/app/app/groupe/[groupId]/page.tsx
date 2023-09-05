@@ -115,7 +115,14 @@ export default function Page({params}: { params: { groupId: number } }) {
         <div className={"grid grid-cols-1 xl:grid-cols-3 gap-x-7"}>
           <div className={"col-span-1 row-span-2"}>
             <Title title={"Transactions"}/>
-            <TransactionList labels={data.labels} transactions={data.transactions} doubleRow={true}/>
+            {
+              <TransactionList 
+                transactions={data.transactions} 
+                doubleRow={true} 
+                getInfo={(t) => (t.RefundedUsername === null ? t.UserUsername ?? "" : `De ${t.UserUsername} à ${t.RefundedUsername}`)}
+                getLabel={(t) => data.labels.find(x => x.id === Number(t.LabelId))}
+                />
+            }
           </div>
           <div className={"col-span-1"}>
             <Title title={"Soldes"}/>
@@ -123,18 +130,21 @@ export default function Page({params}: { params: { groupId: number } }) {
           </div>
           <div className={"col-span-1 row-span-2"}>
             <Title title={"Catégories"}/>
-            <ResponsiveContainer width={"100%"} height={300}>
-              <PieChart width={700} height={300}>
-                <Tooltip labelClassName={"text-secondary"} content={<LabelTooltip/>}/>
-                <Pie data={Object.entries(data.labels[1]).map(([a, b]) => b)} dataKey="value">
-                  {Object.keys(data.labels[1]).map((r) => {
-                    return (
-                      <Cell key={`cell-${r}`} fill={data.labels[1][r].label.color} />
-                    )
-                  })}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
+            {
+              Object.keys(data.labels[1]).length === 0 ? <p>Aucune données</p> :
+              <ResponsiveContainer width={"100%"} height={300}>
+                <PieChart width={700} height={300}>
+                  <Tooltip labelClassName={"text-secondary"} content={<LabelTooltip/>}/>
+                  <Pie data={Object.entries(data.labels[1]).map(([a, b]) => b)} dataKey="value">
+                    {Object.keys(data.labels[1]).map((r) => {
+                      return (
+                        <Cell key={`cell-${r}`} fill={data.labels[1][r].label.color} />
+                      )
+                    })}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            }
           </div>
           <div className={"col-span-1"}>
             <Title title={"Remboursement"}/>
