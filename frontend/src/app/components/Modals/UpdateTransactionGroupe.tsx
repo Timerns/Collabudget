@@ -25,7 +25,7 @@ export type UpdateTransactionForm = {
   }
   date: string,
   payer: string,
-  label: LabelType,
+  label?: LabelType,
   contributors: { isContributing: boolean, username: string, value: number }[]
 };
 
@@ -61,16 +61,28 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
       //Set previous date
       FormTransactionActions.setValue("date", (new Date(props.transaction.date).toISOString()).slice(0, 16))
 
+      setMembers(await request<SoldeType[]>("/api/groups/solde", "POST", { groupId: props.group.id }))
+
+      /*let contributors = await request<[ContributionType]>("/api/transactions/g/contributor", "POST", { groupId: props.group.id, transactionId: props.transaction.id })
+      let id = 0
+      console.log(members)
+      for (const member of members) {
+        if (contributors.filter(x => x.UserUsername == member.UserUsername).length !== 0) {
+          console.log("Halle")
+          FormTransactionActions.setValue(`contributors.${id}.isContributing`, true)
+        } else {
+          console.log("sdf")
+          FormTransactionActions.setValue(`contributors.${id}.isContributing`, false)
+        }
+        console.log(id) 
+        id++
+      }*/
+      //??????????????????????????FormTransactionActions.setValue("contributors.0", {isContributing: false, username: "pipo", value: 10 })
+      
       setIsLoaded(true);
     }
 
     fetchData()
-      .catch(e => toast.error(e));
-
-    request<SoldeType[]>("/api/groups/solde", "POST", { groupId: props.group.id })
-      .then(val => {
-        setMembers(val)        
-      })
       .catch(e => toast.error(e));
 
     getStatus()
@@ -83,16 +95,16 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
   }, [])
 
   function sortList() {
-    var idx = members.filter(x => x.UserUsername != currentUser)
-    return  [currentUser, ...idx.map(x => x.UserUsername)]
+    var idx = members.filter(x => x.UserUsername != props.transaction.UserUsername)
+    return  [props.transaction.UserUsername, ...idx.map(x => x.UserUsername)]
   }
   
   const onSubmitTransaction = (data: UpdateTransactionForm) => {
-    var requestData: any = { groupId: Number(props.group.id), title: data.title, value: data.total.value, date: data.date, payer: data.payer, contributors: data.contributors}
-    if(data.label.id !== -1) {
+    var requestData: any = { groupId: Number(props.group.id), title: data.title, value: data.total.value, date: data.date, payer: data.payer, contributors: data.contributors, transactionId: props.transaction.id}
+    if(data.label?.id !== undefined && data.label.id !== -1) {
       requestData.labelId = data.label.id
     } 
-    request<any>("/api/transactions/g/add", "POST", requestData)
+    request<any>("/api/transactions/g/update", "POST", requestData)
       .then(val => {
         toast.info(val)
         modalTransactionRef.current?.closeModal();
