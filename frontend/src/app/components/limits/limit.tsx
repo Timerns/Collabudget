@@ -17,7 +17,7 @@ export default function Limit({ limit, ...props }: { limit: LimitType, props?: a
           {limit.name || "Aucun label"}
         </span>
       </div>
-      <div className={`col-span-1 text-right`}>
+      <div className={`col-span-1 text-right ${-limit.currentValue >= limit.maxValue && limit.maxValue !== -1 ? "text-red" : "text-green"}`}>
         {-limit.currentValue} / {formatCurrency(limit.maxValue === -1 ? undefined : limit.maxValue, undefined, false)}
       </div>
     </div>
