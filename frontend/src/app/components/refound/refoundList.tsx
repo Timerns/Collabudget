@@ -36,6 +36,7 @@ export default function RefoundList({refounds, groupId}: { refounds: SoldeType[]
   return (
       <ListContainer>
         {isLoaded && 
+        transaction.length === 0 ? <p>Aucun remboursement</p> :
         transaction.map((r, i) => {
           return (
               <div key={i} className={`${i < transaction.length - 1 ? "mb-3" : ""}`}>
