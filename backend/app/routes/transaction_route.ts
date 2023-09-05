@@ -350,6 +350,7 @@ async function participantInGroup(req: any, res: any): Promise<boolean> {
   for (const contributor of JSON.parse(req.body.contributors)) {
     if (contributor.isContributing === undefined || contributor.username === undefined ||contributor.value === undefined) {
       res.json({ error: 'La liste des contributeurs est incorrect.' })
+      return false
     }
 
     const contributorInGroup = await UserGroup.findOne({ where: { UserUsername: contributor.username, GroupId: req.body.groupId } })
