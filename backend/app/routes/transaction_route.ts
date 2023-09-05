@@ -91,6 +91,16 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
     res.json({ status: transactions })
   })
 
+  app.post(apiUrl + apiUrlGroup + "/contributor", async (req, res) => {
+    if (!parametersDefined(res, [req.body.groupId, req.body.transactionId])) return
+    if (!isNumber(res, [req.body.groupId, req.body.transactionId], 'L\'id')) return
+    if (!await userInGroup(res, req.session.username, req.body.groupId)) return
+
+    const contributions = await Contribution.findAll({ where: { TransactionId: req.body.transactionId } })
+
+    res.json({ status: contributions })
+  })
+
   app.post(apiUrl + apiUrlGroup + "/add", async (req, res) => {
     if (!parametersDefined(res, [req.body.title, req.body.value, req.body.date, req.body.payer, req.body.groupId, req.body.contributors])) return
     if (!isNumber(res, [req.body.value, req.body.groupId, (req.body.labelId ?? null)], 'La valeur ou l\'id')) return
