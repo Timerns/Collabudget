@@ -54,9 +54,6 @@ export default function Page() {
 
       let result: any = {};
       transactions.forEach(function (value) {
-        if (value.GroupId) {
-
-        }
         var label: {id: string, name: string, color: string} = (value.GroupId !== null ? {id: "g" + value.GroupId, name: groups.find(g => g.id === parseInt(value.GroupId as string))?.name, color: "#FF9B05"} : (labels.find(p => p.id.toString() == (value.LabelId ?? "")) as any ?? { id: -1, name: "Aucun label", color: "#000000" }));
         if (!result[label.id]) {
           result[label.id] = {label: label, value: Number(value.value)};
@@ -64,6 +61,11 @@ export default function Page() {
           result[label.id].value += Number(value.value);
         }
       }, {});
+
+      transactions = transactions.map((v: any) => {
+        v.value = Number(v.value)
+        return v
+      })
 
       setData({
         groups: groups, 
@@ -111,7 +113,7 @@ export default function Page() {
               <ResponsiveContainer width={"100%"} height={300}>
                 <BarChart data={data.transactions}>
                   <CartesianGrid/>
-                  <XAxis dataKey={"date"} tickFormatter={d => new Date(d).toLocaleDateString()}/>
+                  <XAxis dataKey={"date"} tickFormatter={d => new Date(d).toLocaleDateString()} reversed={true}/>
                   <YAxis dataKey={"value"}/>
                   <Tooltip labelClassName={"text-secondary"} content={<DepenseTooltip/>}/>
                   <Bar dataKey="value">
