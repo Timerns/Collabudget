@@ -1,93 +1,41 @@
 "use client"
 import React, { useState } from 'react'
-import Modal, { ModalHandle } from "@/app/components/Modal";
-import { FormEventHandler, useRef } from "react";
-import InputButton from '@/app/components/Inputs/InputButton';
+import { usePathname } from 'next/navigation';
+import TransactionGroupeMondal from './Modals/TransactionGroupe';
+import LabelGroupeModal from './Modals/LabelGroupe';
+import LabelSoloModal from './Modals/LabelSolo';
+import TransactionSoloModal from './Modals/TransactionSolo';
 
-export default function AddButton() {
+
+
+export default function AddButton(props: { groups: boolean }) {
   const [menu, setMenu] = useState(false);
+  const pathname: string = usePathname()
 
-  const modalRef = useRef<ModalHandle>(null);
-  const handelSumbit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    console.log(e);
-    modalRef.current?.closeModal();
+  function show() {
+    setMenu(!menu);
   }
 
   return (
     <div className="fixed bottom-5 right-5 flex flex-col">
-      <div className={"bg-light-secondary p-2 sm:mx-5 flex flex-col" + (menu? "": " hidden")}>
-        <Modal title='Nouveau label' text_bt='Nouveau label' >
-        <form onSubmit={handelSumbit}>
-          <div className="mb-2">
-            <label className="block text-white text-sm mb-1">
-              Titre
-            </label>
-            <input className="shadow appearance-none text-sm py-3 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Titre" />
-          </div>
-          <div className="mb-2">
-            <label className="block text-white text-sm mb-1">
-              Titre
-            </label>
-            <input className="shadow appearance-none text-sm py-3 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Titre" />
-          </div>
-          <div className="mb-2">
-            <label className="block text-white text-sm mb-1">
-              Titre
-            </label>
-            <input className="shadow appearance-none text-sm py-3 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Titre" />
-          </div>
-          <div className="mb-2">
-            <label className="block text-white text-sm mb-1">
-              Titre
-            </label>
-            <input className="shadow appearance-none text-sm py-3 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Titre" />
-          </div>
-          <div className="mb-6">
-            <label className="block text-white text-sm mb-1">
-              Titre
-            </label>
-            <input className="shadow appearance-none text-sm py-3 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Titre" />
-          </div>
-          <InputButton text='Sauvegarder'></InputButton>
-        </form>
-        </Modal>
+      <div className={"bg-light-secondary p-2 sm:mx-5 flex flex-col" + (menu ? "" : " hidden")}>
+        {
+          props.groups &&
+          <>
+            <LabelGroupeModal show={show} groupId={Number(pathname.split("/").pop())} />
+            <TransactionGroupeMondal show={show} groupId={Number(pathname.split("/").pop())} />
+          </>
+        }
 
-        <Modal title='Ajouter une transaction' text_bt='Ajouter une transaction'>
-        <form onSubmit={handelSumbit}>
-          <div className="mb-2">
-            <label className="block text-white text-sm mb-1">
-              Titre
-            </label>
-            <input className="shadow appearance-none text-sm py-3 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Titre" />
-          </div>
-          <div className="mb-2">
-            <label className="block text-white text-sm mb-1">
-              Titre
-            </label>
-            <input className="shadow appearance-none text-sm py-3 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Titre" />
-          </div>
-          <div className="mb-2">
-            <label className="block text-white text-sm mb-1">
-              Titre
-            </label>
-            <input className="shadow appearance-none text-sm py-3 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Titre" />
-          </div>
-          <div className="mb-2">
-            <label className="block text-white text-sm mb-1">
-              Titre
-            </label>
-            <input className="shadow appearance-none text-sm py-3 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Titre" />
-          </div>
-          <div className="mb-6">
-            <label className="block text-white text-sm mb-1">
-              Titre
-            </label>
-            <input className="shadow appearance-none text-sm py-3 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Titre" />
-          </div>
-          <InputButton text='Sauvegarder' ></InputButton>
-        </form>
-        </Modal>
+        {
+          !props.groups &&
+          <>
+            <LabelSoloModal show={show}/>
+            <TransactionSoloModal show={show}/>
+          </>
+
+        }
+
       </div>
       <div className="flex bg-primary rounded-full p-2 sm:m-5 sm:ml-auto mt-5 ml-auto h-30 w-30" onClick={() => setMenu(!menu)}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48px" height="48px">

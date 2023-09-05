@@ -193,7 +193,7 @@ export default function Page() {
           
         }
       </div>
-      <AddButton></AddButton>
+      <AddButton groups={false}></AddButton>
     </>
   )    
 }

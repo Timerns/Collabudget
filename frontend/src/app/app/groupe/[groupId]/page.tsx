@@ -112,7 +112,7 @@ export default function Page({params}: { params: { groupId: number } }) {
             <RefoundList refounds={data.soldes} groupId={params.groupId}/>
           </div>
         </div>
-        <AddButton></AddButton>
+        <AddButton groups={true}></AddButton>
       </>
   )
 }
