@@ -8,6 +8,8 @@ import { Contribution } from '../database/contribution';
 const apiUrl = '/api/transactions';
 const apiUrlGroup = '/g';
 
+const allowedError = 0.001
+
 export function transactionRoute(app: Express, sequelize: Sequelize) {
   // User transaction
   app.get(apiUrl, async (req, res) => {
@@ -118,7 +120,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
         }
       }
       
-      if (total != 0) {
+      if (Math.abs(total - req.body.value) <= allowedError) {
         throw new Error('Le total des contributeurs est incorrect.')
       }
 
@@ -185,7 +187,8 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
         }
       }
   
-      if (total != 0) {
+
+      if (Math.abs(total - req.body.value) <= allowedError) {
         throw new Error('Le total des contributeurs est incorrect.')
       }
   
