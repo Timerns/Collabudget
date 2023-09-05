@@ -14,7 +14,6 @@ export type ModalHandle = {
 
 
 const Modal = forwardRef<ModalHandle, ModalProps>(({ title, text_bt, children }, ref) => {
-  console.log(children)
   const [showModal, setShowModal] = useState(false);
 
 
