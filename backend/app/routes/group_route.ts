@@ -80,7 +80,7 @@ export function groupRoute(app: Express, sequelize: Sequelize) {
           })
 
           if (created) {
-            res.json({ status: 'Vous avez rejoint le groupe ' + group.name + ' !' })
+            res.json({ status: group.id })
             return
           }
           res.json({ error: 'Vous faites déjà parti du groupe ' + group.name + '.' })
