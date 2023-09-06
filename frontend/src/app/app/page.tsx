@@ -189,7 +189,12 @@ export default function Page() {
               return (
                 <SwiperSlide className={"mb-5"} key={`ss-${g.id}`}>
                   <Link href={`/app/groupe/${g.id}`} className={"text-center"}>
-                    <img src={g.image}/>
+                    {
+                      g.image != "null"?
+                      <img src={g.image} />
+                      :
+                      <img src="/no-image.svg" />
+                    }
                     <div className={"text-lg"}>{g.name}</div>
                     <div className={"text-xs"}>{g.description || "Pas de description"}</div>
                     <div className={"text-xs"}>{showUsers(g.soldes.map(s => s.UserUsername)) || "Personne dans ce groupe"}</div>
