@@ -13,8 +13,8 @@ export default function TransactionCategorie({ transactionCategorie, ...props }:
     setMenu(!menu);
   }
   return (
-    <div className={"grid grid-cols-4 bg-secondary p-3"}>
-      <div className={"col-span-3 font-semibold flex items-center"}>
+    <div className={"grid grid-cols-2 bg-secondary p-3"}>
+      <div className={"col-span-1 font-semibold flex items-center"}>
         <div className="mr-2">
           {
             transactionCategorie.isGroup ?
@@ -27,14 +27,13 @@ export default function TransactionCategorie({ transactionCategorie, ...props }:
         </div>
         <span>
           {
-            transactionCategorie.isGroup?
-            transactionCategorie.name || "Aucun label"
+            transactionCategorie.isGroup || transactionCategorie.name === undefined ?
+              transactionCategorie.name || "Aucun label"
             :
-            transactionCategorie.groupeId?
-            <LabelGroupeModal show={show} title="Modifer label" button={transactionCategorie.name || "Aucun label"} groupId={transactionCategorie.groupeId!} label={{id: transactionCategorie.labelId!, color: transactionCategorie.labelColor!, name: transactionCategorie.name!}}/>
-            :
-            <LabelSoloModal show={show} title="Modifer label" button={transactionCategorie.name || "Aucun label"} label={{id: transactionCategorie.labelId!, color: transactionCategorie.labelColor!, name: transactionCategorie.name!}}/>
-            
+              transactionCategorie.groupeId ?
+                <LabelGroupeModal show={show} title="Modifer label" button={transactionCategorie.name} groupId={transactionCategorie.groupeId!} label={{id: transactionCategorie.labelId!, color: transactionCategorie.labelColor!, name: transactionCategorie.name!}}/>
+                :
+                <LabelSoloModal show={show} title="Modifer label" button={transactionCategorie.name} label={{id: transactionCategorie.labelId!, color: transactionCategorie.labelColor!, name: transactionCategorie.name!}}/>
           }
           
         </span>

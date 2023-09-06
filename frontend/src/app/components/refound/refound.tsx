@@ -13,8 +13,8 @@ export default function Refound({refound, groupId}: { refound: {s: string, d: st
   }
 
   return (
-      <div className={"grid grid-cols-4 bg-secondary p-3"}>
-        <div className={"col-span-2 font-semibold"}>
+      <div className={"grid grid-cols-2 bg-secondary p-3"}>
+        <div className={"col-span-1 font-semibold"}>
           <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg"
                className={"inline mr-3"}>
             <path
@@ -25,7 +25,7 @@ export default function Refound({refound, groupId}: { refound: {s: string, d: st
             {refound.s} à {refound.d}
             </span>
         </div>
-        <div className={`col-span-2 text-right my-auto`}>
+        <div className={`col-span-1 text-right my-auto`}>
           <button onClick={refund} className={"text-primary px-2"}>Rembourser</button>
           <span className={"text-green"}>
               {formatCurrency(Number(refound.m))}
