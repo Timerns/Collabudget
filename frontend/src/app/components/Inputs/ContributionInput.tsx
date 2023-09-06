@@ -38,11 +38,12 @@ const ContributionInput: FC<ContributionInputProps> = ((props) => {
   }, []);
 
   useEffect(() => {
+    let contribs: any[] = props.control._formValues[props.transactionName];
+    var nbUsers = contribs.reduce<number>((acc, curr: any) => acc += curr[props.isContributingName] ? 1 : 0, 0);
     props.users.forEach((user, index) => {
-      var transaction = props.control._formValues[props.transactionName][index];
-
-      transaction[props.valueName] = transaction[props.isContributingName] ? props.totalValue / props.users.reduce((acc, curr) => acc += curr.isContrib ? 1 : 0, 0) : 0;
-      update(index, transaction);
+      var contrib = contribs[index];
+      contrib[props.valueName] = contrib[props.isContributingName] ? props.totalValue / nbUsers : 0;
+      update(index, contrib);
     });
   }, [props.totalValue]);
 
