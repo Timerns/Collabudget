@@ -31,6 +31,12 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
     if (!isNumber(res, [req.body.value, (req.body.labelId ?? null)], 'La valeur ou l\'id')) return
     if (!isDate(res, req.body.date)) return
 
+    //Verification
+    if (!req.body.title) {
+      res.json({error: 'Le titre ne peut pas être vide.'})
+      return
+    }
+
     Transaction.create({
       title: req.body.title,
       value: req.body.value,
@@ -39,7 +45,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
       LabelId: (req.body.labelId ?? null)
     })
       .then(_ => {
-        res.json({status: "La transaction a été créée !"})
+        res.json({status: 'La transaction a été créée !'})
       })
       .catch(err => res.json({ error: err }))
   })
@@ -48,6 +54,12 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
     if (!parametersDefined(res, [req.body.title, req.body.value, req.body.date, req.body.transactionId])) return
     if (!isNumber(res, [req.body.value, req.body.transactionId, (req.body.labelId ?? null)], 'La valeur ou l\'id')) return
     if (!isDate(res, req.body.date)) return
+
+    //Verification
+    if (!req.body.title) {
+      res.json({error: 'Le titre ne peut pas être vide.'})
+      return
+    }
 
     Transaction.update({ title: req.body.title, value: req.body.value, date: req.body.date, LabelId: (req.body.labelId ?? null) }, {
       where : { id: req.body.transactionId, UserUsername: req.session.username }
@@ -98,6 +110,16 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     if (!await participantInGroup(req, res)) return
+
+    //Verification
+    if (!req.body.title) {
+      res.json({error: 'Le titre ne peut pas être vide.'})
+      return
+    }
+    if (Number(req.body.value) <= 0) {
+      res.json({error: 'Une dépense ne peut pas être négative ou nulle.'})
+      return
+    }
 
     const t = await sequelize.transaction()
 
@@ -158,6 +180,16 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
     if (!await participantInGroup(req, res)) return
+
+    //Verification
+    if (!req.body.title) {
+      res.json({error: 'Le titre ne peut pas être vide.'})
+      return
+    }
+    if (Number(req.body.value) <= 0) {
+      res.json({error: 'Une dépense ne peut pas être négative ou nulle.'})
+      return
+    }
 
     const t = await sequelize.transaction()
 

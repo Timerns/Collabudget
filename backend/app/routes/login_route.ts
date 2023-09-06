@@ -10,6 +10,16 @@ export function loginRoute(app: Express, sequelize: Sequelize) {
   app.post("/api/register", (req, res) => {
     if (!parametersDefined(res, [req.body.username, req.body.password])) return
 
+    //Verification
+    if (!req.body.username) {
+      res.json({error: 'Votre nom d\'utilisateur ne peut pas être vide'})
+      return
+    }
+    if (!req.body.password) {
+      res.json({error: 'Votre mot de passe ne peut pas être vide'})
+      return
+    }
+
     User.findOne({ where: { username: req.body.username } })
       .then(user => {
         if (!user) {
