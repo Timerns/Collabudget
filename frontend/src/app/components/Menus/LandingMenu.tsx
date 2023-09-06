@@ -37,9 +37,6 @@ const LandingMenu: FC<pageProps> = (props) => {
               <Link href="/solution" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/solution" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Solution</Link>
             </li>
             <li>
-              <Link href="/a-propos" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/a-propos" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">A propos</Link>
-            </li>
-            <li>
               <Link href="/contact" className={"block py-2 pl-3 pr-4 rounded hover:text-primary" + (pathname == "/contact" ? " text-primary underline decoration-primary underline-offset-4": " text-white")} aria-current="page">Contact</Link>
             </li>
             <li className="lg:ml-20">
