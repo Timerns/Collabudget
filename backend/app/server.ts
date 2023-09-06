@@ -18,7 +18,7 @@ const app = express();
 const port = 8000;
 
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-app.use(session({ secret: process.env.EXPRESS_SECRET ?? '', proxy: true, resave: false, saveUninitialized: false, cookie: { maxAge: 86400000, sameSite: process.env.BACKEND?.includes("localhost") ? false : "none" } }));
+app.use(session({ secret: process.env.EXPRESS_SECRET ?? '', proxy: true, resave: false, saveUninitialized: false, cookie: { maxAge: 86400000 } }));
 app.use(authChecker);
 
 const types: ((conn: Sequelize) => void)[] = [
