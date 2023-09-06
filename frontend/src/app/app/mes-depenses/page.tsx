@@ -1,4 +1,5 @@
 "use client"
+import LabelsAllModal from "@/app/components/Modals/LabelsAll";
 import AddButton from "@/app/components/addButton";
 import LimitList from "@/app/components/limits/limitList";
 import MainTitle from "@/app/components/mainTitle";
@@ -7,12 +8,12 @@ import TransactionList from "@/app/components/transaction/transactionList";
 import TransactionCategorieList from "@/app/components/transactionCategorie/transactionCategorieList";
 import GroupeType from "@/app/types/groupeType";
 import LabelType from "@/app/types/labelType";
-import LimitType from "@/app/types/limitType";
+import { LimitType } from "@/app/types/limitType";
 import SoldeType from "@/app/types/soldeType";
 import TransactionCategorieType from "@/app/types/transactionCategorieType";
 import TransactionType from "@/app/types/transactionType";
 import { request } from "@/app/utils/database";
-import { useEffect, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function Page() {
@@ -35,6 +36,7 @@ export default function Page() {
     monthly: {value: 0, max: 0}
   });
   const [date, setDate] = useState(new Date());
+  const [menu, setMenu] = useState(false);
 
   useEffect(() => {
     setIsLoaded(false);
@@ -70,40 +72,42 @@ export default function Page() {
         var found = acc.find(a => a.name === (a.isGroup && curr.GroupId !== null ? group?.name : label?.name) && a.isGroup === (curr.GroupId !== null));
         if (found !== undefined) {
           found.value += curr.value;
-        } else {
-          var obj: TransactionCategorieType = {name: curr.GroupId !== null ? group?.name : label?.name, isGroup: curr.GroupId !== null, value: curr.value};
-          if (label !== undefined) {
-            obj.labelId = label.id;
-            obj.labelColor = label.color;
-          }
-          acc.push(obj);
         }
 
         return acc;
-      }, [])
-
-      type LimitRes = {
-        month: number,
-        year: number,
-        limit: string,
-        UserLabel?: {
-          LabelId: number
+      }, 
+      labels.reduce<TransactionCategorieType[]>((acc, curr) => {
+        acc.push({name: curr.name, isGroup: false, value: 0, labelId: curr.id, labelColor: curr.color});
+        return acc;
+      }, 
+      groups.reduce<TransactionCategorieType[]>((acc, curr) => {
+        acc.push({name: curr.name, isGroup: true, value: 0})
+        return acc;
+      }, [{name: undefined, isGroup: false, value: 0}]))).sort((a, b) => {
+        if (!a.isGroup && b.isGroup) {
+          return -1;
         }
-      };
+        if (b.name === undefined) {
+          return -1;
+        }
+        return 1
+      })
+
       let limites = await request<[LimitRes[], LimitRes[]]>("/api/limits/month", "POST", { month: date.getMonth() + 1, year: date.getFullYear() });
 
-      let monthly = limites[0].length === 0 ? undefined : limites[0][0];
+      let monthly = limites[0].length === 0 || Number(limites[0][0].limit) === -1 ? undefined : limites[0][0];
 
       let realLimits: LimitType[] = []
+
       limites[1].forEach(l => {
         let categ = categories.find(c => !c.isGroup && c.labelId === l.UserLabel?.LabelId);
         let limitValue = Number(l.limit);
 
+        let label = labels.find(lbl => lbl.id === l.UserLabel?.LabelId);
+
         if (limitValue === -1) {
           return;
         }
-
-        let label = labels.find(lbl => lbl.id === l.UserLabel?.LabelId);
 
         realLimits.push({
           currentValue: categ?.value ?? 0,
@@ -118,14 +122,14 @@ export default function Page() {
         max: 0
       }
 
-      let totalLimit = realLimits.reduce<number>((acc, curr) => acc += curr.maxValue, 0);
+      let totalLimit = realLimits.reduce<number>((acc, curr) => acc += curr.maxValue !== -1 ? curr.maxValue : 0, 0);
       realLimits.push({
-        currentValue: categories.find(c => !c.isGroup && c.name === undefined)?.value ?? 0,
+        currentValue: categories.filter(c => c.isGroup || c.name === undefined).reduce((acc, curr) => acc += curr.value, 0) ?? 0,
         maxValue: monthly ? Number(monthly.limit) - totalLimit : -1,
         name: undefined
       });
 
-      monthlyVal.value = -realLimits.reduce<number>((acc, curr) => acc += curr.currentValue, 0);
+      monthlyVal.value = -categories.reduce<number>((acc, curr) => acc += curr.value, 0);
       monthlyVal.max = monthly ? Number(monthly.limit) : -1;
 
       setData({
@@ -176,9 +180,10 @@ export default function Page() {
                     Limites
                   </div>
                   <div className="grow">
-                    <button className="text-sm text-primary">
-                      Modifier
-                    </button>
+                    <div className="text-sm text-primary hover:cursor-pointer"></div>
+                    <div className="text-sm text-primary">
+                      <LabelsAllModal show={() => setMenu(!menu)} month={date.getMonth() + 1} year={date.getFullYear()} />
+                    </div>
                   </div>
                   <span className="text-sm text-primary">
                     Mensuel : {data.monthly.value} / {data.monthly.max === -1 ? "∞" : data.monthly.max} CHF

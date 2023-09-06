@@ -3,7 +3,8 @@ import ListContainer from "@/app/components/listContainer";
 import TransactionType from "@/app/types/transactionType";
 import LabelType from "@/app/types/labelType";
 
-export default function TransactionList({transactions, doubleRow = false, getInfo, getLabel}: {
+export default function TransactionList({transactions, forGroup = false, doubleRow = false, getInfo, getLabel}: {
+  forGroup?: boolean
   transactions: TransactionType[],
   doubleRow?: boolean,
   getInfo: (t: TransactionType) => string,
@@ -18,7 +19,7 @@ export default function TransactionList({transactions, doubleRow = false, getInf
         transactions.map((t, i) => {
           return (
             <div key={i} className={`${i < transactions.length - 1 ? "mb-3" : ""}`}>
-              <Transaction label={getLabel(t)} info={getInfo(t)} transaction={t}/>
+              <Transaction forGroup={forGroup} label={getLabel(t)} info={getInfo(t)} transaction={t}/>
             </div>
           )
         })}
