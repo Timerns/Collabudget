@@ -20,8 +20,6 @@ export default function LabelGroupeModal(props: {show() :void, groupId: number, 
   
   useEffect(() => {
     if(props.label != undefined) {
-      console.log(props.label.name)
-      console.log(props.label.color)
     FormLabelActions.setValue("title", props.label.name);
     FormLabelActions.setValue("color", props.label.color);
     }
@@ -42,7 +40,7 @@ export default function LabelGroupeModal(props: {show() :void, groupId: number, 
       .catch(e => toast.error(e));
       return
     } 
-
+   
     request<any>("/api/labels/g/update", "POST", { groupId: props.groupId, name: data.title, color: data.color, id: props.label.id })
       .then(val => {
         toast.info(val)

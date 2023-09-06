@@ -156,11 +156,12 @@ export default function Page({params}: { params: { groupId: number } }) {
                 <Title title={"Label du groupe"}/>
                 <TransactionCategorieList
                   transactionsCategories={data.labels[0].map((x) => ({
-                    ...x,
                     isGroup: false,
                     value: 0,
                     labelColor: x.color,
-                    groupeId: params.groupId
+                    groupeId: params.groupId,
+                    labelId: x.id,
+                    name: x.name
                   }))}
                    />
             </div>

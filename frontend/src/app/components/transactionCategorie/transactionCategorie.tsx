@@ -4,9 +4,12 @@ import TransactionType from "@/app/types/transactionType";
 import { formatCurrency } from "@/app/utils/numberFormatter";
 import LabelGroupeModal from "../Modals/LabelGroupe";
 import { useState } from "react";
+import LabelSoloModal from "../Modals/LabelSolo";
 
 export default function TransactionCategorie({ transactionCategorie, ...props }: { transactionCategorie: TransactionCategorieType, props?: any }) {
-
+  console.log("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀")
+  console.log(transactionCategorie)
+  console.log("😁😁😁😁😁😁😁😁😁😁😁😁😁😁")
   const [menu, setMenu] = useState(false);
 
   function show() {
@@ -30,7 +33,11 @@ export default function TransactionCategorie({ transactionCategorie, ...props }:
             transactionCategorie.isGroup?
             transactionCategorie.name || "Aucun label"
             :
+            transactionCategorie.groupeId?
             <LabelGroupeModal show={show} title="Modifer label" button={transactionCategorie.name || "Aucun label"} groupId={transactionCategorie.groupeId!} label={{id: transactionCategorie.labelId!, color: transactionCategorie.labelColor!, name: transactionCategorie.name!}}/>
+            :
+            <LabelSoloModal show={show} title="Modifer label" button={transactionCategorie.name || "Aucun label"} label={{id: transactionCategorie.labelId!, color: transactionCategorie.labelColor!, name: transactionCategorie.name!}}/>
+            
           }
           
         </span>
