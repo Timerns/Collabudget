@@ -4,7 +4,8 @@ import TransactionType from "@/app/types/transactionType";
 import LabelType from "@/app/types/labelType";
 import GroupeType from "@/app/types/groupeType";
 
-export default function TransactionList({transactions, doubleRow = false, getInfo, getLabel, group}: {
+export default function TransactionList({transactions, forGroup= false, doubleRow = false, getInfo, getLabel, group}: {
+  forGroup?: boolean
   transactions: TransactionType[],
   doubleRow?: boolean,
   getInfo: (t: TransactionType) => string,
@@ -19,7 +20,7 @@ export default function TransactionList({transactions, doubleRow = false, getInf
         transactions.map((t, i) => {
           return (
             <div key={i} className={`${i < transactions.length - 1 ? "mb-3" : ""}`}>
-              <Transaction label={getLabel(t)} info={getInfo(t)} transaction={t} group={group}/>
+              <Transaction forGroup={forGroup} label={getLabel(t)} info={getInfo(t)} transaction={t} group={group}/>
             </div>
           )
         })}

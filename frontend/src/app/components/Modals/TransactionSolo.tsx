@@ -20,7 +20,7 @@ import { toISOLocal } from "@/app/utils/dateFormatter";
 
 
 
-export default function TransactionSoloModal(props: {show() :void}) {
+export default function TransactionSoloModal(props: {show() :void, title: string, button: string}) {
   const [transactionValue, setTransactionValue] = useState<number>(0);
   const [labels, setLabels] = useState<LabelType[]>([]);
   const [currentUser, setCurrentUser] = useState<string>();
@@ -77,7 +77,7 @@ export default function TransactionSoloModal(props: {show() :void}) {
     </div>
   )
     return (
-      <Modal title='Ajouter une transaction' text_bt='Ajouter une transaction' ref={modalTransactionRef}>
+      <Modal title={props.title} text_bt={props.button}  ref={modalTransactionRef}>
         <form onBlur={e => {
           setTransactionValue(FormTransactionActions.getValues("total.value"))
           setTransactionCurrency(FormTransactionActions.getValues("total.currency"))

@@ -6,7 +6,8 @@ import { useEffect, useState, useRef } from "react";
 import UpdateTransactionGroupeModal from "../Modals/UpdateTransactionGroupe";
 import UpdateTransactionSoloModal from "../Modals/UpdateTransactionSolo";
 
-export default function Transaction({ transaction, label, info, group, ...props }: {
+export default function Transaction({ transaction, label, info, forGroup = false, group, ...props }: {
+  forGroup: boolean,
   transaction: TransactionType,
   label: LabelType | undefined,
   props?: any,
@@ -39,8 +40,8 @@ export default function Transaction({ transaction, label, info, group, ...props 
         <div className={"col-span-3 font-semibold"}>
           {transaction.title}
         </div>
-        <div className={`col-span-1 text-right ${transaction.value < 0 ? "text-red" : "text-green"}`}>
-          {formatCurrency(transaction.value)}
+        <div className={`col-span-1 text-right ${forGroup === true ? "" : (transaction.value < 0 ? "text-red" : "text-green")}`}>
+          {formatCurrency(transaction.value, undefined, !forGroup)}
         </div>
         <div className={"col-span-3 text-sm flex"}>
           <span>
@@ -48,7 +49,7 @@ export default function Transaction({ transaction, label, info, group, ...props 
           </span>
           {
             label && 
-            <div className={info ? "ml-1" : ""}>
+            <div className={info ? "ml-2" : ""}>
               <div className={"rounded px-2 inline-block"} style={{ background: label.color }}>{label.name}</div>
             </div>
           }

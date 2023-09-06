@@ -4,4 +4,5 @@ export default class TransactionCategorieType {
   value!: number;
   labelColor?: string;
   labelId?: number;
+  groupeId?: number
 }

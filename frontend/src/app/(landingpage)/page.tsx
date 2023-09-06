@@ -1,6 +1,8 @@
 
 import Footer from "@/app/components/footer";
 import LandingMenu from "../components/Menus/LandingMenu";
+import Team from "@/app/(landingpage)/team";
+import Link from "next/link";
 
 export default function Page() {
     return (
@@ -41,35 +43,10 @@ export default function Page() {
                 <div className={"col-span-1 my-16 text-center"}>
                     <div className={"text-xl underline-primary inline-block mb-8 font-semibold"}>L'équipe</div>
                     <div className={"md:w-1/2 mx-auto mb-16"}>
-                        Nous sommes tous quatre étudiants à la HEIG-vD en dernière année de bachelor en Informatique. Ce
+                        Nous sommes tous quatre étudiants à la <Link href={"https://heig-vd.ch/"} target={"_blank"} rel={"nofollow noreferrer noopener"}>HEIG-VD</Link> en dernière année de bachelor en Informatique. Ce
                         projet a été réalisé durant l’été 2023 dans le cadre du cours Projet De Groupe (PDG)
                     </div>
-                    <div className={"grid md:grid-cols-4"}>
-                        <div className={"col-span-1 mb-6"}>
-                            <img src={"/web/user1.png"} className={"w-1/2 mx-auto mb-3"}/>
-                            <h3 className={"text-lg"}>Tim Ernst</h3>
-                            <h3 className={"text-lg"}>Président Directeur Général</h3>
-                            <h4 className={"text-sm"}>tim.ersnt@heig-vd.ch</h4>
-                        </div>
-                        <div className={"col-span-1 mb-6"}>
-                            <img src={"/web/user1.png"} className={"w-1/2 mx-auto mb-3"}/>
-                            <h3 className={"text-lg"}>Tim Ernst</h3>
-                            <h3 className={"text-lg"}>Président Directeur Général</h3>
-                            <h4 className={"text-sm"}>tim.ersnt@heig-vd.ch</h4>
-                        </div>
-                        <div className={"col-span-1 mb-6"}>
-                            <img src={"/web/user1.png"} className={"w-1/2 mx-auto mb-3"}/>
-                            <h3 className={"text-lg"}>Tim Ernst</h3>
-                            <h3 className={"text-lg"}>Président Directeur Général</h3>
-                            <h4 className={"text-sm"}>tim.ersnt@heig-vd.ch</h4>
-                        </div>
-                        <div className={"col-span-1 mb-6"}>
-                            <img src={"/web/user1.png"} className={"w-1/2 mx-auto mb-3"}/>
-                            <h3 className={"text-lg"}>Tim Ernst</h3>
-                            <h3 className={"text-lg"}>Président Directeur Général</h3>
-                            <h4 className={"text-sm"}>tim.ersnt@heig-vd.ch</h4>
-                        </div>
-                    </div>
+                   <Team />
                 </div>
             </div>
             <Footer display="bottom"/>

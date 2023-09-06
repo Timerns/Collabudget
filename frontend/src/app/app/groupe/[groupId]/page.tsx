@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import SoldeType from "@/app/types/soldeType";
 import LabelTooltip from "@/app/components/labelTooltip";
 import UpdateGroupModal from "@/app/components/Modals/UpdateGroupe";
+import TransactionCategorieList from "@/app/components/transactionCategorie/transactionCategorieList";
 
 export default function Page({params}: { params: { groupId: number } }) {
   type Data = {
@@ -127,7 +128,6 @@ export default function Page({params}: { params: { groupId: number } }) {
                 doubleRow={true} 
                 getInfo={(t) => (t.RefundedUsername === null ? t.UserUsername ?? "" : `De ${t.UserUsername} à ${t.RefundedUsername}`)}
                 getLabel={(t) => data.labels.find(x => x.id === Number(t.LabelId))}
-                group={data.group}
                 />
             }
           </div>
@@ -135,7 +135,7 @@ export default function Page({params}: { params: { groupId: number } }) {
             <Title title={"Soldes"}/>
             <UserGroupList soldes={data.soldes}/>
           </div>
-          <div className={"col-span-1 row-span-2"}>
+          <div className={"col-span-1"}>
             <Title title={"Catégories"}/>
             {
               Object.keys(data.labels[1]).length === 0 ? <p>Aucune données</p> :
@@ -157,6 +157,23 @@ export default function Page({params}: { params: { groupId: number } }) {
             <Title title={"Remboursement"}/>
             <RefoundList refounds={data.soldes} groupId={params.groupId}/>
           </div>
+          
+          <div className={"col-span-1"}>
+                <Title title={"Label du groupe"}/>
+                <TransactionCategorieList
+                  transactionsCategories={data.labels[0].map((x) => ({
+                    isGroup: false,
+                    value: 0,
+                    labelColor: x.color,
+                    groupeId: params.groupId,
+                    labelId: x.id,
+                    name: x.name
+                  }))}
+                   />
+            </div>
+          
+
+          
         </div>
         <AddButton groups={true}></AddButton>
       </>
