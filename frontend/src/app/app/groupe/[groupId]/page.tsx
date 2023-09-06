@@ -124,10 +124,11 @@ export default function Page({params}: { params: { groupId: number } }) {
             <Title title={"Transactions"}/>
             {
               <TransactionList 
+                forGroup={true}
                 transactions={data.transactions} 
                 doubleRow={true} 
                 getInfo={(t) => (t.RefundedUsername === null ? t.UserUsername ?? "" : `De ${t.UserUsername} à ${t.RefundedUsername}`)}
-                getLabel={(t) => data.labels.find(x => x.id === Number(t.LabelId))}
+                getLabel={(t) => data.labels[0].find(x => x.id === Number(t.LabelId))}
                 group={data.group}
                 />
             }
