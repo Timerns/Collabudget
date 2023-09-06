@@ -16,6 +16,7 @@ import { getStatus } from "@/app/utils/account";
 import GroupeType from "@/app/types/groupeType";
 import TransactionType from "@/app/types/transactionType";
 import ContributionType from "@/app/types/contributionType";
+import { toISOLocal } from "@/app/utils/dateFormatter";
 
 export type UpdateTransactionForm = {
   title: string,
@@ -59,8 +60,7 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
       setLabels(labelss)
 
       //Set previous date
-      FormTransactionActions.setValue("date", (new Date(props.transaction.date).toISOString()).slice(0, 16))
-
+      FormTransactionActions.setValue("date", toISOLocal(props.transaction.date).slice(0, 16))
       setMembers(await request<SoldeType[]>("/api/groups/solde", "POST", { groupId: props.group.id }))
 
       /*let contributors = await request<[ContributionType]>("/api/transactions/g/contributor", "POST", { groupId: props.group.id, transactionId: props.transaction.id })
@@ -74,7 +74,7 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
           console.log("sdf")
           FormTransactionActions.setValue(`contributors.${id}.isContributing`, false)
         }
-        console.log(id) 
+        console.log(id)
         id++
       }*/
       //??????????????????????????FormTransactionActions.setValue("contributors.0", {isContributing: false, username: "pipo", value: 10 })
@@ -100,8 +100,8 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
   }
   
   const onSubmitTransaction = (data: UpdateTransactionForm) => {
-    var requestData: any = { groupId: Number(props.group.id), title: data.title, value: data.total.value, date: data.date, payer: data.payer, contributors: data.contributors, transactionId: props.transaction.id}
-    if(data.label?.id !== undefined && data.label.id !== -1) {
+    var requestData: any = { groupId: Number(props.group.id), title: data.title, value: data.total.value, date: data.date, payer: data.payer, contributors: data.contributors, transactionId: props.transaction.id }
+    if (data.label?.id !== undefined && data.label.id !== -1) {
       requestData.labelId = data.label.id
     } 
     request<any>("/api/transactions/g/update", "POST", requestData)
@@ -123,32 +123,42 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
     </div>
   )
     return (
-      <Modal title='Modifier la transaction' text_bt='' ref={modalTransactionRef}>
-        <form onBlur={e => {
-          setTransactionValue(FormTransactionActions.getValues("total.value"))
-          setTransactionCurrency(FormTransactionActions.getValues("total.currency"))
-        }} onSubmit={FormTransactionActions.handleSubmit(onSubmitTransaction)}>
-        <div className="mb-2 text-secondary">
-          <TextInput title="Titre" placeholder="Titre" {...FormTransactionActions.register("title")} />
-        </div>
-        <div className="mb-2 text-secondary">
-          <MoneyInput title="Montant" placeholder="-" baseFormName="total" valueName="value" currencyName="currency" setValueForm={FormTransactionActions.setValue} register={FormTransactionActions.register} currencies={["CHF"]} />
-        </div>
-        <div className="mb-2 text-secondary">
-          <DropdownInput title="Label" setValueForm={FormTransactionActions.setValue} choices={labels} show={show} {...FormTransactionActions.register("label", { value: labels[0]})} />
-        </div>
-        <div className="mb-2 text-secondary">
-          <DateInput title="Date" {...FormTransactionActions.register("date", { })} />
-        </div>
-        <div className="mb-2 text-secondary">
-          <ContributionInput title="Participants" register={FormTransactionActions.register} control={FormTransactionActions.control} transactionName="contributors" usernameName="username" valueName="value" isContributingName="isContributing" currency={transactionCurrency} totalValue={transactionValue} users={members.map(x => x.UserUsername)} />
-        </div>
-        <div className="mb-2 text-secondary">
-          <DropdownInput title="Payé par" setValueForm={FormTransactionActions.setValue} choices={sortList()} show={(c) => (<span>{c}</span>)} {...FormTransactionActions.register("payer")}/>
-        </div>
+      <div>
+        {
+          props.transaction.RefundedUsername === null ? 
+            <Modal title='Modifier la transaction' text_bt='' ref={modalTransactionRef}>
+              <form onBlur={e => {
+                setTransactionValue(FormTransactionActions.getValues("total.value"))
+                setTransactionCurrency(FormTransactionActions.getValues("total.currency"))
+              }} onSubmit={FormTransactionActions.handleSubmit(onSubmitTransaction)}>
+              <div className="mb-2 text-secondary">
+                <TextInput title="Titre" placeholder="Titre" {...FormTransactionActions.register("title")} />
+              </div>
+              <div className="mb-2 text-secondary">
+                <MoneyInput title="Montant" placeholder="-" baseFormName="total" valueName="value" currencyName="currency" setValueForm={FormTransactionActions.setValue} register={FormTransactionActions.register} currencies={["CHF"]} />
+              </div>
+              <div className="mb-2 text-secondary">
+                <DropdownInput title="Label" setValueForm={FormTransactionActions.setValue} choices={labels} show={show} {...FormTransactionActions.register("label", { value: labels[0]})} />
+              </div>
+              <div className="mb-2 text-secondary">
+                <DateInput title="Date" {...FormTransactionActions.register("date", { })} />
+              </div>
+              <div className="mb-2 text-secondary">
+                <ContributionInput title="Participants" register={FormTransactionActions.register} control={FormTransactionActions.control} transactionName="contributors" usernameName="username" valueName="value" isContributingName="isContributing" currency={transactionCurrency} totalValue={transactionValue} users={members.map(x => x.UserUsername)} />
+              </div>
+              <div className="mb-2 text-secondary">
+                <DropdownInput title="Payé par" setValueForm={FormTransactionActions.setValue} choices={sortList()} show={(c) => (<span>{c}</span>)} {...FormTransactionActions.register("payer")}/>
+              </div>
 
-        <InputButton text='Sauvegarder'></InputButton>
-      </form>
-    </Modal>
+              <InputButton text='Sauvegarder'></InputButton>
+            </form>
+            <InputButton text='Supprimer'></InputButton>
+          </Modal> :
+          <Modal title='Annuler le remboursement' text_bt='' ref={modalTransactionRef}>
+            <InputButton text='Supprimer'></InputButton>
+          </Modal>
+        }
+      </div>
+      
     )
 };
