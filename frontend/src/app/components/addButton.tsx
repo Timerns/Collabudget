@@ -22,16 +22,16 @@ export default function AddButton(props: { groups: boolean }) {
         {
           props.groups &&
           <>
-            <LabelGroupeModal show={show} groupId={Number(pathname.split("/").pop())} />
-            <TransactionGroupeMondal show={show} groupId={Number(pathname.split("/").pop())} />
+            <LabelGroupeModal title='Nouveau label' button='Nouveau label' show={show} groupId={Number(pathname.split("/").pop())} />
+            <TransactionGroupeMondal title='Ajouter une transaction' button='Ajouter une transaction' show={show} groupId={Number(pathname.split("/").pop())} />
           </>
         }
 
         {
           !props.groups &&
           <>
-            <LabelSoloModal show={show}/>
-            <TransactionSoloModal show={show}/>
+            <LabelSoloModal title='Nouveau label' button='Nouveau label' show={show}/>
+            <TransactionSoloModal title='Ajouter une transaction' button='Ajouter une transaction' show={show}/>
           </>
 
         }

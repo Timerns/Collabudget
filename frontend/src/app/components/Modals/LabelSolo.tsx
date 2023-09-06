@@ -11,7 +11,7 @@ import ColorInput from "../Inputs/ColorInput";
 import { AddLabelForm } from "./LabelGroupe";
 
 
-export default function LabelSoloModal(props: {show() :void}) {
+export default function LabelSoloModal(props: {show() :void, title: string, button: string}) {
   const modalLabelRef = useRef<ModalHandle>(null);
   const FormLabelActions = useForm<AddLabelForm>();
   
@@ -28,7 +28,7 @@ export default function LabelSoloModal(props: {show() :void}) {
       .catch(e => toast.error(e));
   };
     return (
-      <Modal title='Nouveau label' text_bt='Nouveau label' ref={modalLabelRef}>
+      <Modal title={props.title} text_bt={props.button} ref={modalLabelRef}>
       <form onSubmit={FormLabelActions.handleSubmit(onSubmitLabel)}>
         <div className="mb-2 text-secondary">
           <TextInput title="Titre" placeholder="Titre" {...FormLabelActions.register("title")} />

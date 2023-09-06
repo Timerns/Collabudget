@@ -2,8 +2,16 @@ import LabelType from "@/app/types/labelType";
 import TransactionCategorieType from "@/app/types/transactionCategorieType";
 import TransactionType from "@/app/types/transactionType";
 import { formatCurrency } from "@/app/utils/numberFormatter";
+import LabelGroupeModal from "../Modals/LabelGroupe";
+import { useState } from "react";
 
 export default function TransactionCategorie({ transactionCategorie, ...props }: { transactionCategorie: TransactionCategorieType, props?: any }) {
+
+  const [menu, setMenu] = useState(false);
+
+  function show() {
+    setMenu(!menu);
+  }
   return (
     <div className={"grid grid-cols-4 bg-secondary p-3"}>
       <div className={"col-span-3 font-semibold flex items-center"}>
@@ -18,7 +26,13 @@ export default function TransactionCategorie({ transactionCategorie, ...props }:
           }
         </div>
         <span>
-          {transactionCategorie.name || "Aucun label"}
+          {
+            transactionCategorie.isGroup?
+            transactionCategorie.name || "Aucun label"
+            :
+            <LabelGroupeModal show={show} title="Modifer label" button={transactionCategorie.name || "Aucun label"} groupId={transactionCategorie.groupeId!} label={{id: transactionCategorie.labelId!, color: transactionCategorie.labelColor!, name: transactionCategorie.name!}}/>
+          }
+          
         </span>
       </div>
       <div className={`col-span-1 text-right`}>

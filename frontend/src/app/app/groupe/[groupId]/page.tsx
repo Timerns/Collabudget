@@ -159,7 +159,8 @@ export default function Page({params}: { params: { groupId: number } }) {
                     ...x,
                     isGroup: false,
                     value: 0,
-                    labelColor: x.color
+                    labelColor: x.color,
+                    groupeId: params.groupId
                   }))}
                    />
             </div>

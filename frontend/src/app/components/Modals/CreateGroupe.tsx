@@ -19,7 +19,7 @@ export type GroupeForm = {
   currency: string
 };
 
-export default function CreateGroupModal(props: {show() :void}) {
+export default function CreateGroupModal(props: {show() :void, title: string, button: string}) {
   const modalLabelRef = useRef<ModalHandle>(null);
   const FormGroupeActions = useForm<GroupeForm>();
   
@@ -36,7 +36,7 @@ export default function CreateGroupModal(props: {show() :void}) {
       .catch(e => toast.error(e));
   };
     return (
-      <Modal title='Ajouter groupe' text_bt='Ajouter' ref={modalLabelRef}>
+      <Modal title={props.title} text_bt={props.button} ref={modalLabelRef}>
       <form onSubmit={FormGroupeActions.handleSubmit(onSubmitLabel)}>
         <div className="mb-2 text-secondary">
           <TextInput title="Nom du groupe" placeholder="Titre" {...FormGroupeActions.register("title")} />
