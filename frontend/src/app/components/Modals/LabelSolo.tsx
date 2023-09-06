@@ -1,8 +1,9 @@
+"use client"
 import Modal, { ModalHandle } from "../Modal";
 import TextInput from "../Inputs/TextInput";
 import MoneyInput from "../Inputs/MoneyInput";
 import InputButton from "../Inputs/InputButton";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import LabelType from "@/app/types/labelType";
 import { request } from "@/app/utils/database";
 import { toast } from "react-toastify";
@@ -15,12 +16,14 @@ export default function LabelSoloModal(props: {show() :void, title: string, butt
   const modalLabelRef = useRef<ModalHandle>(null);
   const FormLabelActions = useForm<AddLabelForm>();
   
+  const [color, setColor] = useState("#000000");
+
   useEffect(() => {
     if(props.label != undefined) {
-    FormLabelActions.setValue("title", props.label.name);
-    FormLabelActions.setValue("color", props.label.color);
+      FormLabelActions.setValue("title", props.label.name);
+      FormLabelActions.setValue("color", props.label.color);
+      setColor(props.label.color);
     }
-    
   }, [])
   
   const onSubmitLabel = (data: AddLabelForm) => {
@@ -64,7 +67,7 @@ export default function LabelSoloModal(props: {show() :void, title: string, butt
           <TextInput title="Titre" placeholder="Titre" {...FormLabelActions.register("title")} />
         </div>
         <div className="mb-2 text-secondary">
-          <ColorInput title="Couleur" {...FormLabelActions.register("color")} />
+          <ColorInput color={color} title="Couleur" {...FormLabelActions.register("color")} />
         </div>
         
         <InputButton text='Sauvegarder'></InputButton>

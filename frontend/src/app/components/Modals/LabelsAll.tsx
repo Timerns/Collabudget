@@ -30,8 +30,7 @@ export default function LabelsAllModal(props: {show(): void, month: number, year
       FormLimitsArray.remove();
 
       var labels = await request<LabelType[]>("/api/labels", "GET");
-      console.log(labels);
-
+      
       var limits = await request<[LimitRes[], LimitRes[]]>("/api/limits/month", "POST", { month: props.month, year: props.year });
 
       let val = NaN;
