@@ -1,6 +1,6 @@
 import ListContainer from "@/app/components/listContainer";
 import Limit from "./limit";
-import LimitType from "@/app/types/limitType";
+import { LimitType } from "@/app/types/limitType";
 
 export default function LimitList({limits}: {
   limits: LimitType[],
