@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import SoldeType from "@/app/types/soldeType";
 import { getStatus } from "@/app/utils/account";
 import { AddTransactionForm } from "./TransactionGroupe";
+import { toISOLocal } from "@/app/utils/dateFormatter";
 
 
 
@@ -26,14 +27,16 @@ export default function TransactionSoloModal(props: {show() :void}) {
   const [transactionCurrency, setTransactionCurrency] = useState<string>("");
   const pathname: string = usePathname()
   const modalTransactionRef = useRef<ModalHandle>(null);
-  const FormTrasactionActions = useForm<AddTransactionForm>();
+  const FormTransactionActions = useForm<AddTransactionForm>();
   
   useEffect(() => {
+    FormTransactionActions.setValue("date", toISOLocal(new Date()).slice(0, 16))
+
     request<LabelType[]>("/api/labels", "GET")
       .then(val => {
         val.map((i: LabelType) => delete i.GroupLabels)
         val.unshift({name: "Pas de label", color: "#ffffff", id: -1})
-        FormTrasactionActions.setValue("label", val[0])
+        FormTransactionActions.setValue("label", val[0])
         setLabels(val)
       })
       .catch(e => toast.error(e));
@@ -42,7 +45,7 @@ export default function TransactionSoloModal(props: {show() :void}) {
     getStatus()
       .then(val => {
         if (val === null) val = "";
-        FormTrasactionActions.setValue("payer", val)
+        FormTransactionActions.setValue("payer", val)
         setCurrentUser(val);
       })
       .catch(e => toast.error(e));
@@ -51,8 +54,8 @@ export default function TransactionSoloModal(props: {show() :void}) {
   
   const onSubmitTransaction = (data: AddTransactionForm) => {
 
-    var requestData: any = { title: data.title, value: data.total.value, date: data.date.toISOString()}
-    if(data.label.id !== -1) {
+    var requestData: any = { title: data.title, value: data.total.value, date: data.date}
+    if(data.label?.id !== undefined && data.label.id !== -1) {
       requestData.labelId = data.label.id
     } 
     request<any>("/api/transactions/add", "POST", requestData)
@@ -76,20 +79,20 @@ export default function TransactionSoloModal(props: {show() :void}) {
     return (
       <Modal title='Ajouter une transaction' text_bt='Ajouter une transaction' ref={modalTransactionRef}>
         <form onBlur={e => {
-          setTransactionValue(FormTrasactionActions.getValues("total.value"))
-          setTransactionCurrency(FormTrasactionActions.getValues("total.currency"))
-        }} onSubmit={FormTrasactionActions.handleSubmit(onSubmitTransaction)}>
+          setTransactionValue(FormTransactionActions.getValues("total.value"))
+          setTransactionCurrency(FormTransactionActions.getValues("total.currency"))
+        }} onSubmit={FormTransactionActions.handleSubmit(onSubmitTransaction)}>
         <div className="mb-2 text-secondary">
-          <TextInput title="Titre" placeholder="Titre" {...FormTrasactionActions.register("title")} />
+          <TextInput title="Titre" placeholder="Titre" {...FormTransactionActions.register("title")} />
         </div>
         <div className="mb-2 text-secondary">
-          <MoneyInput title="Montant" placeholder="-" baseFormName="total" valueName="value" currencyName="currency" setValueForm={FormTrasactionActions.setValue} register={FormTrasactionActions.register} currencies={["CHF"]} />
+          <MoneyInput title="Montant" placeholder="-" baseFormName="total" valueName="value" currencyName="currency" setValueForm={FormTransactionActions.setValue} register={FormTransactionActions.register} currencies={["CHF"]} />
         </div>
         <div className="mb-2 text-secondary">
-          <DropdownInput title="Label" setValueForm={FormTrasactionActions.setValue} choices={labels} show={show} {...FormTrasactionActions.register("label", { value: labels[0]})} />
+          <DropdownInput title="Label" setValueForm={FormTransactionActions.setValue} choices={labels} show={show} {...FormTransactionActions.register("label", { value: labels[0]})} />
         </div>
         <div className="mb-2 text-secondary">
-          <DateInput title="Date" {...FormTrasactionActions.register("date", { valueAsDate: true })} />
+          <DateInput title="Date" {...FormTransactionActions.register("date", { })} />
         </div>
 
         <InputButton text='Sauvegarder' ></InputButton>
