@@ -8,7 +8,7 @@
     </li>
     <li><a href="#Structure-des-dossiers-principals-du-projet">Structure des dossiers</a></li>
     <li>
-      <a href="#getting-started">Démarer rapidement</a>
+      <a href="#getting-started">Démarrer rapidement</a>
       <ul>
       <li><a href="#Cloner-le-projet">Cloner le projet</a></li>
         <li><a href="#Creation-de-la-base-de-donnée">Creation de la base de donnée</a></li>
@@ -47,7 +47,7 @@ Issues
  ┃ ┗ 📂workflows          # workflows git hub
  ┣ 📂backend              # Node backend code
  ┃ ┣ 📂app                # application backend
- ┃ ┣ 📂tests              # dossier des test
+ ┃ ┣ 📂tests              # dossier des tests
  ┣ 📂deployment
  ┃ ┣ 📂backend
  ┃ ┗ 📂frontend
@@ -55,16 +55,16 @@ Issues
    ┣ 📂public
    ┣ 📂src
    ┃ ┗ 📂app             
-   ┃   ┣ 📂(auth)         # route pour l'authentifiactioon
+   ┃   ┣ 📂(auth)         # route pour l'authentification
    ┃   ┣ 📂(landingpage)  # route pour la landing page
    ┃   ┣ 📂app            # route pour l'application
-   ┃   ┣ 📂components     # composent react pour la réutilisation
-   ┃   ┣ 📂types          # les types des object
+   ┃   ┣ 📂components     # composant react pour la réutilisation
+   ┃   ┣ 📂types          # les types des objets
    ┃   ┗ 📂utils          # fonction utilitaire
    ┗ 📂tests
 ```
 
-## Comment démarer le projet en moin de 15min en local
+## Comment démarrer le projet en moins de 15 minutes en local
 
 ### Cloner le projet
 
@@ -79,9 +79,9 @@ Créer une base de donnée [postgresql](https://www.postgresql.org/download/) av
 
 ### Ajouté les fichiers .env
 
-Le fichier .env sert à définir une variable d'envrionement du projet fontend et backend. Il faut ajouté le fichier avec les variable d'enviroment dans les deux dossiers le frontend et backend.
+Le fichier .env sert à définir une variable d'environnement du projet fontend et backend. Il faut ajouter le fichier avec les variables d'environnement dans les deux dossiers le frontend et backend.
 
-Exemple de fichie .env pour une configuration local:
+Exemple de fichier .env pour une configuration local:
 ```{bash}
 DB_CS="postgres://<nom d'utilisateur>:<mot de pass>@localhost:5432/<nom de la db crée>"
 EXPRESS_SECRET="secret aléatoire pour les cookies"
@@ -89,11 +89,11 @@ BACKEND="http://localhost:8000"
 FRONTEND="http://localhost:3000"
 ```
 
-### Démarer les projets 
+### Démarrer les projets 
 
-Pour démarer le projet backend et frontend, il y a des prérequie. Il faut avoir installé  [node](https://nodejs.org/en/download) avec npm.  
+Pour démarrer le projet backend et frontend, il y a des prérequis. Il faut avoir installé  [node](https://nodejs.org/en/download) avec npm.  
 
-Pour démarer le projet backend, il faut ouvrir un terminal dans le dossier backend puis executer les commandes si dessous: 
+Pour démarrer le projet backend, il faut ouvrir un terminal dans le dossier backend puis exécuter les commandes ci-dessous: 
 
 ```
 npm install
@@ -102,7 +102,7 @@ npm install
 npm run dev-local
 ```
 
-De même pour le frontend, ouvrir un terminal dans le dossier frontend puis executer les commandes si dessous:
+De même pour le frontend, ouvrir un terminal dans le dossier frontend puis exécuter les commandes ci-dessous:
 
 ```
 npm install
@@ -113,7 +113,7 @@ npm run dev-local
 
 ## Contribution au projet 
 
-Pour contribuer au projet, deux étapes à éffectué. La premiere céer une branche pour ca featchure, faire ses modification. Puis faire une pull request. Lors de la pull request les tests unitaire seront executer tout seul et lors du merge de la pull request le déployment automatique se fait sur google cloud. 
+Pour contribuer au projet, deux étapes à effectuer. La première créer une branche pour sa feature, faire ses modifications. Puis faire une pull request. Lors de la pull request les tests unitaires seront executés automatiquement et lors du merge de la pull request dans la branche main le déploiement sera fait automatiquement sur Google cloud. 
 
 
 
