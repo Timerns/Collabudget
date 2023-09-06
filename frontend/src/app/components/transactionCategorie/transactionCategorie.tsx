@@ -7,9 +7,6 @@ import { useState } from "react";
 import LabelSoloModal from "../Modals/LabelSolo";
 
 export default function TransactionCategorie({ transactionCategorie, ...props }: { transactionCategorie: TransactionCategorieType, props?: any }) {
-  console.log("🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀")
-  console.log(transactionCategorie)
-  console.log("😁😁😁😁😁😁😁😁😁😁😁😁😁😁")
   const [menu, setMenu] = useState(false);
 
   function show() {

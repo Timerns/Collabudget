@@ -19,7 +19,9 @@ export default function LabelGroupeModal(props: {show() :void, groupId: number, 
   const FormLabelActions = useForm<AddLabelForm>();
   
   useEffect(() => {
+    
     if(props.label != undefined) {
+    console.log({ id: props.label.id, groupId: props.groupId })
     FormLabelActions.setValue("title", props.label.name);
     FormLabelActions.setValue("color", props.label.color);
     }
@@ -51,6 +53,21 @@ export default function LabelGroupeModal(props: {show() :void, groupId: number, 
       .catch(e => toast.error(e));
     
   };
+
+  const onDeletLabel = () => {
+    
+    if(props.label == undefined) return;
+    
+    request<any>("/api/labels/g/delete", "POST", { id: props.label.id, groupId: props.groupId })
+      .then(val => {
+        toast.info(val)
+        modalLabelRef.current?.closeModal();
+        props.show()
+        // window.location.reload()
+      })
+      .catch(e => toast.error(e));
+  }
+
     return (
       <Modal title={props.title} text_bt={props.button} ref={modalLabelRef}>
       <form onSubmit={FormLabelActions.handleSubmit(onSubmitLabel)}>
@@ -61,6 +78,10 @@ export default function LabelGroupeModal(props: {show() :void, groupId: number, 
           <ColorInput title="Couleur" {...FormLabelActions.register("color")} />
         </div>
         <InputButton text={props.label == undefined? 'Sauvegarder' : 'mettre à jour'}></InputButton>
+        {
+          props.label != undefined &&
+          <button className="bg-red mt-2 w-full hover:bg-white hover:text-red text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={onDeletLabel}> Supprimer </button>
+        }
       </form>
     </Modal>
 
