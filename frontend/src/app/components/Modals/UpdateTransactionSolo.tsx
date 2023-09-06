@@ -50,22 +50,12 @@ export default function UpdateTransactionSoloModal(props: {show() :void, transac
       setIsLoaded(true);
     }
 
-    request<LabelType[]>("/api/labels", "GET")
-      .then(val => {
-        val.map((i: LabelType) => delete i.GroupLabels)
-        val.unshift({name: "Pas de label", color: "#ffffff", id: -1})
-        FormTransactionActions.setValue("label", val[0])
-        setLabels(val)
-      })
-      .catch(e => toast.error(e));
-
     fetchData()
       .catch(e => toast.error(e));
 
     getStatus()
       .then(val => {
         if (val === null) val = "";
-        FormTransactionActions.setValue("payer", val)
         setCurrentUser(val);
       })
       .catch(e => toast.error(e));
@@ -73,9 +63,15 @@ export default function UpdateTransactionSoloModal(props: {show() :void, transac
 
   const onSubmitTransaction = (data: UpdateTransactionForm) => {
     var requestData: any = { title: data.title, value: data.total.value, date: data.date, transactionId: props.transaction.id }
-    if (data.label?.id !== undefined && data.label.id !== -1) {
+    console.log(data.label?.id)
+    if (data.label?.id === undefined) {
+      if (props.transaction.LabelId !== null) {
+        requestData.labelId = props.transaction.LabelId
+      }
+    } else if (data.label.id !== -1) {
       requestData.labelId = data.label.id
-    } 
+    }
+
     request<any>("/api/transactions/update", "POST", requestData)
       .then(val => {
         toast.info(val)
