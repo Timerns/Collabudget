@@ -22,6 +22,12 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
   app.post(apiUrl + '/add', (req, res) => {
     if (!parametersDefined(res, [req.body.name, req.body.color])) return
 
+    //Verification
+    if (!req.body.name) {
+      res.json({error: 'Le nom de votre label ne peut pas être vide'})
+      return
+    }
+
     UserLabel.findOne({ 
       where: { UserUsername: req.session.username },
       include: [{
@@ -51,6 +57,12 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
   app.post(apiUrl + '/update', (req, res) => {
     if (!parametersDefined(res, [req.body.name, req.body.color, req.body.id])) return
     if (!isNumber(res, [req.body.id], 'L\'id')) return
+
+    //Verification
+    if (!req.body.name) {
+      res.json({error: 'Le nom de votre label ne peut pas être vide'})
+      return
+    }
 
     UserLabel.findOne({ where: { UserUsername: req.session.username, LabelId: req.body.id } })
       .then(userLabel => {
@@ -116,6 +128,12 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
     if (!isNumber(res, [req.body.groupId], 'L\'id')) return
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
 
+    //Verification
+    if (!req.body.name) {
+      res.json({error: 'Le nom de votre label ne peut pas être vide'})
+      return
+    }
+
     GroupLabel.findOne({ 
       where: { GroupId: req.body.groupId },
       include: [{
@@ -146,6 +164,12 @@ export function labelRoute(app: Express, sequelize: Sequelize) {
     if (!parametersDefined(res, [req.body.name, req.body.color, req.body.groupId, req.body.id])) return
     if (!isNumber(res, [req.body.groupId, req.body.id], 'L\'id')) return
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
+
+    //Verification
+    if (!req.body.name) {
+      res.json({error: 'Le nom de votre label ne peut pas être vide'})
+      return
+    }
 
     GroupLabel.findOne({ where: { GroupId: req.body.groupId, LabelId: req.body.id } })
       .then(groupLabel => {

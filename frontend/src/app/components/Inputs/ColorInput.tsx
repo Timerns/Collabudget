@@ -1,5 +1,5 @@
 "use client" 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import Input, { SharedProps } from "./Input";
 type ColorInputProps = SharedProps & {
@@ -7,7 +7,6 @@ type ColorInputProps = SharedProps & {
 }
 const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps & ReturnType<UseFormRegister<any>>>((props, ref) => {
   const [color, setColor] = useState("#000000");
-
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     props.onChange(e);
     setColor(e.target.value);

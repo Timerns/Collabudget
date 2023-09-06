@@ -20,6 +20,12 @@ export function groupRoute(app: Express, sequelize: Sequelize) {
   app.post(apiUrl + '/add', (req, res) => {
     if (!parametersDefined(res, [req.body.name, req.body.currency])) return
 
+    //Verification
+    if (!req.body.name) {
+      res.json({error: 'Le nom de votre groupe ne peut pas être vide'})
+      return
+    }
+
     const groupUuid = uuidv4();
     Group.create({ name: req.body.name, currency: req.body.currency, inviteId: groupUuid, description: (req.body.description ?? null), image: (req.body.image ?? null) })
       .then(newGroup => {
@@ -36,6 +42,12 @@ export function groupRoute(app: Express, sequelize: Sequelize) {
     if (!parametersDefined(res, [req.body.name, req.body.groupId])) return
     if (!isNumber(res, [req.body.groupId], 'L\'id')) return
     if (!await userInGroup(res, req.session.username, req.body.groupId)) return
+
+    //Verification
+    if (!req.body.name) {
+      res.json({error: 'Le nom de votre groupe ne peut pas être vide'})
+      return
+    }
 
     Group.update({ name: req.body.name, description: (req.body.description ?? null), image: (req.body.image ?? null) }, {
       where : {
