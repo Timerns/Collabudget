@@ -28,7 +28,7 @@ export type AddTransactionForm = {
   contributors: { isContributing: boolean, username: string, value: number }[]
 };
 
-export default function TransactionGroupeMondal(props: {show() :void, groupId: number}) {
+export default function TransactionGroupeMondal(props: {show() :void, groupId: number, title: string, button: string}) {
   const [transactionValue, setTransactionValue] = useState<number>(0);
   const [labels, setLabels] = useState<LabelType[]>([]);
   const [currentUser, setCurrentUser] = useState<string>("");
@@ -92,7 +92,7 @@ export default function TransactionGroupeMondal(props: {show() :void, groupId: n
     </div>
   )
     return (
-      <Modal title='Ajouter une transaction' text_bt='Ajouter une transaction' ref={modalTransactionRef}>
+      <Modal title={props.title} text_bt={props.button}   ref={modalTransactionRef}>
         <form onBlur={e => {
           setTransactionValue(FormTrasactionActions.getValues("total.value"))
           setTransactionCurrency(FormTrasactionActions.getValues("total.currency"))
