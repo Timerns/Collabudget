@@ -5,7 +5,7 @@ export default function Team() {
                 <img src={"/team/tim.jpg"} className={"w-48 h-48 object-cover mx-auto mb-3 rounded-full"}/>
                 <h3 className={"text-lg"}>Tim Ernst</h3>
                 <h3 className={"text-lg"}>Ingénierie des données</h3>
-                <h4 className={"text-sm"}>tim.ersnt@heig-vd.ch</h4>
+                <h4 className={"text-sm"}>tim.ernst@heig-vd.ch</h4>
             </div>
             <div className={"col-span-1 mb-6"}>
                 <img src={"/team/eric.jpg"} className={"w-48 h-48 object-cover mx-auto mb-3 rounded-full"}/>
