@@ -40,11 +40,11 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
   const modalTransactionRef = useRef<ModalHandle>(null);
   const FormTransactionActions = useForm<UpdateTransactionForm>();
   const [isLoaded, setIsLoaded] = useState(false);
-  
+  const [contrbs, setContrbs] = useState<ContributionType[]>([])
+
   useEffect(() => {
     const fetchData = async () => {
       FormTransactionActions.setValue("title", props.transaction.title)
-      FormTransactionActions.setValue("total.value", props.transaction.value)
 
       //Set previous label
       let labelss = await request<LabelType[]>("/api/labels/g", "POST", { groupId: props.group.id })
@@ -63,22 +63,15 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
       FormTransactionActions.setValue("date", toISOLocal(props.transaction.date).slice(0, 16))
       setMembers(await request<SoldeType[]>("/api/groups/solde", "POST", { groupId: props.group.id }))
 
-      /*let contributors = await request<[ContributionType]>("/api/transactions/g/contributor", "POST", { groupId: props.group.id, transactionId: props.transaction.id })
-      let id = 0
-      console.log(members)
-      for (const member of members) {
-        if (contributors.filter(x => x.UserUsername == member.UserUsername).length !== 0) {
-          console.log("Halle")
-          FormTransactionActions.setValue(`contributors.${id}.isContributing`, true)
-        } else {
-          console.log("sdf")
-          FormTransactionActions.setValue(`contributors.${id}.isContributing`, false)
-        }
-        console.log(id)
-        id++
-      }*/
-      //??????????????????????????FormTransactionActions.setValue("contributors.0", {isContributing: false, username: "pipo", value: 10 })
-      
+      //Set contributors
+      let contributors = await request<ContributionType[]>("/api/transactions/g/contributor", "POST", { groupId: props.group.id, transactionId: props.transaction.id })
+      setContrbs(contributors);
+
+      FormTransactionActions.setValue("total.value", props.transaction.value)
+      setTransactionValue(props.transaction.value)
+      FormTransactionActions.setValue("total.currency", "CHF")
+      setTransactionCurrency("CHF")
+
       setIsLoaded(true);
     }
 
@@ -129,7 +122,6 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
             <Modal title='Modifier la transaction' text_bt='' ref={modalTransactionRef}>
               <form onBlur={e => {
                 setTransactionValue(FormTransactionActions.getValues("total.value"))
-                setTransactionCurrency(FormTransactionActions.getValues("total.currency"))
               }} onSubmit={FormTransactionActions.handleSubmit(onSubmitTransaction)}>
               <div className="mb-2 text-secondary">
                 <TextInput title="Titre" placeholder="Titre" {...FormTransactionActions.register("title")} />
@@ -144,7 +136,7 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
                 <DateInput title="Date" {...FormTransactionActions.register("date", { })} />
               </div>
               <div className="mb-2 text-secondary">
-                <ContributionInput title="Participants" register={FormTransactionActions.register} control={FormTransactionActions.control} transactionName="contributors" usernameName="username" valueName="value" isContributingName="isContributing" currency={transactionCurrency} totalValue={transactionValue} users={members.map(x => x.UserUsername)} />
+                <ContributionInput title="Participants" register={FormTransactionActions.register} control={FormTransactionActions.control} transactionName="contributors" usernameName="username" valueName="value" isContributingName="isContributing" currency={transactionCurrency} totalValue={transactionValue} users={members.map(x => ({name: x.UserUsername, isContrib: (() => { let found = contrbs.find(c => c.UserUsername === x.UserUsername); return found ? (Number(found.value) === 0 ? false : true) : false })()}))} />
               </div>
               <div className="mb-2 text-secondary">
                 <DropdownInput title="Payé par" setValueForm={FormTransactionActions.setValue} choices={sortList()} show={(c) => (<span>{c}</span>)} {...FormTransactionActions.register("payer")}/>

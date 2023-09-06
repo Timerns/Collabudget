@@ -64,6 +64,11 @@ export default function TransactionGroupeMondal(props: {show() :void, groupId: n
         setCurrentUser(val);
       })
       .catch(e => toast.error(e));
+
+    FormTransactionActions.setValue("total.value", 0)
+    setTransactionValue(0)
+    FormTransactionActions.setValue("total.currency", "CHF")
+    setTransactionCurrency("CHF")
   }, [])
 
   function sortList() {
@@ -113,7 +118,7 @@ export default function TransactionGroupeMondal(props: {show() :void, groupId: n
           <DateInput title="Date" {...FormTransactionActions.register("date", { })} />
         </div>
         <div className="mb-2 text-secondary">
-          <ContributionInput title="Participants" register={FormTransactionActions.register} control={FormTransactionActions.control} transactionName="contributors" usernameName="username" valueName="value" isContributingName="isContributing" currency={transactionCurrency} totalValue={transactionValue} users={members.map(x => x.UserUsername)} />
+          <ContributionInput title="Participants" register={FormTransactionActions.register} control={FormTransactionActions.control} transactionName="contributors" usernameName="username" valueName="value" isContributingName="isContributing" currency={transactionCurrency} totalValue={transactionValue} users={members.map(x => ({name: x.UserUsername, isContrib: true}))} />
         </div>
         <div className="mb-2 text-secondary">
           <DropdownInput title="Payé par" setValueForm={FormTransactionActions.setValue} choices={sortList()} show={(c) => (<span>{c}</span>)} {...FormTransactionActions.register("payer")}/>

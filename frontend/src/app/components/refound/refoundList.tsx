@@ -10,8 +10,6 @@ export default function RefoundList({refounds, groupId}: { refounds: SoldeType[]
   const [transaction, setTransaction] = useState<{s: string, d: string, m: number}[]>([])
   const [isLoaded, setIsLoaded] = useState(false);
 
-  console.log("asdfasdfasdfasdfasd")
-  console.log(refounds)
   useEffect(() => {
     var plus:  SoldeType[] = JSON.parse(JSON.stringify(refounds.filter((x) => Number(x.solde) > 0 ).sort((x, y) => Number(y.solde) - Number(x.solde))));
     var moins: SoldeType[] = JSON.parse(JSON.stringify(refounds.filter((x) => Number(x.solde) < 0 ).sort((x, y) => Number(y.solde) - Number(x.solde))));
