@@ -81,7 +81,7 @@ export default function Page() {
             </div>
             <TextInput title="Nom d'utilisateur" placeholder="Nom d'utilisateur" {...register("username")} />
             <NumberInput title="Number" placeholder="Chiffre" {...register("num", { valueAsNumber: true })} />
-            <ColorInput title="Color" {...register("color")} />
+            <ColorInput color="#000000" title="Color" {...register("color")} />
             <ImageInput title="Image" {...register("image")} />
             <DropdownInput title="Choice" setValueForm={setValue} show={show} choices={choices} {...register("choice", { value: choices[0] })} />
             <DateInput title="Date" {...register("date", { valueAsDate: true })} />

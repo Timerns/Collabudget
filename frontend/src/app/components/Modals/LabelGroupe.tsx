@@ -2,7 +2,7 @@ import Modal, { ModalHandle } from "../Modal";
 import TextInput from "../Inputs/TextInput";
 import MoneyInput from "../Inputs/MoneyInput";
 import InputButton from "../Inputs/InputButton";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import LabelType from "@/app/types/labelType";
 import { request } from "@/app/utils/database";
 import { toast } from "react-toastify";
@@ -18,18 +18,19 @@ export default function LabelGroupeModal(props: {show() :void, groupId: number, 
   const modalLabelRef = useRef<ModalHandle>(null);
   const FormLabelActions = useForm<AddLabelForm>();
   
+  const [color, setColor] = useState("#000000");
+
   useEffect(() => {
-    
     if(props.label != undefined) {
-    console.log({ id: props.label.id, groupId: props.groupId })
-    FormLabelActions.setValue("title", props.label.name);
-    FormLabelActions.setValue("color", props.label.color);
+      FormLabelActions.setValue("title", props.label.name);
+      FormLabelActions.setValue("color", props.label.color);
+      setColor(props.label.color);
     }
-    
   }, [])
   
 
   const onSubmitLabel = (data: AddLabelForm) => {
+    console.log(data);
 
     if(props.label == undefined) {
       request<any>("/api/labels/g/add", "POST", { groupId: props.groupId, name: data.title, color: data.color })
@@ -75,7 +76,7 @@ export default function LabelGroupeModal(props: {show() :void, groupId: number, 
           <TextInput title="Titre" placeholder="Titre" {...FormLabelActions.register("title")} />
         </div>
         <div className="mb-2 text-secondary">
-          <ColorInput title="Couleur" {...FormLabelActions.register("color")} />
+          <ColorInput title="Couleur" color={color} {...FormLabelActions.register("color")} />
         </div>
         <InputButton text={props.label == undefined? 'Sauvegarder' : 'mettre à jour'}></InputButton>
         {
