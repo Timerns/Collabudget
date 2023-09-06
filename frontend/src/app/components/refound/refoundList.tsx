@@ -5,25 +5,40 @@ import Refound from "@/app/components/refound/refound";
 import SoldeType from "@/app/types/soldeType";
 import { useEffect, useState } from "react";
 
-export default function RefoundList({refounds, groupId}: { refounds: SoldeType[], groupId: number}) {
+export default function RefoundList({refounds, groupId, username}: { refounds: SoldeType[], groupId: number, username: string}) {
   
   const [transaction, setTransaction] = useState<{s: string, d: string, m: number}[]>([])
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    var plus:  SoldeType[] = JSON.parse(JSON.stringify(refounds.filter((x) => Number(x.solde) > 0 ).sort((x, y) => Number(y.solde) - Number(x.solde))));
-    var moins: SoldeType[] = JSON.parse(JSON.stringify(refounds.filter((x) => Number(x.solde) < 0 ).sort((x, y) => Number(y.solde) - Number(x.solde))));
+    var plus: SoldeType[] = JSON.parse(JSON.stringify(refounds.filter((x) => Number(x.solde) > 0).sort((x, y) => Number(y.solde) - Number(x.solde))));
+    var moins: SoldeType[] = JSON.parse(JSON.stringify(refounds.filter((x) => Number(x.solde) < 0).sort((x, y) => Number(x.solde) - Number(y.solde)))).map((v: SoldeType) => {
+      v.solde = String(-Number(v.solde));
+      return v;
+    });
+
+    if (plus.length === 0 || moins.length === 0) {
+      return;
+    }
 
     let transa = []
-    while (moins.length !== 0) {
-      if(Number(plus[plus.length - 1].solde) - Number(moins[moins.length - 1].solde) >= 0) {
-        transa.push({s: moins[moins.length - 1].UserUsername, d: plus[plus.length - 1].UserUsername, m: Math.abs(Number(moins[moins.length - 1].solde))});
-        plus[plus.length - 1].solde = String(Number(plus[plus.length - 1].solde) - Number(moins[moins.length - 1].solde)); 
-        moins.pop();
+    let moinsCurr: SoldeType | undefined = undefined;
+    while (moinsCurr = moins.pop()) {
+      var plusCurr = plus[0];
+      var plusSolde = Number(plusCurr.solde);
+      var moinsSolde = Number(moinsCurr.solde);
+
+      if (plusSolde > moinsSolde) {
+        moinsCurr.solde = "0";
+        transa.push({s: moinsCurr.UserUsername, d: plusCurr.UserUsername, m: moinsSolde})
       } else {
-        transa.push({s: moins[moins.length - 1].UserUsername, d: plus[plus.length - 1].UserUsername, m: Number(plus[plus.length - 1].solde)});
-        moins[moins.length - 1].solde = String(Number(moins[-1].solde) + Number(plus[plus.length - 1].solde));
-        plus.pop(); 
+        var solde = moinsSolde - plusSolde;
+        if (solde !== 0) {
+          moinsCurr.solde = String(solde);
+          moins.push(moinsCurr);
+        }
+        transa.push({s: moinsCurr.UserUsername, d: plusCurr.UserUsername, m: plusSolde})
+        plus.splice(0, 1);
       }
     }
     
@@ -38,7 +53,7 @@ export default function RefoundList({refounds, groupId}: { refounds: SoldeType[]
         transaction.map((r, i) => {
           return (
               <div key={i} className={`${i < transaction.length - 1 ? "mb-3" : ""}`}>
-                <Refound refound={r} groupId={groupId}/>
+                <Refound username={username} refound={r} groupId={groupId}/>
               </div>
           )
         })}

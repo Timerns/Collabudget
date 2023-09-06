@@ -143,16 +143,16 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
         LabelId: (req.body.labelId ?? null)
       }, { transaction: t })
   
-      let total = req.body.value
+      let total = Number(req.body.value)
 
       //contributor: { isContributing: boolean, username: string, value: number }
       for (const contributor of JSON.parse(req.body.contributors)) {
         if (contributor.isContributing) {
-          total -= contributor.value
+          total -= Number(contributor.value)
         }
       }
       
-      if (Math.abs(total - req.body.value) <= allowedError) {
+      if (Number(Math.abs(Number(total))) > Number(allowedError)) {
         throw new Error('Le total des contributeurs est incorrect.')
       }
 
@@ -228,9 +228,8 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
           total -= contributor.value
         }
       }
-  
 
-      if (Math.abs(total - req.body.value) <= allowedError) {
+      if (Number(Math.abs(Number(total))) > Number(allowedError)) {
         throw new Error('Le total des contributeurs est incorrect.')
       }
   

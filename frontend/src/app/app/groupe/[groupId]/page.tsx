@@ -19,13 +19,15 @@ import SoldeType from "@/app/types/soldeType";
 import LabelTooltip from "@/app/components/labelTooltip";
 import UpdateGroupModal from "@/app/components/Modals/UpdateGroupe";
 import TransactionCategorieList from "@/app/components/transactionCategorie/transactionCategorieList";
+import { getStatus } from "@/app/utils/account";
 
 export default function Page({params}: { params: { groupId: number } }) {
   type Data = {
     group: GroupeType,
     transactions: TransactionType[],
     labels: [LabelType[], any],
-    soldes: SoldeType[]
+    soldes: SoldeType[],
+    username: string
   }
 
   const [menu, setMenu] = useState(false);
@@ -34,7 +36,8 @@ export default function Page({params}: { params: { groupId: number } }) {
     group: {id: -1, currency: "", description: "", image: "", inviteId: "", name: "", soldes: []},
     transactions: [],
     labels: [[], {}],
-    soldes: []
+    soldes: [],
+    username: ""
   });
 
   useEffect(() => {
@@ -60,11 +63,14 @@ export default function Page({params}: { params: { groupId: number } }) {
         }
       }, {});
 
+      var user = await getStatus();
+
       setData({
         group: group, 
         transactions: transactions, 
         labels: [labels, result],
-        soldes: soldes
+        soldes: soldes,
+        username: user ?? ""
       });
       setIsLoaded(true);
     }
@@ -124,10 +130,11 @@ export default function Page({params}: { params: { groupId: number } }) {
             <Title title={"Transactions"}/>
             {
               <TransactionList 
+                forGroup={true}
                 transactions={data.transactions} 
                 doubleRow={true} 
                 getInfo={(t) => (t.RefundedUsername === null ? t.UserUsername ?? "" : `De ${t.UserUsername} à ${t.RefundedUsername}`)}
-                getLabel={(t) => data.labels.find(x => x.id === Number(t.LabelId))}
+                getLabel={(t) => data.labels[0].find(x => x.id === Number(t.LabelId))}
                 group={data.group}
                 />
             }
@@ -156,25 +163,22 @@ export default function Page({params}: { params: { groupId: number } }) {
           </div>
           <div className={"col-span-1"}>
             <Title title={"Remboursement"}/>
-            <RefoundList refounds={data.soldes} groupId={params.groupId}/>
+            <RefoundList username={data.username} refounds={data.soldes} groupId={params.groupId}/>
           </div>
           
           <div className={"col-span-1"}>
-                <Title title={"Label du groupe"}/>
-                <TransactionCategorieList
-                  transactionsCategories={data.labels[0].map((x) => ({
-                    isGroup: false,
-                    value: 0,
-                    labelColor: x.color,
-                    groupeId: params.groupId,
-                    labelId: x.id,
-                    name: x.name
-                  }))}
-                   />
+            <Title title={"Label du groupe"}/>
+            <TransactionCategorieList
+              transactionsCategories={data.labels[0].map((x) => ({
+                isGroup: false,
+                value: 0,
+                labelColor: x.color,
+                groupeId: params.groupId,
+                labelId: x.id,
+                name: x.name
+              }))}
+                />
             </div>
-          
-
-          
         </div>
         <AddButton groups={true}></AddButton>
       </>

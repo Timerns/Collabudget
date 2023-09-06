@@ -61,7 +61,20 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
 
       //Set previous date
       FormTransactionActions.setValue("date", toISOLocal(props.transaction.date).slice(0, 16))
-      setMembers(await request<SoldeType[]>("/api/groups/solde", "POST", { groupId: props.group.id }))
+
+      //Set group members
+      let groupMembers = await request<SoldeType[]>("/api/groups/solde", "POST", { groupId: props.group.id })
+      if (props.transaction.UserUsername !== null) {
+        let temp = groupMembers.filter(member => member.UserUsername == props.transaction.UserUsername)[0]
+        groupMembers = groupMembers.filter(member => member.UserUsername != props.transaction.UserUsername)
+        groupMembers.unshift(temp)
+      } else {
+        let temp = groupMembers.filter(member => member.UserUsername == currentUser)[0]
+        groupMembers = groupMembers.filter(member => member.UserUsername != currentUser)
+        groupMembers.unshift(temp)
+      }
+      
+      setMembers(groupMembers)
 
       //Set contributors
       let contributors = await request<ContributionType[]>("/api/transactions/g/contributor", "POST", { groupId: props.group.id, transactionId: props.transaction.id })
@@ -81,22 +94,24 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
     getStatus()
       .then(val => {
         if (val === null) val = "";
-        FormTransactionActions.setValue("payer", val)
         setCurrentUser(val);
       })
       .catch(e => toast.error(e));
   }, [])
-
-  function sortList() {
-    var idx = members.filter(x => x.UserUsername != props.transaction.UserUsername)
-    return  [props.transaction.UserUsername, ...idx.map(x => x.UserUsername)]
-  }
   
   const onSubmitTransaction = (data: UpdateTransactionForm) => {
     var requestData: any = { groupId: Number(props.group.id), title: data.title, value: data.total.value, date: data.date, payer: data.payer, contributors: data.contributors, transactionId: props.transaction.id }
-    if (data.label?.id !== undefined && data.label.id !== -1) {
+    if (data.label?.id === undefined) {
+      if (props.transaction.LabelId !== null) {
+        requestData.labelId = props.transaction.LabelId
+      }
+    } else if (data.label.id !== -1) {
       requestData.labelId = data.label.id
-    } 
+    }
+    if (data.payer === undefined) {
+      requestData.payer = props.transaction.UserUsername 
+    }
+
     request<any>("/api/transactions/g/update", "POST", requestData)
       .then(val => {
         toast.info(val)
@@ -150,7 +165,7 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
                 <ContributionInput title="Participants" register={FormTransactionActions.register} control={FormTransactionActions.control} transactionName="contributors" usernameName="username" valueName="value" isContributingName="isContributing" currency={transactionCurrency} totalValue={transactionValue} users={members.map(x => ({name: x.UserUsername, isContrib: (() => { let found = contrbs.find(c => c.UserUsername === x.UserUsername); return found ? (Number(found.value) === 0 ? false : true) : false })()}))} />
               </div>
               <div className="mb-2 text-secondary">
-                <DropdownInput title="Payé par" setValueForm={FormTransactionActions.setValue} choices={sortList()} show={(c) => (<span>{c}</span>)} {...FormTransactionActions.register("payer")}/>
+                <DropdownInput title="Payé par" setValueForm={FormTransactionActions.setValue} choices={members.map(x => x.UserUsername)} show={(c) => (<span>{c}</span>)} {...FormTransactionActions.register("payer")}/>
               </div>
 
               <InputButton text='Sauvegarder'></InputButton>

@@ -38,9 +38,13 @@ export default function TransactionCategorie({ transactionCategorie, ...props }:
           
         </span>
       </div>
-      <div className={`col-span-1 text-right`}>
-        {formatCurrency(-transactionCategorie.value, undefined, false)}
-      </div>
+      {
+        !transactionCategorie.groupeId ?
+        <div className={`col-span-1 text-right`}>
+          {formatCurrency(-transactionCategorie.value, undefined, false)}
+        </div> :
+        <div></div>
+      }
     </div>
   )
 }

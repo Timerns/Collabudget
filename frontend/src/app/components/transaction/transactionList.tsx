@@ -4,7 +4,7 @@ import TransactionType from "@/app/types/transactionType";
 import LabelType from "@/app/types/labelType";
 import GroupeType from "@/app/types/groupeType";
 
-export default function TransactionList({transactions, forGroup= false, doubleRow = false, getInfo, getLabel, group}: {
+export default function TransactionList({transactions, forGroup = false, doubleRow = false, getInfo, getLabel, group}: {
   forGroup?: boolean
   transactions: TransactionType[],
   doubleRow?: boolean,

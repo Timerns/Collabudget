@@ -41,6 +41,10 @@ export default function UpdateGroupModal(props: {show(): void, group: GroupeType
       groupImage = await readFirstFile(data.image)
     } catch (err: any) {}
 
+    if (groupImage === null && props.group.image !== "null") {
+      groupImage = props.group.image
+    }
+
     request<any>("/api/groups/update", "POST", { name: data.title, description: data.description, image: groupImage, groupId: props.group.id })
       .then(val => {
         toast.info(val)

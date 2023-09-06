@@ -4,7 +4,7 @@ import Link from "next/link";
 import { request } from "@/app/utils/database";
 import { toast } from "react-toastify";
 
-export default function Refound({refound, groupId}: { refound: {s: string, d: string, m: number}, groupId: number}) {
+export default function Refound({refound, groupId, username}: { refound: {s: string, d: string, m: number}, groupId: number, username: string}) {
 
   function refund () {
     request<any>("/api/transactions/g/refund", "POST", { groupId: groupId, refunder: refound.s, refunded: refound.d})
@@ -26,7 +26,7 @@ export default function Refound({refound, groupId}: { refound: {s: string, d: st
             </span>
         </div>
         <div className={`col-span-1 text-right my-auto`}>
-          <button onClick={refund} className={"text-primary px-2"}>Rembourser</button>
+          {(username === refound.s || username === refound.d) && <button onClick={refund} className={"text-primary px-2"}>Rembourser</button>}
           <span className={"text-green"}>
               {formatCurrency(Number(refound.m))}
             </span>

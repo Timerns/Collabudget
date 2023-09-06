@@ -129,7 +129,7 @@ const AppMenu: FC<pageProps> = (props) => {
                   <path d="M3.04167 22.375C2.37709 22.375 1.80796 22.1382 1.33429 21.6645C0.860627 21.1908 0.624196 20.6221 0.625002 19.9583V3.04167C0.625002 2.37709 0.861835 1.80796 1.3355 1.33429C1.80917 0.860627 2.37789 0.624196 3.04167 0.625002H11.5V3.04167H3.04167V19.9583H11.5V22.375H3.04167ZM16.3333 17.5417L14.6719 15.7896L17.7531 12.7083H7.875V10.2917H17.7531L14.6719 7.21042L16.3333 5.45834L22.375 11.5L16.3333 17.5417Z" />
                 </svg>
 
-                <span className={"ml-3 text-light-gray  hover:text-primary" + (pathname == "/deconnection" ? " text-primary underline decoration-primary underline-offset-4" : " text-white")}>Déconnection</span>
+                <span className={"ml-3 text-light-gray  hover:text-primary" + (pathname == "/deconnection" ? " text-primary underline decoration-primary underline-offset-4" : " text-white")}>Déconnexion</span>
               </Link>
             </li>
             <hr className="w-48 h-1 mx-auto my-4 bg-primary border-0 rounded md:my-10" />
