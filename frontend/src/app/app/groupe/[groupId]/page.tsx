@@ -128,6 +128,7 @@ export default function Page({params}: { params: { groupId: number } }) {
                 doubleRow={true} 
                 getInfo={(t) => (t.RefundedUsername === null ? t.UserUsername ?? "" : `De ${t.UserUsername} à ${t.RefundedUsername}`)}
                 getLabel={(t) => data.labels.find(x => x.id === Number(t.LabelId))}
+                group={data.group}
                 />
             }
           </div>

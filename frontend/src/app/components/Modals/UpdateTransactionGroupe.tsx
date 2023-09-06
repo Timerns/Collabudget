@@ -107,6 +107,17 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
       .catch(e => toast.error(e));
   };
 
+  const onDeleteTransaction = () => {
+    request<any>("/api/transactions/g/delete", "POST", { groupId: Number(props.group.id), transactionId: props.transaction.id })
+      .then(val => {
+        toast.info(val)
+        modalTransactionRef.current?.closeModal();
+        props.show()
+        window.location.reload()
+      })
+      .catch(e => toast.error(e));
+  }
+
   const show = (elem: LabelType) => (
     <div className="px-2 py-1" style={{
       backgroundColor: elem.color,
@@ -143,11 +154,15 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
               </div>
 
               <InputButton text='Sauvegarder'></InputButton>
+              {
+                <button type="button" className="bg-red mt-2 w-full hover:bg-white hover:text-red text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={onDeleteTransaction}> Supprimer </button>
+              }
             </form>
-            <InputButton text='Supprimer'></InputButton>
           </Modal> :
           <Modal title='Annuler le remboursement' text_bt='' ref={modalTransactionRef}>
-            <InputButton text='Supprimer'></InputButton>
+            {
+              <button type="button" className="bg-red mt-2 w-full hover:bg-white hover:text-red text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={onDeleteTransaction}> Supprimer </button>
+            }
           </Modal>
         }
       </div>

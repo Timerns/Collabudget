@@ -70,7 +70,7 @@ export default function LabelSoloModal(props: {show() :void, title: string, butt
         <InputButton text='Sauvegarder'></InputButton>
         {
           props.label != undefined &&
-          <button className="bg-red mt-2 w-full hover:bg-white hover:text-red text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={onDeletLabel}> Supprimer </button>
+          <button type="button" className="bg-red mt-2 w-full hover:bg-white hover:text-red text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={onDeletLabel}> Supprimer </button>
         }
       
       </form>

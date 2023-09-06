@@ -63,7 +63,7 @@ export default function LabelGroupeModal(props: {show() :void, groupId: number, 
         toast.info(val)
         modalLabelRef.current?.closeModal();
         props.show()
-        // window.location.reload()
+        window.location.reload()
       })
       .catch(e => toast.error(e));
   }
@@ -80,7 +80,7 @@ export default function LabelGroupeModal(props: {show() :void, groupId: number, 
         <InputButton text={props.label == undefined? 'Sauvegarder' : 'mettre à jour'}></InputButton>
         {
           props.label != undefined &&
-          <button className="bg-red mt-2 w-full hover:bg-white hover:text-red text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={onDeletLabel}> Supprimer </button>
+          <button type="button" className="bg-red mt-2 w-full hover:bg-white hover:text-red text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={onDeletLabel}> Supprimer </button>
         }
       </form>
     </Modal>
