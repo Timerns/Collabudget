@@ -4,6 +4,7 @@ import TransactionType from "@/app/types/transactionType";
 import { formatCurrency } from "@/app/utils/numberFormatter";
 import { useEffect, useState, useRef } from "react";
 import UpdateTransactionGroupeModal from "../Modals/UpdateTransactionGroupe";
+import UpdateTransactionSoloModal from "../Modals/UpdateTransactionSolo";
 
 export default function Transaction({ transaction, label, info, group, ...props }: {
   transaction: TransactionType,
@@ -29,7 +30,9 @@ export default function Transaction({ transaction, label, info, group, ...props 
     <div>
       { 
         group === undefined ?
-        <div className="w-0 h-0"></div> :
+          transaction.GroupId === null ?
+          <div className="w-0 h-0"><UpdateTransactionSoloModal show={show} transaction={transaction} /></div> :
+          <div></div> :
         <div className="w-0 h-0"><UpdateTransactionGroupeModal show={show} group={group} transaction={transaction} /></div>
       }
       <div className={"grid grid-cols-4 bg-secondary p-3"} onClick={triggerClickEvent("transaction " + transaction.id.toString())} id={"transaction " + transaction.id.toString()} >
