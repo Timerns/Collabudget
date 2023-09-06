@@ -72,17 +72,26 @@ export default function Page() {
         var found = acc.find(a => a.name === (a.isGroup && curr.GroupId !== null ? group?.name : label?.name) && a.isGroup === (curr.GroupId !== null));
         if (found !== undefined) {
           found.value += curr.value;
-        } else {
-          var obj: TransactionCategorieType = {name: curr.GroupId !== null ? group?.name : label?.name, isGroup: curr.GroupId !== null, value: curr.value};
-          if (label !== undefined) {
-            obj.labelId = label.id;
-            obj.labelColor = label.color;
-          }
-          acc.push(obj);
         }
 
         return acc;
-      }, [])
+      }, 
+      labels.reduce<TransactionCategorieType[]>((acc, curr) => {
+        acc.push({name: curr.name, isGroup: false, value: 0, labelId: curr.id, labelColor: curr.color});
+        return acc;
+      }, 
+      groups.reduce<TransactionCategorieType[]>((acc, curr) => {
+        acc.push({name: curr.name, isGroup: true, value: 0})
+        return acc;
+      }, [{name: undefined, isGroup: false, value: 0}]))).sort((a, b) => {
+        if (!a.isGroup && b.isGroup) {
+          return -1;
+        }
+        if (b.name === undefined) {
+          return -1;
+        }
+        return 1
+      })
 
       let limites = await request<[LimitRes[], LimitRes[]]>("/api/limits/month", "POST", { month: date.getMonth() + 1, year: date.getFullYear() });
 
@@ -95,6 +104,10 @@ export default function Page() {
         let limitValue = Number(l.limit);
 
         let label = labels.find(lbl => lbl.id === l.UserLabel?.LabelId);
+
+        if (limitValue === -1) {
+          return;
+        }
 
         realLimits.push({
           currentValue: categ?.value ?? 0,
