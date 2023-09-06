@@ -1,16 +1,15 @@
 import Modal, { ModalHandle } from "../Modal";
 import TextInput from "../Inputs/TextInput";
-import MoneyInput from "../Inputs/MoneyInput";
 import InputButton from "../Inputs/InputButton";
 import { useRef } from "react";
-import LabelType from "@/app/types/labelType";
 import { request } from "@/app/utils/database";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import ColorInput from "../Inputs/ColorInput";
-import { AddLabelForm } from "./LabelGroupe";
+
 import ImageInput from "../Inputs/ImageInput";
 import { readFirstFile } from "@/app/utils/fileReader";
+import { useEffect, useState } from "react";
+import GroupeType from "@/app/types/groupeType";
 
 export type GroupeForm = {
   title: string,
@@ -19,10 +18,22 @@ export type GroupeForm = {
   currency: string
 };
 
-export default function CreateGroupModal(props: {show() :void, title: string, button: string}) {
+export default function UpdateGroupModal(props: {show(): void, group: GroupeType}) {
   const modalLabelRef = useRef<ModalHandle>(null);
   const FormGroupeActions = useForm<GroupeForm>();
+  const [isLoaded, setIsLoaded] = useState(false);
   
+  useEffect(() => { 
+    const fetchData = async () => {
+      FormGroupeActions.setValue("title", props.group.name)
+      FormGroupeActions.setValue("description", props.group.description)
+      setIsLoaded(true);
+    }
+
+    fetchData()
+      .catch(e => toast.error(e));
+  }, [props]);
+
 
   const onSubmitLabel = async (data: GroupeForm) => {
     let groupImage = null
@@ -30,7 +41,7 @@ export default function CreateGroupModal(props: {show() :void, title: string, bu
       groupImage = await readFirstFile(data.image)
     } catch (err: any) {}
 
-    request<any>("/api/groups/add", "POST", { name: data.title, currency: "CHF", description: data.description, image: groupImage })
+    request<any>("/api/groups/update", "POST", { name: data.title, description: data.description, image: groupImage, groupId: props.group.id })
       .then(val => {
         toast.info(val)
         modalLabelRef.current?.closeModal();
@@ -39,8 +50,9 @@ export default function CreateGroupModal(props: {show() :void, title: string, bu
       })
       .catch(e => toast.error(e));
   };
-    return (
-      <Modal title={props.title} text_bt={props.button} ref={modalLabelRef}>
+
+  return (
+    <Modal title='Éditer groupe' text_bt='Éditer' ref={modalLabelRef}>
       <form onSubmit={FormGroupeActions.handleSubmit(onSubmitLabel)}>
         <div className="mb-2 text-secondary">
           <TextInput title="Nom du groupe" placeholder="Titre" {...FormGroupeActions.register("title")} />

@@ -10,7 +10,7 @@ type ContributionInputProps = SharedProps & {
   register: UseFormRegister<any>,
   control: Control<any, any>,
   currency: string,
-  users: string[],
+  users: {name: string, isContrib: boolean}[],
   totalValue: number,
   transactionName: string,
   isContributingName: string,
@@ -30,22 +30,20 @@ const ContributionInput: FC<ContributionInputProps> = ((props) => {
     remove();
     append(props.users.map((user) => {
       var obj: any = {};
-      obj[props.usernameName] = user;
-      obj[props.isContributingName] = true;
-      obj[props.valueName] = props.totalValue / props.users.length;
+      obj[props.usernameName] = user.name;
+      obj[props.isContributingName] = user.isContrib;
+      obj[props.valueName] = props.totalValue / props.users.reduce((acc, curr) => acc += curr.isContrib ? 1 : 0, 0);
       return obj;
     }));
   }, []);
 
   useEffect(() => {
-    remove();
-    append(props.users.map((user) => {
-      var obj: any = {};
-      obj[props.usernameName] = user;
-      obj[props.isContributingName] = true;
-      obj[props.valueName] = props.totalValue / props.users.length;
-      return obj;
-    }));
+    props.users.forEach((user, index) => {
+      var transaction = props.control._formValues[props.transactionName][index];
+
+      transaction[props.valueName] = transaction[props.isContributingName] ? props.totalValue / props.users.reduce((acc, curr) => acc += curr.isContrib ? 1 : 0, 0) : 0;
+      update(index, transaction);
+    });
   }, [props.totalValue]);
 
   return (

@@ -86,7 +86,7 @@ export default function Page() {
             <DropdownInput title="Choice" setValueForm={setValue} show={show} choices={choices} {...register("choice", { value: choices[0] })} />
             <DateInput title="Date" {...register("date", { valueAsDate: true })} />
             <MoneyInput title="Date" placeholder="date" baseFormName="money" valueName="value" currencyName="currency" setValueForm={setValue} register={register} currencies={["CHF", "EUR", "USD"]} />
-            <ContributionInput title="Participants" register={register} control={control} transactionName="transaction" usernameName="username" valueName="value"  isContributingName="isContributing" currency="CHF" totalValue={50} users={["Green", "Red", "Blue", "Sus"]} />
+            {/*<ContributionInput title="Participants" register={register} control={control} transactionName="transaction" usernameName="username" valueName="value"  isContributingName="isContributing" currency="CHF" totalValue={50} users={["Green", "Red", "Blue", "Sus"]} />*/}
             <div className="mb-4">
               <TextInput type="password" title="Mot de passe" placeholder="Mot de passe" {...register("password")} />
             </div>

@@ -1,11 +1,8 @@
-import {NameType, ValueType} from "recharts/types/component/DefaultTooltipContent";
-import {TooltipProps} from "recharts";
 import Modal, { ModalHandle } from "../Modal";
 import TextInput from "../Inputs/TextInput";
 import MoneyInput from "../Inputs/MoneyInput";
 import DropdownInput from "../Inputs/DropdownInput";
 import DateInput from "../Inputs/DateInput";
-import ContributionInput from "../Inputs/ContributionInput";
 import InputButton from "../Inputs/InputButton";
 import { useEffect, useRef, useState } from "react";
 import LabelType from "@/app/types/labelType";
@@ -13,36 +10,47 @@ import { request } from "@/app/utils/database";
 import { usePathname } from "next/navigation";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import SoldeType from "@/app/types/soldeType";
 import { getStatus } from "@/app/utils/account";
+import { UpdateTransactionForm } from "./UpdateTransactionGroupe";
+import GroupeType from "@/app/types/groupeType";
+import TransactionType from "@/app/types/transactionType";
 import { toISOLocal } from "@/app/utils/dateFormatter";
 
-export type AddTransactionForm = {
-  title: string,
-  total: {
-    value: number
-    currency: string
-  }
-  date: string,
-  payer: string,
-  label: LabelType,
-  contributors: { isContributing: boolean, username: string, value: number }[]
-};
-
-export default function TransactionGroupeMondal(props: {show() :void, groupId: number, title: string, button: string}) {
+export default function UpdateTransactionSoloModal(props: {show() :void, transaction: TransactionType}) {
   const [transactionValue, setTransactionValue] = useState<number>(0);
   const [labels, setLabels] = useState<LabelType[]>([]);
-  const [currentUser, setCurrentUser] = useState<string>("");
+  const [currentUser, setCurrentUser] = useState<string>();
   const [transactionCurrency, setTransactionCurrency] = useState<string>("");
-  const [members, setMembers] = useState<SoldeType[]>([]);
   const pathname: string = usePathname()
   const modalTransactionRef = useRef<ModalHandle>(null);
-  const FormTransactionActions = useForm<AddTransactionForm>();
+  const FormTransactionActions = useForm<UpdateTransactionForm>();
+  const [isLoaded, setIsLoaded] = useState(false);
   
   useEffect(() => {
-    FormTransactionActions.setValue("date", toISOLocal(new Date()).slice(0, 16))
+    const fetchData = async () => {
+      FormTransactionActions.setValue("title", props.transaction.title)
+      FormTransactionActions.setValue("total.value", -props.transaction.value)
 
-    request<LabelType[]>("/api/labels/g", "POST", { groupId: props.groupId })
+      //Set previous label
+      let labelss = await request<LabelType[]>("/api/labels", "GET")
+      labelss.unshift({name: "Pas de label", color: "#ffffff", id: -1})
+      
+      if (props.transaction.LabelId !== null) {
+        let temp = labelss.filter(x => x.id === Number(props.transaction.LabelId))[0]
+        labelss = labelss.filter(x => x.id !== Number(props.transaction.LabelId))
+        labelss.unshift(temp)
+      } 
+
+      //FormTransactionActions.setValue("label", labelss[0])
+      setLabels(labelss)
+
+      //Set previous date
+      FormTransactionActions.setValue("date", toISOLocal(props.transaction.date).slice(0, 16))
+      
+      setIsLoaded(true);
+    }
+
+    request<LabelType[]>("/api/labels", "GET")
       .then(val => {
         val.map((i: LabelType) => delete i.GroupLabels)
         val.unshift({name: "Pas de label", color: "#ffffff", id: -1})
@@ -51,10 +59,7 @@ export default function TransactionGroupeMondal(props: {show() :void, groupId: n
       })
       .catch(e => toast.error(e));
 
-    request<SoldeType[]>("/api/groups/solde", "POST", { groupId: props.groupId })
-      .then(val => {
-        setMembers(val)        
-      })
+    fetchData()
       .catch(e => toast.error(e));
 
     getStatus()
@@ -64,24 +69,14 @@ export default function TransactionGroupeMondal(props: {show() :void, groupId: n
         setCurrentUser(val);
       })
       .catch(e => toast.error(e));
-
-    FormTransactionActions.setValue("total.value", 0)
-    setTransactionValue(0)
-    FormTransactionActions.setValue("total.currency", "CHF")
-    setTransactionCurrency("CHF")
   }, [])
 
-  function sortList() {
-    var idx = members.filter(x => x.UserUsername != currentUser)
-    return  [currentUser, ...idx.map(x => x.UserUsername)]
-  }
-  
-  const onSubmitTransaction = (data: AddTransactionForm) => {
-    var requestData: any = { groupId: Number(props.groupId), title: data.title, value: data.total.value, date: data.date, payer: data.payer, contributors: data.contributors}
-    if(data.label?.id !== undefined && data.label.id !== -1) {
+  const onSubmitTransaction = (data: UpdateTransactionForm) => {
+    var requestData: any = { title: data.title, value: data.total.value, date: data.date, transactionId: props.transaction.id }
+    if (data.label?.id !== undefined && data.label.id !== -1) {
       requestData.labelId = data.label.id
     } 
-    request<any>("/api/transactions/g/add", "POST", requestData)
+    request<any>("/api/transactions/update", "POST", requestData)
       .then(val => {
         toast.info(val)
         modalTransactionRef.current?.closeModal();
@@ -90,6 +85,17 @@ export default function TransactionGroupeMondal(props: {show() :void, groupId: n
       })
       .catch(e => toast.error(e));
   };
+
+  const onDeletTransaction = () => {
+    request<any>("/api/transactions/delete", "POST", { transactionId: props.transaction.id })
+      .then(val => {
+        toast.info(val)
+        modalTransactionRef.current?.closeModal();
+        props.show()
+        window.location.reload()
+      })
+      .catch(e => toast.error(e));
+  }
 
   const show = (elem: LabelType) => (
     <div className="px-2 py-1" style={{
@@ -100,7 +106,7 @@ export default function TransactionGroupeMondal(props: {show() :void, groupId: n
     </div>
   )
     return (
-      <Modal title={props.title} text_bt={props.button}   ref={modalTransactionRef}>
+      <Modal title='Modifier la transaction' text_bt='' ref={modalTransactionRef}>
         <form onBlur={e => {
           setTransactionValue(FormTransactionActions.getValues("total.value"))
           setTransactionCurrency(FormTransactionActions.getValues("total.currency"))
@@ -117,14 +123,11 @@ export default function TransactionGroupeMondal(props: {show() :void, groupId: n
         <div className="mb-2 text-secondary">
           <DateInput title="Date" {...FormTransactionActions.register("date", { })} />
         </div>
-        <div className="mb-2 text-secondary">
-          <ContributionInput title="Participants" register={FormTransactionActions.register} control={FormTransactionActions.control} transactionName="contributors" usernameName="username" valueName="value" isContributingName="isContributing" currency={transactionCurrency} totalValue={transactionValue} users={members.map(x => ({name: x.UserUsername, isContrib: true}))} />
-        </div>
-        <div className="mb-2 text-secondary">
-          <DropdownInput title="Payé par" setValueForm={FormTransactionActions.setValue} choices={sortList()} show={(c) => (<span>{c}</span>)} {...FormTransactionActions.register("payer")}/>
-        </div>
 
-        <InputButton text='Sauvegarder'></InputButton>
+        <InputButton text='Sauvegarder' ></InputButton>
+        {
+          <button type="button" className="bg-red mt-2 w-full hover:bg-white hover:text-red text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={onDeletTransaction}> Supprimer </button>
+        }
       </form>
     </Modal>
     )
