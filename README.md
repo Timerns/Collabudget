@@ -135,7 +135,7 @@ Toute les informations sur dans le fichier README.md dans le dossier documentati
 
 Une grande partie de la collaboration se fait sur notre discorde
 
-![Discord](https://discordapp.com/api/guilds/1143139605961510952/widget.png?style=banner1)
+![Discord](https://discordapp.com/api/guilds/1143139605961510952/widget.png?style=banner4)
 
 ## Chema de base de donnée
 
