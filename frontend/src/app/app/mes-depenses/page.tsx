@@ -13,6 +13,7 @@ import SoldeType from "@/app/types/soldeType";
 import TransactionCategorieType from "@/app/types/transactionCategorieType";
 import TransactionType from "@/app/types/transactionType";
 import { request } from "@/app/utils/database";
+import { formatCurrency } from "@/app/utils/numberFormatter";
 import { MouseEventHandler, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -186,7 +187,7 @@ export default function Page() {
                     </div>
                   </div>
                   <span className="text-sm text-primary">
-                    Mensuel : {data.monthly.value} / {data.monthly.max === -1 ? "∞" : data.monthly.max} CHF
+                    Mensuel : {Math.round(data.monthly.value * 100) / 100} / {formatCurrency(data.monthly.max === -1 ? undefined : data.monthly.max, undefined, false)}
                   </span>
                 </h3>
                 <LimitList 

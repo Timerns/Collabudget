@@ -5,7 +5,7 @@ import Input, { SharedProps } from "./Input";
 
 type BasicInputProps = SharedProps & {
   type: React.HTMLInputTypeAttribute,
-  step: string
+  step?: string
 }
 const BasicInput = React.forwardRef<HTMLInputElement, BasicInputProps & ReturnType<UseFormRegister<any>>>((props, ref) => {
   return (
