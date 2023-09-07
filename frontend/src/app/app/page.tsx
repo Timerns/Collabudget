@@ -106,10 +106,10 @@ export default function Page() {
             !isLoaded && <p>Chargement...</p>
           }
           {
-            isLoaded &&
-            data.transactions.length === 0 ?
-            (<p>Aucune transaction</p>) : 
+            isLoaded && 
             (
+              data.transactions.length === 0 ?
+              <p>Aucune transaction</p> : 
               <ResponsiveContainer width={"100%"} height={300}>
                 <BarChart data={data.transactions}>
                   <CartesianGrid/>
