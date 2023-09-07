@@ -3,7 +3,7 @@ import { isDate, isNumber, parametersDefined } from "../routes/routes"
 const res = undefined
 const id = 1
 const name = "Name"
-const date = new Date()
+const date = new Date().valueOf()
 const isNull = null
 const notDefine = undefined
 

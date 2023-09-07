@@ -62,7 +62,7 @@ export default function UpdateTransactionSoloModal(props: {show() :void, transac
   }, [])
 
   const onSubmitTransaction = (data: UpdateTransactionForm) => {
-    var requestData: any = { title: data.title, value: data.total.value, date: data.date, transactionId: props.transaction.id }
+    var requestData: any = { title: data.title, value: data.total.value, date: new Date(data.date).valueOf(), transactionId: props.transaction.id }
     console.log(data.label?.id)
     if (data.label?.id === undefined) {
       if (props.transaction.LabelId !== null) {
