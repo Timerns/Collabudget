@@ -45,7 +45,7 @@ const DropdownInput = React.forwardRef<HTMLInputElement, DropdownInputProps & Re
             {
               props.choices.map(c => (
                 <li key={JSON.stringify(c)}>
-                  <button onClick={() => {setValue(c); props.setValueForm(props.name, c); setOpen(false);}} type="button" className="block w-full px-4 py-2 dark:hover:bg-gray-400 dark:hover:text-white">
+                  <button onClick={() => {setValue(c); props.setValueForm(props.name, c); setOpen(false);}} type="button" className="block w-full px-4 py-2 hover:bg-gray-400 hover:text-black dark:hover:bg-gray-400 dark:hover:text-black">
                     {props.show(c)}
                   </button>
                 </li>
