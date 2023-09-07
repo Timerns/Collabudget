@@ -1,7 +1,7 @@
 function toISOLocal(d: Date) {
   var z  = (n: any) =>  ('0' + n).slice(-2);
   var zz = (n: any) => ('00' + n).slice(-3);
-  var off = 0;
+  var off = d.getTimezoneOffset();
   var sign = off > 0? '-' : '+';
   off = Math.abs(off);
 
