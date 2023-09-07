@@ -177,6 +177,7 @@ export default function Page({params}: { params: { groupId: number } }) {
                 labelId: x.id,
                 name: x.name
               }))}
+              group={true}
                 />
             </div>
         </div>
