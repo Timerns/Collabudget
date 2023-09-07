@@ -100,7 +100,7 @@ export default function UpdateTransactionGroupeModal(props: {show() :void, group
   }, [])
   
   const onSubmitTransaction = (data: UpdateTransactionForm) => {
-    var requestData: any = { groupId: Number(props.group.id), title: data.title, value: data.total.value, date: data.date, payer: data.payer, contributors: data.contributors, transactionId: props.transaction.id }
+    var requestData: any = { groupId: Number(props.group.id), title: data.title, value: data.total.value, date: new Date(data.date).valueOf(), payer: data.payer, contributors: data.contributors, transactionId: props.transaction.id }
     if (data.label?.id === undefined) {
       if (props.transaction.LabelId !== null) {
         requestData.labelId = props.transaction.LabelId

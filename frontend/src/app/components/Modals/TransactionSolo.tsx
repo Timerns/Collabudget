@@ -53,8 +53,7 @@ export default function TransactionSoloModal(props: {show() :void, title: string
 
   
   const onSubmitTransaction = (data: AddTransactionForm) => {
-
-    var requestData: any = { title: data.title, value: data.total.value, date: data.date}
+    var requestData: any = { title: data.title, value: data.total.value, date: new Date(data.date).valueOf()}
     if(data.label?.id !== undefined && data.label.id !== -1) {
       requestData.labelId = data.label.id
     } 

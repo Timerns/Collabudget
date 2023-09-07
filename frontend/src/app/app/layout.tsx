@@ -23,7 +23,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       {!isLoaded &&
         <div className={"font-primary bg-secondary text-white min-h-screen items-center content-start flex"}>
           <div className={"w-full center text-center h-fit text-3xl"}>
-            Loading...
+            Chargement...
           </div>
         </div>
       }

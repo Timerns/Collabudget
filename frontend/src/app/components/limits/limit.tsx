@@ -18,7 +18,7 @@ export default function Limit({ limit, ...props }: { limit: LimitType, props?: a
         </span>
       </div>
       <div className={`col-span-1 text-right ${-limit.currentValue >= limit.maxValue && limit.maxValue !== -1 ? "text-red" : "text-green"}`}>
-        {-limit.currentValue} / {formatCurrency(limit.maxValue === -1 ? undefined : limit.maxValue, undefined, false)}
+        {Math.round(-limit.currentValue * 100) / 100} / {formatCurrency(limit.maxValue === -1 ? undefined : limit.maxValue, undefined, false)}
       </div>
     </div>
   )
