@@ -24,7 +24,7 @@ const MoneyInput: FC<MoneyInputProps> = ((props) => {
   return (
     <Input {...props} onChange={onChange} onBlur={onChange} name="">
       <div className="flex bg-white appearance-none text-sm border rounded w-full justify-between overflow-hidden">
-        <NumberInput {...props} {...props.register(`${props.baseFormName}.${props.valueName}`, { valueAsNumber: true, value: 0 })} onlyComponent={true} />
+        <NumberInput step=".01" {...props} {...props.register(`${props.baseFormName}.${props.valueName}`, { valueAsNumber: true, value: 0 })} onlyComponent={true} />
         <DropdownInput {...props} {...props.register(`${props.baseFormName}.${props.currencyName}`, { value: props.currencies[0] })} setValueForm={props.setValueForm} choices={props.currencies} show={(c) => (<span>{c}</span>)} onlyComponent={true} />
       </div>
     </Input>
