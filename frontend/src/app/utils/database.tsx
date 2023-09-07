@@ -1,4 +1,4 @@
-function getBodyUrlEncoded(obj?: object) {
+export function getBodyUrlEncoded(obj?: object) {
   if (obj === undefined) {
     return undefined;
   }
