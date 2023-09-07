@@ -31,9 +31,9 @@ export default function TransactionCategorie({ transactionCategorie, ...props }:
               transactionCategorie.name || "Aucun label"
             :
               transactionCategorie.groupeId ?
-                <LabelGroupeModal show={show} title="Modifer label" button={transactionCategorie.name} groupId={transactionCategorie.groupeId!} label={{id: transactionCategorie.labelId!, color: transactionCategorie.labelColor!, name: transactionCategorie.name!}}/>
+                <LabelGroupeModal show={show} title="Modifier label" button={transactionCategorie.name} groupId={transactionCategorie.groupeId!} label={{id: transactionCategorie.labelId!, color: transactionCategorie.labelColor!, name: transactionCategorie.name!}}/>
                 :
-                <LabelSoloModal show={show} title="Modifer label" button={transactionCategorie.name} label={{id: transactionCategorie.labelId!, color: transactionCategorie.labelColor!, name: transactionCategorie.name!}}/>
+                <LabelSoloModal show={show} title="Modifier label" button={transactionCategorie.name} label={{id: transactionCategorie.labelId!, color: transactionCategorie.labelColor!, name: transactionCategorie.name!}}/>
           }
           
         </span>
