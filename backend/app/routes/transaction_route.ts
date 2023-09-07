@@ -40,7 +40,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
     Transaction.create({
       title: req.body.title,
       value: req.body.value,
-      date: req.body.date,
+      date: new Date(Number(req.body.date)),
       UserUsername: req.session.username,
       LabelId: (req.body.labelId ?? null)
     })
@@ -61,7 +61,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
       return
     }
 
-    Transaction.update({ title: req.body.title, value: req.body.value, date: req.body.date, LabelId: (req.body.labelId ?? null) }, {
+    Transaction.update({ title: req.body.title, value: req.body.value, date: new Date(Number(req.body.date)), LabelId: (req.body.labelId ?? null) }, {
       where : { id: req.body.transactionId, UserUsername: req.session.username }
     })
       .then(transaction => {
@@ -137,7 +137,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
       const transaction = await Transaction.create({
         title: req.body.title,
         value: req.body.value,
-        date: req.body.date,
+        date: new Date(Number(req.body.date)),
         UserUsername: req.body.payer,
         GroupId: req.body.groupId,
         LabelId: (req.body.labelId ?? null)
@@ -208,7 +208,7 @@ export function transactionRoute(app: Express, sequelize: Sequelize) {
       const transaction = await Transaction.update({
         title: req.body.title,
         value: req.body.value,
-        date: req.body.date,
+        date: new Date(Number(req.body.date)),
         UserUsername: req.body.payer,
         LabelId: (req.body.labelId ?? null)
       }, {

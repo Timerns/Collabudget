@@ -50,7 +50,7 @@ export function isNumber(res: any, parameters: any[], message: string): boolean 
 }
 
 export function isDate(res: any, parameter: any): boolean {
-  if (isNaN(new Date(parameter).valueOf())) {
+  if (isNaN(new Date(Number(parameter)).valueOf())) {
     res?.json({ error: 'La date n\'est pas valide.' })
     return false
   }

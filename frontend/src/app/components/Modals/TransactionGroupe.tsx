@@ -77,7 +77,7 @@ export default function TransactionGroupeMondal(props: {show() :void, groupId: n
   }
   
   const onSubmitTransaction = (data: AddTransactionForm) => {
-    var requestData: any = { groupId: Number(props.groupId), title: data.title, value: data.total.value, date: data.date, payer: data.payer, contributors: data.contributors}
+    var requestData: any = { groupId: Number(props.groupId), title: data.title, value: data.total.value, date: new Date(data.date).valueOf(), payer: data.payer, contributors: data.contributors}
     if(data.label?.id !== undefined && data.label.id !== -1) {
       requestData.labelId = data.label.id
     } 
