@@ -1,8 +1,10 @@
 # Collabudget
 
-
   <summary>Table des matières</summary>
   <ol>
+    <li>
+      <a href="#Description">Description</a>
+    </li>
     <li>
       <a href="#Etat-du-projet">Etat du projet</a>
     </li>
@@ -20,11 +22,21 @@
       <a href="#Contribution-au-projet ">Contribution au projet </a>
     </li>
     <li>
+      <a href="#Contrainte-et-méthodologie-du-projet">Contrainte et méthodologie du projet</a>
+    </li>
+    <li>
+      <a href="#Chema-de-base-de-donnée">Contrainte et méthodologie du projet</a>
+    </li>
+    <li>
       <a href="#Technologie-utilisé">Technologie uilisé</a>
     </li>
     
   </ol>
 
+## Description
+Lorsqu'on cherche à organiser notre budget il peut parfois être compliqué de tout rassembler au même endroit sans devoir entrer nos dépenses à doubles dans plusieurs applications. Si on a effectuer des dépenses au sein d'un groupe d'amis il faut ensuite également rajouter cette dépense sur notre compte personnel ce qui peut être ennuyant. Prenons l'exemple plus concret du voyage que vous organisez avec plusieurs amis, l'un va acheter les billets d'avions pour tous le monde, l'autre s'occuper de la réservation des chambres d'hotels et peut être même qu'un autre va s'occuper de la plupart des dépenses de la nourriture sur place. Il vous suffit donc d'entrer chaqu'une de ces dépenses dans notre applications et vous saurez instantanément qui doit de l'argent à qui et quelle somme sans devoir vérifier vous-même pour chaque dépense combien d'argent chaque personne vous doit.
+
+Collabudget est une application conçue pour simplifier la gestion de votre budget mensuel. Vous pouvez facilement enregistrer vos dépenses et il vous est également possible de spécifier une limite de dépense pour le mois courant. De plus, notre application vous offre également la possibilité de créer des groupes de partage de budgets avec vos amis, votre famille ou vos collègues facilitant ainsi la répartition équitables de vos finances. Les dépenses au sein de ces groupes sont ensuite automatiquement ajoutée sur votre profil personnel afin d'avoir un suivi des dépenses exactes et localisé dans une seule application.
 
 ## Etat du projet
 Workflows
@@ -117,7 +129,17 @@ npm run dev-local
 
 Pour contribuer au projet, deux étapes à effectuer. La première créer une branche pour sa feature, faire ses modifications. Puis faire une pull request. Lors de la pull request les tests unitaires seront executés automatiquement et lors du merge de la pull request dans la branche main le déploiement sera fait automatiquement sur Google cloud. 
 
+## Contrainte et méthodologie du projet 
 
+Toute les informations sur dans le fichier README.md dans le dossier documentation. [lien](./documentation/README.md)
+
+Une grande partie de la collaboration se fait sur notre discorde
+
+![Discord](https://discordapp.com/api/guilds/1143139605961510952/widget.png?style=banner1)
+
+## Chema de base de donnée
+
+![db chema](./documentation/db.png)
 
 ## Technologie uilisé
 ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
