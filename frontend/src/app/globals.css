@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+@import 'react-toastify/dist/ReactToastify.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -56,6 +57,14 @@
 ::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 3px;
+}
+
+/* Color picker border */
+::-webkit-color-swatch {
+    border-color: transparent;
+}
+::-moz-color-swatch {
+    border-color: transparent;
 }
 
 .swiper .swiper-button-prev, .swiper .swiper-button-next {

@@ -4,6 +4,7 @@ import { getInitOptions } from './utils';
 export class Contribution extends Model {
   id!: CreationOptional<number>;
   value!: number;
+  UserUsername!: string | null;
 
   public static register(conn: Sequelize): void {
     Contribution.init({

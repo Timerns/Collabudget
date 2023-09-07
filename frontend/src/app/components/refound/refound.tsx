@@ -1,11 +1,20 @@
 import {formatCurrency} from "@/app/utils/numberFormatter";
 import RefoundType from "@/app/types/refoundType";
 import Link from "next/link";
+import { request } from "@/app/utils/database";
+import { toast } from "react-toastify";
 
-export default function Refound({refound}: { refound: RefoundType}) {
+export default function Refound({refound, groupId, username}: { refound: {s: string, d: string, m: number}, groupId: number, username: string}) {
+
+  function refund () {
+    request<any>("/api/transactions/g/refund", "POST", { groupId: groupId, refunder: refound.s, refunded: refound.d})
+      .then(v => window.location.reload())
+      .catch(e => toast.error(e));
+  }
+
   return (
-      <div className={"grid grid-cols-4 bg-secondary p-3"}>
-        <div className={"col-span-2 font-semibold"}>
+      <div className={"grid grid-cols-2 bg-secondary p-3"}>
+        <div className={"col-span-1 font-semibold"}>
           <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg"
                className={"inline mr-3"}>
             <path
@@ -13,13 +22,13 @@ export default function Refound({refound}: { refound: RefoundType}) {
                 fill="#F5F5F5"/>
           </svg>
           <span>
-            {refound.userFrom.username} à {refound.userTo.username}
+            {refound.s} à {refound.d}
             </span>
         </div>
-        <div className={`col-span-2 text-right my-auto`}>
-          <Link href={""} className={"text-primary px-2"}>Rembourser</Link>
+        <div className={`col-span-1 text-right my-auto`}>
+          {(username === refound.s || username === refound.d) && <button onClick={refund} className={"text-primary px-2"}>Rembourser</button>}
           <span className={"text-green"}>
-              {formatCurrency(refound.amount)}
+              {formatCurrency(Number(refound.m))}
             </span>
         </div>
       </div>
