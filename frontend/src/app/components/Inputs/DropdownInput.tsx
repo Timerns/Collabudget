@@ -40,8 +40,8 @@ const DropdownInput = React.forwardRef<HTMLInputElement, DropdownInputProps & Re
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
           </svg>
         </button>
-        <div ref={refDropdown} id="dropdown" className={(open ? "" : "hidden ") + "mt-1 absolute z-10 divide-y divide-gray-100 rounded-lg shadow dark:bg-white"}>
-          <ul className="py-2 text-sm text-gray-700 dark:text-black">
+        <div ref={refDropdown} id="dropdown" className={(open ? "" : "hidden ") + "mt-1 absolute z-10 divide-y divide-gray-100 rounded-lg shadow bg-white dark:bg-white"}>
+          <ul className="py-2 text-sm text-gray-700 text-black dark:text-black">
             {
               props.choices.map(c => (
                 <li key={JSON.stringify(c)}>
