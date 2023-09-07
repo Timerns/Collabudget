@@ -89,6 +89,8 @@ BACKEND="http://localhost:8000"
 FRONTEND="http://localhost:3000"
 ```
 
+⚠️ Si une des valeurs ci-dessus contient des caractères spéciaux (par exemple '\$') il faut les remplacer par leur versions hexadécimales (pour '\$' il faudra écrire '%24') ⚠️
+
 ### Démarrer les projets 
 
 Pour démarrer le projet backend et frontend, il y a des prérequis. Il faut avoir installé  [node](https://nodejs.org/en/download) avec npm.  
