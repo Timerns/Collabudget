@@ -79,15 +79,29 @@ export default function Page({params}: { params: { groupId: number } }) {
       .catch(e => toast.error(e));
   }, []);
 
+  function unsecuredCopyToClipboard(text: string) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.focus({preventScroll:true});
+    textArea.select();
+    try {
+      document.execCommand('copy');
+    } catch (err) {
+      throw new Error('Unable to copy to clipboard');
+    }
+    document.body.removeChild(textArea);
+  }
+
   const copyToClipboard = async () => {
     try {
       const uuid = await request<string>("/api/groups/invite", "POST", { groupId: params.groupId });
       const link = process.env.FRONTEND_URL + "/app/groupe/invite/" + uuid
 
-      await navigator.clipboard.writeText(link);
+      unsecuredCopyToClipboard(link);
       toast.success('Le lien d\'invitation a été copié dans le presse-papier');
     } catch (err: any) {
-      toast.success(err.message);
+      toast.error(err.message);
     }
   }
 
